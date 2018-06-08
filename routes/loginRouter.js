@@ -80,7 +80,8 @@ loginRouter.post('/',function(req,res){
                         res.end('Email Unverified');
                     })
                     .catch(function(error) {
-                        res.end(error);
+                        //res.end(error);
+                        res.send("Error");
                     });
                 }
                 else {
@@ -91,7 +92,8 @@ loginRouter.post('/',function(req,res){
                 // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
-                res.end(errorMessage+""+errorCode);
+                //res.end(errorMessage+""+errorCode);
+                res.send('Error');
                 // ...
               });
             //   firebase.auth().onAuthStateChanged(function(user) {
@@ -116,26 +118,26 @@ loginRouter.post('/',function(req,res){
     //     res.end("User does not exist");
     // }); 
 // });
-    loginRouter.post('/auth',function(req,res){
-        firebase.database().ref('users/' + req.body.uid).set({
-            email: req.body.email,
-            phoneNumber: req.body.phoneNumber,
-            displayName: req.body.displayName,
-            username:"",
-            password: "",
-            age: "",
-            dateOfBirth:"",
-            state: "",
-            country: ""
-          });
-          firebase.database().ref('users/' + req.body.uid +'/address/').set({
-            flatNo: "",
-            streetName: "",
-            area: "",
-            city:"",
-            pinCode: ""
-          });
-          //console.log("Done");
-          res.end('Done');
-    })
+    // loginRouter.post('/auth',function(req,res){
+    //     firebase.database().ref('users/' + req.body.uid).set({
+    //         email: req.body.email,
+    //         phoneNumber: req.body.phoneNumber,
+    //         displayName: req.body.displayName,
+    //         username:"",
+    //         password: "",
+    //         age: "",
+    //         dateOfBirth:"",
+    //         state: "",
+    //         country: ""
+    //       });
+    //       firebase.database().ref('users/' + req.body.uid +'/address/').set({
+    //         flatNo: "",
+    //         streetName: "",
+    //         area: "",
+    //         city:"",
+    //         pinCode: ""
+    //       });
+    //       //console.log("Done");
+    //       res.end('Done');
+    // })
 module.exports = loginRouter;

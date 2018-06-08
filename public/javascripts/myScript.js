@@ -155,26 +155,30 @@ document.addEventListener('DOMContentLoaded', function() {
         // User successfully signed in.
         // Return type determines whether we continue the redirect automatically
         // or whether we leave that to developer to handle.
-        $.ajax({
-          url: '/login/auth',
-          method:'POST',
-          contentType:'application/json',
-          data: JSON.stringify({
-            uid:currentUser.uid,
+          firebase.database().ref('users/' + currentUser.uid).set({
             email: currentUser.email,
             phoneNumber: currentUser.phoneNumber,
             displayName: currentUser.displayName,
-          }),
-          success:function(response){
-            console.log(response);
-            if (response=='Done'){
-              window.location.origin = window.location.protocol + "//" 
-              + window.location.hostname 
-              + (window.location.port ? ':' + window.location.port : '');
-              window.location = window.location.origin+'/home';
-            }
-          }
-        });
+            username:"",
+            password: "",
+            age: "",
+            dateOfBirth:"",
+            state: "",
+            country: ""
+          });
+          firebase.database().ref('users/' + currentUser.uid +'/address/').set({
+            flatNo: "",
+            streetName: "",
+            area: "",
+            city:"",
+            pinCode: ""
+          })
+          .then(function(){
+            window.location.origin = window.location.protocol + "//" 
+            + window.location.hostname 
+            + (window.location.port ? ':' + window.location.port : '');
+            window.location = window.location.origin+'/home';
+          });  
         return false;
       },
       uiShown: function() {
@@ -595,27 +599,32 @@ $('#restDet').on('submit',function(event){
           var ImagesRef = storageRef.child('images/'+selectedFile.files[0].name);
           ImagesRef.put(selectedFile.files[0])
           .then(function(snapshot){
+            snapshot.ref.getDownloadURL().then(function(downloadURL){
+              firebase.database().ref('restaurant').child(name).child('restImage').set(downloadURL);
+            });
             console.log('Uploaded File');
-          })
-          firebase.database().ref('restaurant').child(name).child('restImage').set(ImagesRef.fullPath);
-          var fileLength = selectedFile.files.length;
-          for (var i=1; i < fileLength ; i++ ) {
-            console.log(i);
-          ImagesRef = storageRef.child('images/'+selectedFile.files[i].name);
-          ImagesRef.put(selectedFile.files[i])
-          .then(function(snapshot){
-            console.log('Uploaded File');
-            firebase.database().ref('restaurant').child(name).child('extraImage').push(ImagesRef.fullPath).then(function(){
-              if(i==fileLength){
-                window.location.origin = window.location.protocol + "//" 
-                + window.location.hostname 
-                + (window.location.port ? ':' + window.location.port : '');
-                window.location = window.location.origin+'/home/add';
-              }
-            })
-            //console.log(i,fileLength-1);
+            var fileLength = selectedFile.files.length;
+            for (var i=1; i < fileLength ; i++ ) {
+              console.log(i);
+            ImagesRef = storageRef.child('images/'+selectedFile.files[i].name);
+            ImagesRef.put(selectedFile.files[i])
+            .then(function(snapshot){
+              snapshot.ref.getDownloadURL().then(function(downloadURL){
+                firebase.database().ref('restaurant').child(name).child('extraImage').push(downloadURL).then(function(){
+                  if(i==fileLength){
+                    window.location.origin = window.location.protocol + "//" 
+                    + window.location.hostname 
+                    + (window.location.port ? ':' + window.location.port : '');
+                    window.location = window.location.origin+'/home/add';
+                  }
+                });
+              })
+              console.log('Uploaded File');
+              
+              //console.log(i,fileLength-1);
+            });
+          }
           });
-        }
       } 
       }
       }

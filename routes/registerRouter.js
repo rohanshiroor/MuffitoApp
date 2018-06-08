@@ -152,7 +152,7 @@ registerRouter.post('/',function(req,res){
         })
         .catch(function(error) {
           //console.log("Error creating new user:", error);
-          res.end(error);
+          res.send("Error");
         });
     } 
     else {
@@ -216,7 +216,7 @@ registerRouter.post('/',function(req,res){
           var errorCode = error.code;
           var errorMessage = error.message;
           console.log(errorCode);
-          res.end(errorMessage);
+          res.send("Error");
           // ...
           });
           //console.log('Step');
