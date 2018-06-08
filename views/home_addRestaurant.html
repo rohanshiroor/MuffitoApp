@@ -1,0 +1,179 @@
+  <html>
+  <head>
+    <title>Home</title>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <link rel="stylesheet" href="../stylesheets/style.css" />
+  </head>
+  <body>
+  <div class="container">
+    <nav class="nav nav-pills nav-fill">
+    <a class="nav-item nav-link active" href="#add" role="tab" data-toggle="tab" onclick="pageChange(event,'add')">Add Resteraunt</a>
+    <a class="nav-item nav-link" href="#search" role="tab" data-toggle="tab" onclick="pageChange(event,'search')">Search Resteraunt</a>
+    <a class="nav-item nav-link" href="#edit" role="tab" data-toggle="tab" onclick="pageChange(event,'contactus')">Contact Us</a>
+    <a class="nav-item nav-link" href="#signout" role="tab" data-toggle="tab" onclick="pageChange(event,'signout')">Sign Out</a>
+    </nav>
+    <br />
+      <h2>Add Your Resteraunt Details</h2>
+      <form name="restDet" enctype='multipart/form-data' id="restDet">
+        <div class="form-group">
+          <label for="restName">Resteraunt Name:</label>
+          <input class="form-control" id="restName" type="text" name="restName" placeholder="Resteraunt Name" required onblur="valInp('restDet','restName')">
+        </div>
+        <div class="form-group">
+          <label for="restCity">City:</label>
+          <input class="form-control" id="restCity" type="text" name="restCity" placeholder="City" required onblur="valInp('restDet','restCity')">
+        </div>
+        <div class="form-group">
+          <label for="restArea">Area:</label>
+          <input class="form-control" id="restArea" type="text" name="restArea" placeholder="Area" required onblur="valInp('restDet','restArea')">
+        </div>
+        <div class="form-group">
+          <label for="restStreetName">Street Name:</label>
+          <input class="form-control" id="restStreetName" type="text" name="restStreetName" placeholder="Street Name" required onblur="valInp('restDet','restStreetName')">
+        </div>
+        <div id="map"></div>
+        <br />
+        <input type="hidden" id="latitude" name="latitude">
+        <input type="hidden" id="longitude" name="longitude">
+        <div class='form-group'>
+          <label for='restImage'>Resteraunt Images</label>
+          <input type='file' class='form-control-file' name='' id='restImage' multiple name='restImage'>
+          </div>
+        <div class="form-group">
+          <label for="rating">Current Rating:</label>
+          <input class="form-control" id="rating" type="number" name="rating" placeholder="Current rating" required="" onblur="valInp('restDet','rating')">
+        </div>
+        <div class="form-group">
+          <label for="restType">Resteraunt Type</label>
+          <select class="form-control" id="restType" name="restType">
+            <option>cheap</option>
+            <option>moderate</option>
+            <option>costly</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="stagEntry">Stag Entry</label>
+          <select class="form-control" id="stagEntry" name="stagEntry">
+            <option>Yes</option>
+            <option>No</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="restOpen">Resteraunt Open Info</label>
+          <select class="form-control" id="restOpen" name="restOpen">
+            <option>Open Now</option>
+            <option>Closed</option>
+          </select>
+        </div>
+        <h3>Hours:</h3>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-2">
+              <h4>Monday:</h4>
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" id="monOp" type="time" name="monOp" required="">
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" id="monCl" type="time" name="monCl" required="">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-2">
+              <h4>Tuesday:</h4>
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" id="tueOp" type="time" name="tueOp" required="">
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" id="tueCl" type="time" name="tueCl" required="">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-2">
+              <h4>Wednesday:</h4>
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" id="wedOp" type="time" name="wedOp" required="">
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" id="wedCl" type="time" name="wedCl" required="">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-2">
+              <h4>Thursday:</h4>
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" id="thOp" type="time" name="thOp" required="">
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" id="thCl" type="time" name="thCl" required="">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-2">
+              <h4>Friday:</h4>
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" id="friOp" type="time" name="friOp" required="">
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" id="friCl" type="time" name="friCl" required="">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-2">
+              <h4>Saturday:</h4>
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" id="satOp" type="time" name="satOp" required="">
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" id="satCl" type="time" name="satCl" required="">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-2">
+              <h4>Sunday:</h4>
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" id="sunOp" type="time" name="sunOp" required="">
+            </div>
+            <div class="col-md-3">
+              <input class="form-control" id="sunCl" type="time" name="sunCl" required="">
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </form>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase.js"></script>
+  <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="../javascripts/myScript.js"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRIt05f_gxZGvC0HTPpjxGh0hsglgl2I4&callback=initMap"></script>
+</body>
+</html>

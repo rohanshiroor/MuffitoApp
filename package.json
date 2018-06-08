@@ -1,0 +1,38 @@
+{
+  "name": "webapp",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www",
+    "devstart": "nodemon ./bin/www",
+    "lint": "eslint app.js"
+  },
+  "dependencies": {
+    "body-parser": "~1.18.2",
+    "bootstrap": "^4.1.1",
+    "chalk": "^2.4.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "^2.6.9",
+    "email-existence": "^0.1.6",
+    "eslint": "^4.19.1",
+    "express": "^4.15.5",
+    "express-form": "^0.12.6",
+    "express-validator": "^5.2.0",
+    "firebase": "^5.0.2",
+    "firebase-admin": "^5.12.1",
+    "firebaseui": "^3.0.0",
+    "flash": "^1.1.0",
+    "jquery": "^3.3.1",
+    "morgan": "~1.9.0",
+    "nodemailer": "^4.6.4",
+    "popper.js": "^1.14.3",
+    "pug": "2.0.0-beta11",
+    "serve-favicon": "~2.4.5"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.11.0",
+    "nodemon": "^1.17.4"
+  }
+}

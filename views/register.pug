@@ -1,0 +1,68 @@
+head
+  title Registration
+  link(type='text/css' rel='stylesheet' href='https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css')
+  link(rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous')
+  link(rel='stylesheet' href='stylesheets/style.css')
+.container
+  .tab
+    button.tablinks.active(onclick="tabChange(event, 'email')") Email
+    button.tablinks(onclick="tabChange(event, 'phone')") Phone
+  br
+  form(name='register' id='register')
+    h2#regWithEmail Register with Email:
+    h2#regWithPhone Register with Phone:
+    .form-group
+      label(for='firstname') First Name:
+      input#firstname.form-control(type='text' name='firstname' placeholder='First Name' required='' onblur="valInp('register','firstname')")
+    .form-group
+      label(for='lastname') Last Name:
+      input#lastname.form-control(type='text' name='lastname' placeholder='Last Name' required='' onblur="valInp('register','lastname')")
+    .form-group
+      label(for='age') Age:
+      input#age.form-control(type='number' name='age' placeholder='Age' required='' onblur="valInp('register','age')")
+    .form-group
+      label(for='flatno') Flat Number:
+      input#flatno.form-control(type='number' name='flatno' placeholder='Flat Number' required='' onblur="valInp('register','flatno')")
+    .form-group
+      label(for='streetName') Street Name:
+      input#streetName.form-control(type='text' name='streetName' placeholder='Street Name' required='' onblur="valInp('register','streetName')")
+    .form-group
+      label(for='area') Area:
+      input#area.form-control(type='text' name='area' placeholder='Area' required='' onblur="valInp('register','area')")
+    .form-group
+      label(for='city') City:
+      input#city.form-control(type='text' name='city' placeholder='City' required='' onblur="valInp('register','city')")
+    .form-group
+      label(for='pincode') Pincode:
+      input#pincode.form-control(type='number' name='pincode' placeholder='Pincode' required='' onblur="valInp('register','pincode')")
+    .form-group
+      label(for='dob') Date of Birth:
+      input#dob.form-control(type='date' name='dob' placeholder='Date of Birth' required='' onblur="valInp('register','dob')")
+    .form-group
+      label(for='state') State
+      input#state.form-control(type='text' name='state' placeholder='State' required='' onblur="valInp('register','state')")
+    .form-group
+      label(for='country') Country:
+      input#country.form-control(type='text' name='country' placeholder='Country:' required='' onblur="valInp('register','country')")
+    #em.form-group
+      label(for='state') Email Address:
+      input#email.form-control(type='email' name='email' placeholder='Email' required='' onblur="valInp('register','email')")
+    .form-group
+      label(for='username') Username:
+      input#username.form-control(type='text' name='username' placeholder='Username' required='' onblur="valInp('register','username')")
+    #ph.form-group
+      label(for='phone') Phone Number:
+      input#phone.form-control(type='tel' name='phone' placeholder='Phone Number' onblur="val_phone()")
+    .form-group
+      label(for='password') Password:
+      input#password.form-control(type='password' name='password' placeholder='Password' required='' onblur="valInp('register','password')")
+    button.btn.btn-primary(type='submit') Submit
+    include messages
+script(src='https://www.gstatic.com/firebasejs/5.0.1/firebase.js')
+script(src='https://www.gstatic.com/firebasejs/5.0.1/firebase-app.js')
+script(src='https://www.gstatic.com/firebasejs/5.0.1/firebase-auth.js')
+script(src='https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous')
+script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js')
+script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous')
+script(src='javascripts/myScript.js')

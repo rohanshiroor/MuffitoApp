@@ -1,0 +1,76 @@
+function val_lastname() {
+    var lname = document.forms["register"]["lastname"].value;
+    lname = $.sanitize(lname);
+    document.forms["register"]["lastname"].value = lname;
+}
+
+function val_age() {
+    var age = document.forms["register"]["age"].value;
+    age = $.sanitize(age);
+    document.forms["register"]["age"].value = age;
+}
+
+function val_flatno() {
+    var flatno = document.forms["register"]["flatno"].value;
+    flatno = $.sanitize(flatno);
+    document.forms["register"]["flatno"].value = flatno;
+}
+
+function val_streetName() { 
+    var streetName = document.forms["register"]["streetName"].value;
+    streetName = $.sanitize(streetName);
+    document.forms["register"]["streetName"].value = streetName; 
+}
+
+function val_area() {
+    var area = document.forms["register"]["area"].value;
+    area = $.sanitize(area);
+    document.forms["register"]["area"].value = area;
+}
+
+function val_city() {
+    var city = document.forms["register"]["city"].value;
+    city = $.sanitize(city);
+    document.forms["register"]["city"].value = city;
+}
+
+function val_pincode() {
+    var pincode = document.forms["register"]["pincode"].value;
+    pincode = $.sanitize(pincode);
+    document.forms["register"]["pincode"].value = pincode;
+}
+
+function val_dob() {
+    var dob = document.forms["register"]["dob"].value;
+    dob = $.sanitize(dob);
+    document.forms["register"]["dob"].value = dob;
+}
+
+function val_state() {
+    var state = document.forms["register"]["state"].value;
+    state = $.sanitize(state);
+    document.forms["register"]["state"].value = state;
+}
+
+function val_country() {
+    var country = document.forms["register"]["country"].value;
+    country = $.sanitize(country);
+    document.forms["register"]["country"].value = country;
+}
+
+function val_email() {
+    var email = document.forms["register"]["email"].value;
+    email = $.sanitize(email);
+    document.forms["register"]["email"].value = email;
+}
+
+function val_username() {
+    var username = document.forms["register"]["username"].value;
+    username = $.sanitize(username);
+    document.forms["register"]["username"].value = username;
+}
+function val_pwd() {
+    var password = document.forms["register"]["password"].value;
+    password = $.sanitize(password);
+    document.forms["register"]["password"].value = password;
+}

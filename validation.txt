@@ -1,0 +1,84 @@
+ var ck_name = /^[A-Za-z]{3,20}$/;
+    var ck_email = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    var ck_username = /^[A-Za-z0-9_]{1,20}$/;
+    var ck_password =  /^[A-Za-z0-9!@#$%^&*()_]{6,20}$/;
+    var numbers = /^[0-9]+$/;
+    var pin = /^[0-9]{5}$/;
+    var ck_phone = /^[0-9]{10}$/;
+    var ck_misctext = /^[A-Za-z0-9 ]+$/;
+
+
+if(!ck_name.test(fname)){
+        document.forms["register"]["firstname"].style.borderColor = red;
+        return false;
+    }
+
+if(!ck_name.test(lname)){
+        document.forms["register"]["lastname"].style.borderColor = red;
+        return false;
+    }
+
+ if(NaN(age)||age<1 || age>999){
+        document.forms["register"]["age"].style.borderColor = red;
+        return false;
+    }
+
+ if(!numbers.test(flatno)){
+        document.forms["register"]["flatno"].style.borderColor = red;
+        return false;
+    }
+
+ if(!ck_misctext.test(streetName)){
+        document.forms["register"]["streetName"].style.borderColor = red;
+        return false;
+    }
+
+if(!ck_misctext.test(area)){
+        document.forms["register"]["area"].style.borderColor = red;
+        return false;
+    }
+
+if(!ck_name.test(city)){
+        document.forms["register"]["city"].style.borderColor = red;
+        return false;
+    }
+
+if(!pin.test(pincode)){
+        document.forms["register"]["pincode"].style.borderColor = red;
+        return false;
+    }
+
+if(!numbers.test(dob)){
+        document.forms["register"]["dob"].style.borderColor = red;
+        return false;
+    }
+
+if(!ck_name.test(state)){
+        document.forms["register"]["state"].style.borderColor = red;
+        return false;
+    }
+
+ if(!ck_name.test(country)){
+        document.forms["register"]["country"].style.borderColor = red;
+        return false;
+    }
+
+if(!ck_email.test(email) && email!=''){
+        document.forms["register"]["email"].style.borderColor = red;
+        return false;
+    }
+
+if(!ck_username.test(username)){
+        document.forms["register"]["username"].style.borderColor = red;
+        return false;
+    }
+
+if(!ck_phone.test(phone)){
+        document.forms["register"]["phone"].style.borderColor = red;
+        return false;
+    }
+
+if(!ck_password.test(password)){
+        document.forms["register"]["password"].style.borderColor = red;
+        return false;
+    }
