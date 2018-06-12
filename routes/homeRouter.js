@@ -16,8 +16,8 @@ homeRouter.get('/',function(req,res){
 homeRouter.get('/add',function(req,res){
     res.sendFile(path.join(__dirname,'../views/home_addRestaurant.html'));
 });
-homeRouter.get('/search',function(req,res){
-    res.sendFile(path.join(__dirname,'../views/home_searchRestaurant.html'));
+homeRouter.get('/update',function(req,res){
+    res.sendFile(path.join(__dirname,'../views/home_updateProfile.html'));
 });
 homeRouter.get('/contactus',function(req,res){
     res.sendFile(path.join(__dirname,'../views/home_contactUs.html'));

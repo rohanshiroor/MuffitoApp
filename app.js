@@ -9,12 +9,13 @@ const bodyParser = require('body-parser');
 // const morgan = require('morgan');
 const firebase = require('firebase');
 // const firebaseui = require('firebaseui');
-const index = require('./routes/index');
-const users = require('./routes/users');
+//const index = require('./routes/index');
+//const users = require('./routes/users');
 const loginRouter = require('./routes/loginRouter');
 const registerRouter = require('./routes/registerRouter');
 const verifyRouter = require('./routes/verifyRouter');
 const homeRouter = require('./routes/homeRouter');
+const indexRouter = require('./routes/indexRouter');
 const admin = require('firebase-admin');
 // const firebaseui = require('firebaseui');
 const app = express();
@@ -60,8 +61,8 @@ const database = firebase.database();
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
-app.use('/', index);
-app.use('/users', users);
+app.use('/', indexRouter);
+//app.use('/users', users);
 app.use('/register', registerRouter);
 app.use('/login',loginRouter);
 app.use('/verify',verifyRouter);

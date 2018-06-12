@@ -626,6 +626,12 @@ $('#restDet').on('submit',function(event){
           }
           });
       } 
+      else {
+        window.location.origin = window.location.protocol + "//" 
+        + window.location.hostname 
+        + (window.location.port ? ':' + window.location.port : '');
+        window.location = window.location.origin+'/home/add';
+      }
       }
       }
 });
@@ -660,4 +666,10 @@ function pageChange(evt,page){
     });
   }
 }
+
+$('#restDet').on('submit',function(event){
+  event.preventDefault();
+  
+});
+
 
