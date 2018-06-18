@@ -716,7 +716,9 @@ $("#searchRest").change(function restSearch() {
   var searText = document.forms["searchRest"]["searchText"].value; 
   var stagEntry = document.forms["searchRest"]["stagEntryBox"].checked;
   var openNow = document.forms["searchRest"]["openNowBox"].checked;
-
+  var sort = document.getElementById("sort");
+  var sortBy =  sort.options[sort.selectedIndex].innerHTML;
+  console.log(sortBy);
   if(!ck_misctext.test(searText)){
           document.forms["searchRest"]["searchText"].style.borderColor = 'red';
           $("<span>Invalid Search Text</span>").addClass('error').insertAfter("#searchText");
@@ -729,19 +731,19 @@ $("#searchRest").change(function restSearch() {
   console.log(count);
   var flag = 0;
   //console.log(data[0])
+  
   for(var i=0;i<count;i++){
     for(key in data[i]){
       data[i][key] = data[i][key].toString();
       // console.log(data[i]);
       if(data[i][key].indexOf(searText)!=-1) {
          //console.log(data[i].name);
-  //       nameArray.push(data[i].name);
   //       cityArray.push(data.city);
   //       areaArray.push(data.area);
   //       //extraImageArray.push(data.)
   //       openInfoArray.push(data.openInfo);
-  //       ratingArray.push(data.rating);
-  //       restaurantTypeArray.push(data.restaurantType);
+  //         
+  //       
   //       stagEntryArray.push(data.stagEntry);
   //       streetArray.push(data.street);
   //       //distanceArray.push()
@@ -772,11 +774,116 @@ $("#searchRest").change(function restSearch() {
     if (flag == 1) {
       nameArray.push(data[i].name);
       imageUrlArray.push(data[i].imageUri);
+      ratingArray.push(data[i].ratting);
+      restaurantTypeArray.push(data[i]["restaurant type"]);
+      //console.log(data[i]["restaurant type"]);
     }
     flag = 0;
   }
+  
+  switch(sortBy) {
+    
+    case "Rating":
+    {   
+        var temp = null;
+        console.log("R");
+        for(var i=0;i<ratingArray.length;i++){
+          for(var j=0;j<ratingArray.length-i-1;j++){
+              if(ratingArray[j] < ratingArray[j+1]){
+                temp = nameArray[j];
+                nameArray[j] = nameArray[j+1];
+                nameArray[j+1] = temp;
+                temp = imageUrlArray[j];
+                imageUrlArray[j] = imageUrlArray[j+1];
+                imageUrlArray[j+1] = temp;
+                temp = ratingArray[j];
+                ratingArray[j] = ratingArray[j+1];
+                ratingArray[j+1] = temp;
+                temp = restaurantTypeArray[j];
+                restaurantTypeArray[j] = restaurantTypeArray[j+1];
+                restaurantTypeArray[j+1] = temp;
+              }
+          }
+        }
+        break;
+    }
+    case "Cost-High to Low":
+    { 
+      var temp = null;
+      console.log("CHL");
+      for(var i=0;i<restaurantTypeArray.length;i++){
+        if(restaurantTypeArray[i]=="cheap")
+        costArrayhigh.push(0);
+        if(restaurantTypeArray[i]=="moderate")
+        costArrayhigh.push(1);
+        if(restaurantTypeArray[i]=="costly")
+        costArrayhigh.push(2);
+      }
+      //console.log(costArrayhigh.length);
+      for(var i=0;i<costArrayhigh.length;i++){
+        for(var j=0;j<costArrayhigh.length-i-1;j++){
+            if(costArrayhigh[j] < costArrayhigh[j+1]){
+              temp = nameArray[j];
+              nameArray[j] = nameArray[j+1];
+              nameArray[j+1] = temp;
+              temp = imageUrlArray[j];
+              imageUrlArray[j] = imageUrlArray[j+1];
+              imageUrlArray[j+1] = temp;
+              temp = ratingArray[j];
+              ratingArray[j] = ratingArray[j+1];
+              ratingArray[j+1] = temp;
+              temp = restaurantTypeArray[j];
+              restaurantTypeArray[j] = restaurantTypeArray[j+1];
+              restaurantTypeArray[j+1] = temp;
+              temp = costArrayhigh[j];
+              costArrayhigh[j] = costArrayhigh[j+1];
+              costArrayhigh[j+1] = temp;
+            }
+        }
+      }
+      break;
+    }
+    case "Cost-Low to High":
+    {
+      var temp = null;
+      console.log("CLH");
+      for(var i=0;i<restaurantTypeArray.length;i++){
+        if(restaurantTypeArray[i]=="cheap")
+        costArray.push(0);
+        if(restaurantTypeArray[i]=="moderate")
+        costArray.push(1);
+        if(restaurantTypeArray[i]=="costly")
+        costArray.push(2);
+      }
+      //console.log(costArray);
+      for(var i=0;i<costArray.length;i++){
+        for(var j=0;j<costArray.length-i-1;j++){
+            if(costArray[j] > costArray[j+1]){  
+              temp = nameArray[j];
+              nameArray[j] = nameArray[j+1];
+              nameArray[j+1] = temp;
+              temp = imageUrlArray[j];
+              imageUrlArray[j] = imageUrlArray[j+1];
+              imageUrlArray[j+1] = temp;
+              temp = ratingArray[j];
+              ratingArray[j] = ratingArray[j+1];
+              ratingArray[j+1] = temp;
+              temp = restaurantTypeArray[j];
+              restaurantTypeArray[j] = restaurantTypeArray[j+1];
+              restaurantTypeArray[j+1] = temp;
+              temp = costArray[j];
+              costArray[j] = costArray[j+1];
+              costArray[j+1] = temp;
+            }
+        }
+      }
+      break;
+    }
+    default:
+  }
 //console.log(nameArray);
-console.log(document.forms["searchRest"]["stagEntryBox"].checked);
+//console.log(document.forms["searchRest"]["stagEntryBox"].checked);
+
   var bodyDiv = $('#restCards');
   if (nameArray.length!=0){
     for(var i=0;i<nameArray.length;i++){
@@ -786,6 +893,8 @@ console.log(document.forms["searchRest"]["stagEntryBox"].checked);
       <img class="card-img-top" src =`+imageUrlArray[i]+`alt="Card image cap" height="300" > 
       <div class="card-body">
         <h5 class="card-title">`+nameArray[i]+`</h5>
+        <p class="card-text">`+ratingArray[i]+`</p>
+        <p class="card-text">`+restaurantTypeArray[i]+`</p>
       </div>
       `);
       bodyDiv.append(`<br />`);
