@@ -1,4 +1,5 @@
 var phone;
+var restData;
 (function($) {
 	$.sanitize = function(input) {
 		var output = input.replace(/<script[^>]*?>.*?<\/script>/gi, '').
@@ -667,9 +668,129 @@ function pageChange(evt,page){
   }
 }
 
-$('#restDet').on('submit',function(event){
-  event.preventDefault();
-  
+function getData(){
+  var dataArray = [];
+  var restRef = firebase.database().ref('restaurant')
+  restRef.orderByValue().once('value',function(snapshot){
+    snapshot.forEach(function(data){
+        //console.log(data.key);
+        dataArray.push(data.val());
+    });
+    //console.log(JSON.stringify(dataArray));
+    window.localStorage.setItem("snapshot",JSON.stringify(dataArray));
+  }); 
+}
+$("#searchRest").change(function restSearch() {
+  var data = JSON.parse(window.localStorage.getItem("snapshot"));
+  //console.log(data[0]);
+  nameArray = [];
+  cityArray = [];
+  areaArray = [];
+  extraImageArray = [];
+  openInfoArray = [];
+  ratingArray = [];
+  restaurantTypeArray = [];
+  stagEntryArray = [];
+  streetArray = [];
+  distanceArray = [];
+  costArray = [];
+  costArrayhigh = [];
+  imageUrlArray = [];
+  mondayOpenArray = [];
+  tuesdayOpenArray = [];
+  wednesdayOpenArray = [];
+  thursdayOpenArray = [];
+  fridayOpenArray = [];
+  saturdayOpenArray = [];
+  sundayOpenArray = [];
+  mondayCloseArray = [];
+  tuesdayCloseArray = [];
+  wednesdayCloseArray = [];
+  thursdayCloseArray = [];
+  fridayCloseArray = [];
+  saturdayCloseArray = [];
+  sundayCloseArray = [];
+  $('#restCards').empty();
+  var ck_misctext = /^[A-Za-z0-9 ]+$/;
+  var error = false;
+  var searText = document.forms["searchRest"]["searchText"].value; 
+  var stagEntry = document.forms["searchRest"]["stagEntryBox"].checked;
+  var openNow = document.forms["searchRest"]["openNowBox"].checked;
+
+  if(!ck_misctext.test(searText)){
+          document.forms["searchRest"]["searchText"].style.borderColor = 'red';
+          $("<span>Invalid Search Text</span>").addClass('error').insertAfter("#searchText");
+          error = true;
+  }
+  if (error) {
+    return false
+  }
+  var count = Object.keys(data).length;
+  console.log(count);
+  var flag = 0;
+  //console.log(data[0])
+  for(var i=0;i<count;i++){
+    for(key in data[i]){
+      data[i][key] = data[i][key].toString();
+      // console.log(data[i]);
+      if(data[i][key].indexOf(searText)!=-1) {
+         //console.log(data[i].name);
+  //       nameArray.push(data[i].name);
+  //       cityArray.push(data.city);
+  //       areaArray.push(data.area);
+  //       //extraImageArray.push(data.)
+  //       openInfoArray.push(data.openInfo);
+  //       ratingArray.push(data.rating);
+  //       restaurantTypeArray.push(data.restaurantType);
+  //       stagEntryArray.push(data.stagEntry);
+  //       streetArray.push(data.street);
+  //       //distanceArray.push()
+  //       //costArray.push()
+  //       //costArrayhigh.push()
+  //       imageUrlArray.push(data[i].imageUri);
+  //       mondayOpenArray.push(data.mondayOpen);
+  //       tuesdayOpenArray.push(data.tuesdayOpen);
+  //       wednesdayOpenArray.push(data.wednesdayOpen);
+  //       thursdayOpenArray.push(data.thursdayOpen);
+  //       fridayOpenArray.push(data.fridayOpen);
+  //       saturdayOpenArray.push(data.saturdayOpen);
+  //       sundayOpenArray.push(data.sundayOpen);
+  //       mondayCloseArray.push(data.mondayClose);
+  //       tuesdayCloseArray.push(data.tuesdayClose);
+  //       wednesdayCloseArray.push(data.wednesdayClose);
+  //       thursdayCloseArray.push(data.thursdayClose);
+  //       fridayCloseArray.push(data.fridayClose);
+  //       saturdayCloseArray.push(data.saturdayClose);
+  //       sundayCloseArray.push(data.sundayClose);
+  flag = 1;
+    }
+  } 
+    if(stagEntry && (data[i].stagEntry != "yes" || data[i].stagEntry != "Yes"))
+          flag = 0;
+    if(openNow && data[i].openInfo != "open now" )
+          flag = 0;
+    if (flag == 1) {
+      nameArray.push(data[i].name);
+      imageUrlArray.push(data[i].imageUri);
+    }
+    flag = 0;
+  }
+//console.log(nameArray);
+console.log(document.forms["searchRest"]["stagEntryBox"].checked);
+  var bodyDiv = $('#restCards');
+  if (nameArray.length!=0){
+    for(var i=0;i<nameArray.length;i++){
+      
+      bodyDiv.append(`
+      <div class="card">              
+      <img class="card-img-top" src =`+imageUrlArray[i]+`alt="Card image cap" height="300" > 
+      <div class="card-body">
+        <h5 class="card-title">`+nameArray[i]+`</h5>
+      </div>
+      `);
+      bodyDiv.append(`<br />`);
+    }
+  }
 });
 
 

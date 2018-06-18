@@ -40,6 +40,7 @@ homeRouter.post('/add',function(req,res){
         restaurantType: req.body.restType,
         stagEntry: req.body.stagEntry,
         openInfo:req.body.restOpen,
+        name: req.body.restName,
         latitude: req.body.latitude,
         longitude: req.body.longitude,
         mondayOpen: req.body.monOp,
