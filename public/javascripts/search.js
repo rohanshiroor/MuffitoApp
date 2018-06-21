@@ -1,18 +1,26 @@
 function getData(){
     var dataArray = [];
+    imageArray = [];
     var restRef = firebase.database().ref('restaurant')
     restRef.orderByValue().once('value',function(snapshot){
       snapshot.forEach(function(data){
           //console.log(data.key);
           dataArray.push(data.val());
-      });
+          restRef.child(data.key).child("extraImage").orderByValue().once('value',function(snapshot1){
+                //console.log(snapshot1.val());
+                imageArray.push(snapshot1.val());
+                window.localStorage.setItem("images",JSON.stringify(imageArray));
+            });
+      //console.log(JSON.stringify(imageArray));
+    }); 
       //console.log(JSON.stringify(dataArray));
       window.localStorage.setItem("snapshot",JSON.stringify(dataArray));
     }); 
   }
   $("#searchRest").change(function restSearch() {
     var data = JSON.parse(window.localStorage.getItem("snapshot"));
-    //console.log(data[0]);
+    var imageUrlArray = JSON.parse(window.localStorage.getItem("images"));
+    //console.log(imageUrlArray);
     nameArray = [];
     cityArray = [];
     areaArray = [];
@@ -25,7 +33,6 @@ function getData(){
     distanceArray = [];
     costArray = [];
     costArrayhigh = [];
-    imageUrlArray = [];
     mondayOpenArray = [];
     tuesdayOpenArray = [];
     wednesdayOpenArray = [];
@@ -70,7 +77,7 @@ function getData(){
            //console.log(data[i].name);
     //       cityArray.push(data.city);
     //       areaArray.push(data.area);
-    //       //extraImageArray.push(data.)
+    //       imageUrlArray.push(data[i].imageUri);
     //       openInfoArray.push(data.openInfo);
     //         
     //       
@@ -103,14 +110,15 @@ function getData(){
             flag = 0;
       if (flag == 1) {
         nameArray.push(data[i].name);
-        imageUrlArray.push(data[i].imageUri);
+        for(key in imageUrlArray[i])
+          extraImageArray.push(imageUrlArray[i][key]);
         ratingArray.push(data[i].ratting);
         restaurantTypeArray.push(data[i]["restaurant type"]);
-        //console.log(data[i]["restaurant type"]);
+        //console.log(data[i]);
       }
       flag = 0;
     }
-    
+    //console.log(extraImageArray);
     switch(sortBy) {
       
       case "Rating":
@@ -123,9 +131,9 @@ function getData(){
                   temp = nameArray[j];
                   nameArray[j] = nameArray[j+1];
                   nameArray[j+1] = temp;
-                  temp = imageUrlArray[j];
-                  imageUrlArray[j] = imageUrlArray[j+1];
-                  imageUrlArray[j+1] = temp;
+                  temp = extraImageArray[j];
+                  extraImageArray[j] = extraImageArray[j+1];
+                  extraImageArray[j+1] = temp;
                   temp = ratingArray[j];
                   ratingArray[j] = ratingArray[j+1];
                   ratingArray[j+1] = temp;
@@ -156,9 +164,9 @@ function getData(){
                 temp = nameArray[j];
                 nameArray[j] = nameArray[j+1];
                 nameArray[j+1] = temp;
-                temp = imageUrlArray[j];
-                imageUrlArray[j] = imageUrlArray[j+1];
-                imageUrlArray[j+1] = temp;
+                temp = extraImageArray[j];
+                extraImageArray[j] = extraImageArray[j+1];
+                extraImageArray[j+1] = temp;
                 temp = ratingArray[j];
                 ratingArray[j] = ratingArray[j+1];
                 ratingArray[j+1] = temp;
@@ -192,9 +200,9 @@ function getData(){
                 temp = nameArray[j];
                 nameArray[j] = nameArray[j+1];
                 nameArray[j+1] = temp;
-                temp = imageUrlArray[j];
-                imageUrlArray[j] = imageUrlArray[j+1];
-                imageUrlArray[j+1] = temp;
+                temp = extraImageArray[j];
+                extraImageArray[j] = extraImageArray[j+1];
+                extraImageArray[j+1] = temp;
                 temp = ratingArray[j];
                 ratingArray[j] = ratingArray[j+1];
                 ratingArray[j+1] = temp;
@@ -220,14 +228,106 @@ function getData(){
         
         bodyDiv.append(`
         <div class="card">              
-        <img class="card-img-top" src =`+imageUrlArray[i]+`alt="Card image cap" height="300" > 
+        <img class="card-img-top" src = '${extraImageArray[i]}' alt="Card image cap" height="300" > 
         <div class="card-body">
-          <h5 class="card-title">`+nameArray[i]+`</h5>
-          <p class="card-text">`+ratingArray[i]+`</p>
-          <p class="card-text">`+restaurantTypeArray[i]+`</p>
+          <h5 class="card-title">${nameArray[i]}</h5>
+          <p class="card-text">${ratingArray[i]}</p>
+          <p class="card-text">${restaurantTypeArray[i]}</p>
         </div>
+        <button type="button" onclick = "knowMore(event,'${nameArray[i]}','${extraImageArray[i]}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        Know More
+        </button>
         `);
         bodyDiv.append(`<br />`);
       }
     }
   });
+
+ function knowMore(evt,name,imageURL){
+  var data = JSON.parse(window.localStorage.getItem("snapshot"));
+  //console.log(name);
+  var modal = $('#myModal');
+  modal.append(`
+  <div class="modal-dialog">
+  <div class="modal-content">
+  <div class="modal-header">
+      <h4 class="modal-title">${name}</h4>
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+  </div>
+  <div class="modal-body">
+<div id="model" class="carousel slide" data-ride="carousel">
+<ul class="carousel-indicators">
+<li data-target="#model" data-slide-to="0" class="active"></li>
+</ul>
+<div class="carousel-inner">
+<div class="carousel-item active">
+  <img src="${imageURL}" alt="Res 1" height="500">
+  </div>
+</div>
+<a class="carousel-control-prev" href="#model" data-slide="prev">
+     <span class="carousel-control-prev-icon"></span>
+ 	</a>
+ 	<a class="carousel-control-next" href="#model" data-slide="next">
+ 		<span class="carousel-control-next-icon"></span>
+</a>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-danger" id="close" data-dismiss="modal">Close</button>
+</div>
+</div>
+</div>
+  `);
+  
+  $('#myModal').on('hidden.bs.modal', function () {
+    $('#myModal').empty();
+});
+
+  //var carousel
+ }
+
+
+//  <!-- Modal Header -->
+//         
+
+        
+
+//         <!-- Modal body -->
+//         <div class="modal-body">
+// 		<div id="model" class="carousel slide" data-ride="carousel">
+
+//   <!-- Indicators -->
+//   <ul class="carousel-indicators">
+//     <li data-target="#model" data-slide-to="0" class="active"></li>
+//     <li data-target="#model" data-slide-to="1"></li>
+//     <li data-target="#model" data-slide-to="2"></li>
+//   </ul>
+
+//   <!-- The slideshow -->
+//   <div class="carousel-inner">
+//     <div class="carousel-item active">
+//       <img src="" alt="Res 1">
+//     </div>
+//     <div class="carousel-item">
+//       <img src="" alt="Res 2">
+//     </div>
+//     <div class="carousel-item">
+//       <img src="" alt="Res 3">
+//     </div>
+//   </div>
+
+//   <!-- Left and right controls -->
+//   <a class="carousel-control-prev" href="#model" data-slide="prev">
+//     <span class="carousel-control-prev-icon"></span>
+// 	</a>
+// 	<a class="carousel-control-next" href="#model" data-slide="next">
+// 		<span class="carousel-control-next-icon"></span>
+// 	</a>
+
+// 	</div>	
+			
+//         </div>
+        
+//         <!-- Modal footer -->
+//         <div class="modal-footer">
+//           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+//         </div>
