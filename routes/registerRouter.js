@@ -130,7 +130,7 @@ registerRouter.post('/',function(req,res){
           // See the UserRecord reference doc for the contents of userRecord.
           //console.log("Successfully created new user:", userRecord.uid);
           firebase.database().ref('users/' + userRecord.uid).set({
-            username:req.body.username,
+            userName:req.body.username,
             password: req.body.password,
             firstName:req.body.firstname,
             lastName: req.body.lastname,
@@ -168,7 +168,7 @@ registerRouter.post('/',function(req,res){
             var userId = firebase.auth().currentUser.uid;
             console.log(userId);
             var postData = {
-              username:req.body.username,
+              userName:req.body.username,
               password: req.body.password,
               firstName:req.body.firstname,
               lastName: req.body.lastname,
