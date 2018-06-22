@@ -248,7 +248,7 @@ function getData(){
   //console.log(name);
   var modal = $('#myModal');
   modal.append(`
-  <div class="modal-dialog">
+  <div  class="modal-dialog modal-lg" >
   <div class="modal-content">
   <div class="modal-header">
       <h4 class="modal-title">${name}</h4>
@@ -261,20 +261,61 @@ function getData(){
 </ul>
 <div class="carousel-inner">
 <div class="carousel-item active">
-  <img src="${imageURL}" alt="Res 1" height="500">
+  <img class="d-block w-100" src="${imageURL}" alt="Res 1" height="500">
   </div>
-</div>
-<a class="carousel-control-prev" href="#model" data-slide="prev">
-     <span class="carousel-control-prev-icon"></span>
- 	</a>
- 	<a class="carousel-control-next" href="#model" data-slide="next">
- 		<span class="carousel-control-next-icon"></span>
-</a>
+   </div>
+      <a class="carousel-control-prev" href="#model" data-slide="prev">
+          <span class="carousel-control-prev-icon"></span>
+ 	    </a>
+ 	    <a class="carousel-control-next" href="#model" data-slide="next">
+ 		     <span class="carousel-control-next-icon"></span>
+      </a>
+  </div>
+<div class="container-fluid">
+    <div>
+      <h5 class="modal-title">${name}</h5>
+    </div><br>
+    <div  class= "col-md-6 mr-auto row">   <h6>Rating  : </h6>
+        <span class="fa fa-star checked" style="color: orange;"></span>
+        <span class="fa fa-star checked"  style="color: orange;"></span>
+        <span class="fa fa-star checked"style="color: orange;"></span>
+        <span class="fa fa-star"></span>
+        <span class="fa fa-star"></span>
+    </div><br>
+    <div>
+        <h6>Adress Of the restraunts.</h6>
+    </div><br>
+    <div class="row">
+      <div class="col-md-6 mr-auto"><h6>Location</h6></div>
+      <div class="col-md-6 ml-auto"><h6>Distance</h6></div>
+  </div><br>
+  <div class="row">
+      <div class="col-md-6 mr-auto"><h6>Open Info : </h6></div>
+      <div class="col-md-6 ml-auto"><h6>Stag Entry : </h6></div>
+  </div><br>
+  <div >
+        <h6><strong>Timings</strong></h6>  
+    </div>
+    <div class="row">
+            <div class="col-md-6 mr-auto"><h6>Monday : </h6></div>
+            <div class="col-md-6 ml-auto"><h6>Tusday : </h6></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mr-auto"><h6>Wednesday : </h6></div>
+            <div class="col-md-6 ml-auto"><h6>Thursday : </h6></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mr-auto"><h6>Friday : </h6></div>
+            <div class="col-md-6 ml-auto"><h6>Saturday : </h6></div>
+        </div>
+
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-danger" id="close" data-dismiss="modal">Close</button>
-</div>
-</div>
+      <button type="button" class="btn btn-danger" id="close" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+  </div>  
+  </div>
 </div>
   `);
   
