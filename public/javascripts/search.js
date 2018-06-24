@@ -33,20 +33,6 @@ function getData(){
     distanceArray = [];
     costArray = [];
     costArrayhigh = [];
-    mondayOpenArray = [];
-    tuesdayOpenArray = [];
-    wednesdayOpenArray = [];
-    thursdayOpenArray = [];
-    fridayOpenArray = [];
-    saturdayOpenArray = [];
-    sundayOpenArray = [];
-    mondayCloseArray = [];
-    tuesdayCloseArray = [];
-    wednesdayCloseArray = [];
-    thursdayCloseArray = [];
-    fridayCloseArray = [];
-    saturdayCloseArray = [];
-    sundayCloseArray = [];
     $('#restCards').empty();
     var ck_misctext = /^[A-Za-z0-9 ]+$/;
     var error = false;
@@ -56,7 +42,7 @@ function getData(){
     var sort = document.getElementById("sort");
     var sortBy =  sort.options[sort.selectedIndex].innerHTML;
     console.log(sortBy);
-    if(!ck_misctext.test(searText)){
+    if(!ck_misctext.test(searText) && searText != ""){
             document.forms["searchRest"]["searchText"].style.borderColor = 'red';
             $("<span>Invalid Search Text</span>").addClass('error').insertAfter("#searchText");
             error = true;
@@ -77,7 +63,6 @@ function getData(){
            //console.log(data[i].name);
     //       cityArray.push(data.city);
     //       areaArray.push(data.area);
-    //       imageUrlArray.push(data[i].imageUri);
     //       openInfoArray.push(data.openInfo);
     //         
     //       
@@ -87,22 +72,12 @@ function getData(){
     //       //costArray.push()
     //       //costArrayhigh.push()
     //       imageUrlArray.push(data[i].imageUri);
-    //       mondayOpenArray.push(data.mondayOpen);
-    //       tuesdayOpenArray.push(data.tuesdayOpen);
-    //       wednesdayOpenArray.push(data.wednesdayOpen);
-    //       thursdayOpenArray.push(data.thursdayOpen);
-    //       fridayOpenArray.push(data.fridayOpen);
-    //       saturdayOpenArray.push(data.saturdayOpen);
-    //       sundayOpenArray.push(data.sundayOpen);
-    //       mondayCloseArray.push(data.mondayClose);
-    //       tuesdayCloseArray.push(data.tuesdayClose);
-    //       wednesdayCloseArray.push(data.wednesdayClose);
-    //       thursdayCloseArray.push(data.thursdayClose);
-    //       fridayCloseArray.push(data.fridayClose);
-    //       saturdayCloseArray.push(data.saturdayClose);
-    //       sundayCloseArray.push(data.sundayClose);
     flag = 1;
       }
+      else if(stagEntry && (data[i].stagEntry == "yes" || data[i].stagEntry == "Yes"))
+        flag = 1;
+      else if(openNow && data[i].openInfo == "open now" )
+        flag = 1;
     } 
       if(stagEntry && (data[i].stagEntry != "yes" || data[i].stagEntry != "Yes"))
             flag = 0;
