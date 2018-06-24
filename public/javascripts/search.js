@@ -221,6 +221,58 @@ function getData(){
  function knowMore(evt,name,imageURL){
   var data = JSON.parse(window.localStorage.getItem("snapshot"));
   //console.log(name);
+  var count = Object.keys(data).length;
+  // var city;
+  // areaArray;
+  // extraImageArray;
+  // openInfoArray;
+  // rattingArray;
+  // restaurantTypeArray;
+  // stagEntryArray;
+  // streetArray;
+  // distanceArray;
+  // costArray;
+  // costArrayhigh;
+  // imageUrlArray;
+  // mondayOpenArray;
+  // tuesdayOpenArray;
+  // wednesdayOpenArray;
+  // thursdayOpenArray;
+  // fridayOpenArray;
+  // saturdayOpenArray;
+  // sundayOpenArray;
+  // mondayCloseArray;
+  // tuesdayCloseArray;
+  // wednesdayCloseArray;
+  // thursdayCloseArray;
+  // fridayCloseArray;
+  // saturdayCloseArray;
+  // sundayCloseArray;
+  for(var i=0;i<count;i++){
+      if(data[i]["name"].indexOf(name)!=-1) {
+        city = data[i].city;
+        area = data[i].area;
+        openInfo = data[i].openInfo;
+        rating = data[i].ratting;
+        restaurantType = data[i].restaurantType;
+        stagEntry = data[i].stagEntry;
+        street = data[i].street;
+        mondayOpen = data[i].mondayOpen;
+        tuesdayOpen = data[i].tuesdayOpen;
+        wednesdayOpen = data[i].wednesdayOpen;
+        thursdayOpen = data[i].thursdayOpen;
+        fridayOpen = data[i].fridayOpen;
+        saturdayOpen = data[i].saturdayOpen;
+        sundayOpen = data[i].sundayOpen;
+        mondayClose = data[i].mondayClose;
+        tuesdayClose = data[i].tuesdayClose;
+        wednesdayClose = data[i].wednesdayClose;
+        thursdayClose = data[i].thursdayClose;
+        fridayClose = data[i].fridayClose;
+        saturdayClose = data[i].saturdayClose;
+        sundayClose = data[i].sundayClose;
+      }
+    }
   var modal = $('#myModal');
   modal.append(`
   <div  class="modal-dialog modal-lg" >
@@ -258,30 +310,30 @@ function getData(){
         <span class="fa fa-star"></span>
     </div><br>
     <div>
-        <h6>Adress Of the restraunts.</h6>
+        <h6>Adress Of the restraunts: ${street},${area},${city}</h6>
     </div><br>
     <div class="row">
-      <div class="col-md-6 mr-auto"><h6>Location</h6></div>
+      <div class="col-md-6 mr-auto"><h6>Location: ${street} ${area}</h6></div>
       <div class="col-md-6 ml-auto"><h6>Distance</h6></div>
   </div><br>
   <div class="row">
-      <div class="col-md-6 mr-auto"><h6>Open Info : </h6></div>
-      <div class="col-md-6 ml-auto"><h6>Stag Entry : </h6></div>
+      <div class="col-md-6 mr-auto"><h6>Open Info : ${openInfo} </h6></div>
+      <div class="col-md-6 ml-auto"><h6>Stag Entry : ${stagEntry} </h6></div>
   </div><br>
   <div >
         <h6><strong>Timings</strong></h6>  
     </div>
     <div class="row">
-            <div class="col-md-6 mr-auto"><h6>Monday : </h6></div>
-            <div class="col-md-6 ml-auto"><h6>Tusday : </h6></div>
+            <div class="col-md-6 mr-auto"><h6>Monday : ${mondayOpen}-${mondayClose}</h6></div>
+            <div class="col-md-6 ml-auto"><h6>Tusday : ${tuesdayOpen}-${tuesdayClose} </h6></div>
         </div>
         <div class="row">
-            <div class="col-md-6 mr-auto"><h6>Wednesday : </h6></div>
-            <div class="col-md-6 ml-auto"><h6>Thursday : </h6></div>
+            <div class="col-md-6 mr-auto"><h6>Wednesday : ${wednesdayOpen}-${wednesdayClose} </h6></div>
+            <div class="col-md-6 ml-auto"><h6>Thursday : ${thursdayOpen}-${thursdayClose} </h6></div>
         </div>
         <div class="row">
-            <div class="col-md-6 mr-auto"><h6>Friday : </h6></div>
-            <div class="col-md-6 ml-auto"><h6>Saturday : </h6></div>
+            <div class="col-md-6 mr-auto"><h6>Friday : ${fridayOpen}-${fridayClose} </h6></div>
+            <div class="col-md-6 ml-auto"><h6>Saturday : ${saturdayOpen}-${saturdayClose} </h6></div>
         </div>
 
 </div>
