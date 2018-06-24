@@ -6,12 +6,6 @@ function getData(){
       snapshot.forEach(function(data){
           //console.log(data.key);
           dataArray.push(data.val());
-          restRef.child(data.key).child("extraImage").orderByValue().once('value',function(snapshot1){
-                //console.log(snapshot1.val());
-                imageArray.push(snapshot1.val());
-                window.localStorage.setItem("images",JSON.stringify(imageArray));
-            });
-      //console.log(JSON.stringify(imageArray));
     }); 
       //console.log(JSON.stringify(dataArray));
       window.localStorage.setItem("snapshot",JSON.stringify(dataArray));
@@ -19,20 +13,18 @@ function getData(){
   }
   $("#searchRest").change(function restSearch() {
     var data = JSON.parse(window.localStorage.getItem("snapshot"));
-    var imageUrlArray = JSON.parse(window.localStorage.getItem("images"));
     //console.log(imageUrlArray);
     nameArray = [];
     cityArray = [];
     areaArray = [];
-    extraImageArray = [];
+    imageUriArray = [];
     openInfoArray = [];
     ratingArray = [];
-    restaurantTypeArray = [];
-    stagEntryArray = [];
     streetArray = [];
     distanceArray = [];
     costArray = [];
     costArrayhigh = [];
+    restaurantTypeArray = [];
     $('#restCards').empty();
     var ck_misctext = /^[A-Za-z0-9 ]+$/;
     var error = false;
@@ -60,35 +52,25 @@ function getData(){
         data[i][key] = data[i][key].toString();
         // console.log(data[i]);
         if(data[i][key].indexOf(searText)!=-1) {
-           //console.log(data[i].name);
-    //       cityArray.push(data.city);
-    //       areaArray.push(data.area);
-    //       openInfoArray.push(data.openInfo);
-    //         
-    //       
-    //       stagEntryArray.push(data.stagEntry);
-    //       streetArray.push(data.street);
-    //       //distanceArray.push()
-    //       //costArray.push()
-    //       //costArrayhigh.push()
-    //       imageUrlArray.push(data[i].imageUri);
-    flag = 1;
-      }
-      else if(stagEntry && (data[i].stagEntry == "yes" || data[i].stagEntry == "Yes"))
-        flag = 1;
-      else if(openNow && data[i].openInfo == "open now" )
-        flag = 1;
-    } 
+          flag = 1;
+        }
+        else if(stagEntry && (data[i].stagEntry == "yes" || data[i].stagEntry == "Yes"))
+          flag = 1;
+        else if(openNow && data[i].openInfo == "open now" )
+          flag = 1;
+      } 
       if(stagEntry && (data[i].stagEntry != "yes" || data[i].stagEntry != "Yes"))
             flag = 0;
       if(openNow && data[i].openInfo != "open now" )
             flag = 0;
       if (flag == 1) {
         nameArray.push(data[i].name);
-        for(key in imageUrlArray[i])
-          extraImageArray.push(imageUrlArray[i][key]);
+        imageUriArray.push(data[i].imageUri);
         ratingArray.push(data[i].ratting);
         restaurantTypeArray.push(data[i]["restaurant type"]);
+        cityArray.push(data[i].city);
+        areaArray.push(data[i].area);
+        streetArray.push(data[i].street);
         //console.log(data[i]);
       }
       flag = 0;
@@ -106,15 +88,24 @@ function getData(){
                   temp = nameArray[j];
                   nameArray[j] = nameArray[j+1];
                   nameArray[j+1] = temp;
-                  temp = extraImageArray[j];
-                  extraImageArray[j] = extraImageArray[j+1];
-                  extraImageArray[j+1] = temp;
+                  temp = imageUriArray[j];
+                  imageUriArray[j] = imageUriArray[j+1];
+                  imageUriArray[j+1] = temp;
                   temp = ratingArray[j];
                   ratingArray[j] = ratingArray[j+1];
                   ratingArray[j+1] = temp;
                   temp = restaurantTypeArray[j];
                   restaurantTypeArray[j] = restaurantTypeArray[j+1];
                   restaurantTypeArray[j+1] = temp;
+                  temp = cityArray[j];
+                  cityArray[j] = cityArray[j+1];
+                  cityArray[j+1] = temp;
+                  temp = areaArray[j];
+                  areaArray[j] = areaArray[j+1];
+                  areaArray[j+1] = temp;
+                  temp = streetArray[j];
+                  streetArray[j] = streetArray[j+1];
+                  streetArray[j+1] = temp;
                 }
             }
           }
@@ -139,9 +130,9 @@ function getData(){
                 temp = nameArray[j];
                 nameArray[j] = nameArray[j+1];
                 nameArray[j+1] = temp;
-                temp = extraImageArray[j];
-                extraImageArray[j] = extraImageArray[j+1];
-                extraImageArray[j+1] = temp;
+                temp = imageUriArray[j];
+                imageUriArray[j] = imageUriArray[j+1];
+                imageUriArray[j+1] = temp;
                 temp = ratingArray[j];
                 ratingArray[j] = ratingArray[j+1];
                 ratingArray[j+1] = temp;
@@ -151,6 +142,15 @@ function getData(){
                 temp = costArrayhigh[j];
                 costArrayhigh[j] = costArrayhigh[j+1];
                 costArrayhigh[j+1] = temp;
+                temp = cityArray[j];
+                cityArray[j] = cityArray[j+1];
+                cityArray[j+1] = temp;
+                temp = areaArray[j];
+                areaArray[j] = areaArray[j+1];
+                areaArray[j+1] = temp;
+                temp = streetArray[j];
+                streetArray[j] = streetArray[j+1];
+                streetArray[j+1] = temp;
               }
           }
         }
@@ -175,9 +175,9 @@ function getData(){
                 temp = nameArray[j];
                 nameArray[j] = nameArray[j+1];
                 nameArray[j+1] = temp;
-                temp = extraImageArray[j];
-                extraImageArray[j] = extraImageArray[j+1];
-                extraImageArray[j+1] = temp;
+                temp = imageUriArray[j];
+                imageUriArray[j] = imageUriArray[j+1];
+                imageUriArray[j+1] = temp;
                 temp = ratingArray[j];
                 ratingArray[j] = ratingArray[j+1];
                 ratingArray[j+1] = temp;
@@ -187,6 +187,15 @@ function getData(){
                 temp = costArray[j];
                 costArray[j] = costArray[j+1];
                 costArray[j+1] = temp;
+                temp = cityArray[j];
+                cityArray[j] = cityArray[j+1];
+                cityArray[j+1] = temp;
+                temp = areaArray[j];
+                areaArray[j] = areaArray[j+1];
+                areaArray[j+1] = temp;
+                temp = streetArray[j];
+                streetArray[j] = streetArray[j+1];
+                streetArray[j+1] = temp;
               }
           }
         }
@@ -203,15 +212,21 @@ function getData(){
         
         bodyDiv.append(`
         <div class="card">              
-        <img class="card-img-top" src = '${extraImageArray[i]}' alt="Card image cap" height="300" > 
+        <img class="card-img-top" src = '${imageUriArray[i]}' alt="Card image cap" height="300" > 
         <div class="card-body">
           <h5 class="card-title">${nameArray[i]}</h5>
-          <p class="card-text">${ratingArray[i]}</p>
-          <p class="card-text">${restaurantTypeArray[i]}</p>
-        </div>
-        <button type="button" onclick = "knowMore(event,'${nameArray[i]}','${extraImageArray[i]}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+          <div class="row">
+          <div class="col-md-6 mr-auto"><p class="card-text">${ratingArray[i]}</p></div>
+          <div class="col-md-6 ml-auto"><p class="card-text">${restaurantTypeArray[i]}</p></div>
+          </div>
+          <br />
+          <p class="card-text">${streetArray[i]},${areaArray[i]}</p>
+          <p class="card-text">${cityArray[i]}</p>
+          <br />
+        <button type="button" onclick = "knowMore(event,'${nameArray[i]}','${imageUriArray[i]}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
         Know More
         </button>
+        </div>
         `);
         bodyDiv.append(`<br />`);
       }
@@ -271,6 +286,7 @@ function getData(){
         fridayClose = data[i].fridayClose;
         saturdayClose = data[i].saturdayClose;
         sundayClose = data[i].sundayClose;
+        extraImage = data[i].extraImage;
       }
     }
   var modal = $('#myModal');
@@ -345,7 +361,20 @@ function getData(){
   </div>
 </div>
   `);
-  
+  var indicator = $("ul.carousel-indicators");
+  var addImages = $("div.carousel-inner");
+  var count = 1;
+  for(key in extraImage){
+    indicator.append(`
+    <li data-target="#model" data-slide-to="${count}" class="active"></li>
+    `);
+    addImages.append(`
+    <div class="carousel-item">
+    <img class="d-block w-100" src="${extraImage[key]}" alt="Res 1" height="500">
+    </div>
+    `);
+    count++;
+  }
   $('#myModal').on('hidden.bs.modal', function () {
     $('#myModal').empty();
 });
