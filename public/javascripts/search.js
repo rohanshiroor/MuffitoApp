@@ -318,12 +318,8 @@ function getData(){
     <div>
       <h5 class="modal-title">${name}</h5>
     </div><br>
-    <div  class= "col-md-6 mr-auto row">   <h6>Rating  : </h6>
-        <span class="fa fa-star checked" style="color: orange;"></span>
-        <span class="fa fa-star checked"  style="color: orange;"></span>
-        <span class="fa fa-star checked"style="color: orange;"></span>
-        <span class="fa fa-star"></span>
-        <span class="fa fa-star"></span>
+    <div  class= "col-md-6 mr-auto row">   <h6>Rating  :  ${rating}/5.0 </h6>
+      <span class="fa fa-star checked" style="color: orange;"></span>
     </div><br>
     <div>
         <h6>Adress Of the restraunts: ${street},${area},${city}</h6>
