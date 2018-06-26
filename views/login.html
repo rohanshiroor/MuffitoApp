@@ -2,31 +2,72 @@
     <head>
         <title>Login</title>
         <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
         <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous'>
-    </head>
-    <body>       
+        <link rel="stylesheet" href="stylesheets/form-elements.css">
+        <link rel="stylesheet" href="stylesheets/login.css">
+        <link rel="shortcut icon" href="images/favicon.ico">        
+</head>
+    <body>   
+        <div class="top-content">
+        <div class="inner-bg">    
             <div class='container'>
-            <form name="login" id="login">
+                <div class="row">
+                <div class="col-sm-8 col-sm-offset-2 text" >
+                <h1 ><strong >Muffito</strong> Login Form</h1>
+                <div class="description">
+                <p>
+                Muffito helps you to search local pubs and bars based on your choices.
+
+                </p>
+                </div>
+                </div>
+           </div>
+           <div class="row">
+                <div class="col-sm-6 col-sm-offset-3 form-box">
+                        <div class="form-top">
+                                <div class="form-top-left">
+                                        <h3>Login to our site</h3>
+                                <p>Enter your username and password to log on:</p>
+                                </div>
+                                <div class="form-top-right">
+                                <i class="fa fa-key"></i>
+                                </div>
+                </div>
+            <div class="form-bottom">
+            <form name="login" id="login" class="login-form">
                     <div class='form-group'>
-                            <label for='emailOrPhone'>Email/Phone Number:</label>
-                            <input type='text' class='form-control' id='emailOrPhone' name='emailOrPhone' placeholder='Email/Phone Number' required onblur="valInp('login','emailOrPhone')">
+                            <label class="sr-only" for='emailOrPhone'>Email/Phone Number:</label>
+                            <input type='text' class='form-username form-control' id='emailOrPhone' name='emailOrPhone' placeholder='Email/Phone Number' required onblur="valInp('login','emailOrPhone')">
                     </div>
                     <div class="form-group">
-                            <label for="password">Password:</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required onblur="valInp('login','password')">
+                            <label class="sr-only" for="password">Password:</label>
+                            <input type="password" class="form-password form-control" id="password" name="password" placeholder="Password" required onblur="valInp('login','password')">
                     </div>
-                    <button type='submit' class='btn btn-primary'>Submit</button>
+                    <button type='submit' class='btn'>Sign in!</button>
+                    <br><div style="text-align: center">
+                        <a href="#" class="button large hpbottom">Forget Password</a>
+                        </div>
             </form>
             <a href="/register">Not a member Sign Up Here!</a>
-            <p>OR</p>
-            <p>Sign Up With</p>
             </div>
-        <div id="firebaseui-auth-container"></div>
+            </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3 social-login">
+                <h3>...or login with:</h3>
+                <div id="firebaseui-auth-container"></div>
+            </div>
+            </div>       
+            </div>
+            </div>
+            </div>
         <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase.js"></script>
         <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous'></script>
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
         <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous'></script>
+        <script src="javascripts/jquery.backstretch.min.js"></script>
         <script src="javascripts/myScript.js"></script>
         <script src="javascripts/login.js"></script>            
     </body>

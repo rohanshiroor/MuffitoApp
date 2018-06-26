@@ -67,8 +67,8 @@ function valInp(form,field) {
     var formInp = document.forms[form][field].value;
     formInp = $.sanitize(formInp);
     document.forms[form][field].value = formInp;
-    $(document.forms[form][field]).next().remove();
-    document.forms[form][field].style.borderColor = 'black';
+    //$(document.forms[form][field]).next().remove();
+    document.forms[form][field].classList.remove('input-error');
 }
 
 function val_phone() {  
