@@ -1,23 +1,89 @@
 
   function Data(dataArray){ 
-    console.log("Yes");
+    //console.log("Yes");
+    var origin = new google.maps.LatLng(window.localStorage.getItem("lat"),window.localStorage.getItem("lng"));
+    var count = Object.keys(dataArray).length;
+    var service = new google.maps.DistanceMatrixService();
+    var destination = null;
+    window.count = count;
+    for(var i=0;i<count;i++){
+      window.localStorage.setItem("item",i);
+      destination = new google.maps.LatLng(dataArray[i].latitude,dataArray[i].longitude);
+      service.getDistanceMatrix(
+        {
+          origins: [origin],
+          destinations: [destination],
+          travelMode: 'DRIVING',
+        }, callback);
+    }
+  }
+
+  function distToNum(distance) {
+    var temp_dist = distance.split(" ");
+    temp_dist[0] = temp_dist[0].replace(",","");
+    var dist = parseFloat(temp_dist[0]);   
+    return dist;
+  }
+
+  function callback(response,status){
+    //console.log("Yes");
+    if (status == 'OK') {
+    var results = response.rows[0].elements;
+    var element = results[0];
+    var distance = element.distance.text;
+    var duration = element.duration.text;
+    window.distTextArray.push(distance);
+    window.durationArray.push(duration);
+    var bodyDiv = $('#restCards');
+    var data = JSON.parse(window.localStorage.getItem("snapshot"));
+    var itm = window.localStorage.getItem("item");
+    bodyDiv.append(`
+        <div class="card">              
+        <img class="card-img-top" src = '${data[itm].imageUri}' alt="Card image cap" height="300" > 
+        <div class="card-body">
+          <h5 class="card-title">${data[itm].name}</h5>
+          <div class="row">
+          <div class="col-md-6 mr-auto"><p class="card-text">${data[itm].ratting}</p></div>
+          <div class="col-md-6 ml-auto"><p class="card-text">${data[itm]["restaurant type"]}</p></div>
+          </div>
+          <br />
+          <div class="row">
+          <div class="col-md-6 mr-auto"><p class="card-text">${distance}</p></div>
+          <div class="col-md-6 ml-auto"><p class="card-text">${duration}</p></div>
+          </div>
+          <br />
+          <p class="card-text">${data[itm].street},${data[itm].area}</p>
+          <p class="card-text">${data[itm].city}</p>
+          <br />
+        <button type="button" onclick = "knowMore(event,'${data[itm].name}','${data[itm].imageUri}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        Know More
+        </button>
+        </div>
+        `);
+        bodyDiv.append(`<br />`);
+        //if(itm == window.count)
+        // /  document.getElementById("searchText").disabled = false;
+    }
   }
 
   function getData(){
     var dataArray = [];
+    window.distTextArray = [];
+    window.durationArray = [];
     var city = window.localStorage.getItem("minCity");
-    var latArray = [];
-    var lngArray = [];
+    //var latArray = [];
+    //var lngArray = [];
+    console.log(city);
     var restRef = firebase.database().ref().child('restaurants').child(city)
     restRef.orderByValue().once('value',function(snapshot){
       snapshot.forEach(function(data){
           //console.log(data.key);
           dataArray.push(data.val());
-          //latArray.push(data.val().latitude);
-          //lngArray.push(data.val().longitude);
     }); 
-      //console.log(JSON.stringify(latArray));
+      console.log(dataArray);
       Data(dataArray);
+      console.log(window);
+      console.log(window.distTextArray);
       window.localStorage.setItem("snapshot",JSON.stringify(dataArray));
     });
   }
@@ -33,9 +99,12 @@
     ratingArray = [];
     streetArray = [];
     distanceArray = [];
+    duration = [];
     costArray = [];
     costArrayhigh = [];
     restaurantTypeArray = [];
+    distTextArray = window.distTextArray;
+    durationArray = window.durationArray;
     $('#restCards').empty();
     var ck_misctext = /^[A-Za-z0-9 ]+$/;
     var error = false;
@@ -54,7 +123,7 @@
       return false
     }
     var count = Object.keys(data).length;
-    console.log(count);
+    //console.log(count);
     var flag = 0;
     //console.log(data[0])
     
@@ -82,6 +151,8 @@
         cityArray.push(data[i].city);
         areaArray.push(data[i].area);
         streetArray.push(data[i].street);
+        distanceArray.push(distTextArray[i]);
+        duration.push(durationArray[i]);
         //console.log(data[i]);
       }
       flag = 0;
@@ -117,6 +188,12 @@
                   temp = streetArray[j];
                   streetArray[j] = streetArray[j+1];
                   streetArray[j+1] = temp;
+                  temp = duration[j];
+                  duration[j] = duration[j+1];
+                  duration[j+1] = temp;
+                  temp = distanceArray[j];
+                  distanceArray[j] = distanceArray[j+1];
+                  distanceArray[j+1] = temp;
                 }
             }
           }
@@ -162,6 +239,12 @@
                 temp = streetArray[j];
                 streetArray[j] = streetArray[j+1];
                 streetArray[j+1] = temp;
+                temp = duration[j];
+                duration[j] = duration[j+1];
+                duration[j+1] = temp;
+                temp = distanceArray[j];
+                distanceArray[j] = distanceArray[j+1];
+                distanceArray[j+1] = temp;
               }
           }
         }
@@ -207,6 +290,52 @@
                 temp = streetArray[j];
                 streetArray[j] = streetArray[j+1];
                 streetArray[j+1] = temp;
+                temp = duration[j];
+                duration[j] = duration[j+1];
+                duration[j+1] = temp;
+                temp = distanceArray[j];
+                distanceArray[j] = distanceArray[j+1];
+                distanceArray[j+1] = temp;
+              }
+          }
+        }
+        break;
+      }
+      case "Distance":
+      {
+        for(var i=0;i<distanceArray.length;i++){
+          for(var j=0;j<distanceArray.length-i-1;j++){
+              if(distToNum(distanceArray[j]) > distToNum(distanceArray[j+1])){  
+                temp = nameArray[j];
+                nameArray[j] = nameArray[j+1];
+                nameArray[j+1] = temp;
+                temp = imageUriArray[j];
+                imageUriArray[j] = imageUriArray[j+1];
+                imageUriArray[j+1] = temp;
+                temp = ratingArray[j];
+                ratingArray[j] = ratingArray[j+1];
+                ratingArray[j+1] = temp;
+                temp = restaurantTypeArray[j];
+                restaurantTypeArray[j] = restaurantTypeArray[j+1];
+                restaurantTypeArray[j+1] = temp;
+                temp = costArray[j];
+                costArray[j] = costArray[j+1];
+                costArray[j+1] = temp;
+                temp = cityArray[j];
+                cityArray[j] = cityArray[j+1];
+                cityArray[j+1] = temp;
+                temp = areaArray[j];
+                areaArray[j] = areaArray[j+1];
+                areaArray[j+1] = temp;
+                temp = streetArray[j];
+                streetArray[j] = streetArray[j+1];
+                streetArray[j+1] = temp;
+                temp = duration[j];
+                duration[j] = duration[j+1];
+                duration[j+1] = temp;
+                temp = distanceArray[j];
+                distanceArray[j] = distanceArray[j+1];
+                distanceArray[j+1] = temp;
               }
           }
         }
@@ -231,6 +360,11 @@
           <div class="col-md-6 ml-auto"><p class="card-text">${restaurantTypeArray[i]}</p></div>
           </div>
           <br />
+          <div class="row">
+          <div class="col-md-6 mr-auto"><p class="card-text">${distanceArray[i]}</p></div>
+          <div class="col-md-6 ml-auto"><p class="card-text">${duration[i]}</p></div>
+          </div>
+          <br />
           <p class="card-text">${streetArray[i]},${areaArray[i]}</p>
           <p class="card-text">${cityArray[i]}</p>
           <br />
@@ -241,6 +375,9 @@
         `);
         bodyDiv.append(`<br />`);
       }
+    }
+    else {
+      bodyDiv.append(`<h3>No results found, Please Try Again</h3>`);
     }
   });
 
@@ -274,6 +411,8 @@
   // fridayCloseArray;
   // saturdayCloseArray;
   // sundayCloseArray;
+  var distArray = window.distTextArray;
+  var durArray = window.durationArray;
   for(var i=0;i<count;i++){
       if(data[i]["name"].indexOf(name)!=-1) {
         city = data[i].city;
@@ -298,6 +437,8 @@
         saturdayClose = data[i].saturdayClose;
         sundayClose = data[i].sundayClose;
         extraImage = data[i].extraImage;
+        distance = distArray[i];
+        duration = durArray[i];
       }
     }
   var modal = $('#myModal');
@@ -347,6 +488,10 @@
       <div class="col-md-6 mr-auto"><h6>Open Info : ${openInfo} </h6></div>
       <div class="col-md-6 ml-auto"><h6>Stag Entry : ${stagEntry} </h6></div>
   </div><br>
+  <div class="row">
+  <div class="col-md-6 mr-auto"><h6>Distance : ${distance} </h6></div>
+  <div class="col-md-6 ml-auto"><h6>ETA : ${duration} </h6></div>
+</div><br>
   <div >
         <h6><strong>Timings</strong></h6>  
     </div>
