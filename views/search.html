@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Search</title>
+        <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous'>
+    </head>
+    <body onload="getData()">       
+            <div class='container'>
+            <br />
+            <form name="searchRest" id="searchRest">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                    <span class="input-group-text" ><i class="fa fa-search"></i></span>
+                    </div>
+                    <input class="form-control" placeholder="Search for Bars & Pubs" name="searchText" id="searchText">
+                </div>
+                <br>
+                <div class = "row">
+                    <div class="col-sm-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="stagEntryBox">
+                    <label class="form-check-label" for="stagEntryBox">
+                      Stag Entry
+                    </label>
+                  </div>
+                </div>
+                <div class="col-sm-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="openNowBox">
+                    <label class="form-check-label" for="openNowBox">
+                      Open Now
+                    </label>
+                </div>
+                </div>
+                <div class="col-sm-3">
+                <div class="dropdown show">
+                  <!--  <a class="btn btn-primary dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Sort
+                    </a>  
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li class="dropdown-item">Rating</li>
+                        <li class="dropdown-item">Cost-High to Low</li>
+                        <li class="dropdown-item">Cost-Low to High</li>
+                    </ul>
+                -->
+                <select id="sort" name="sort">
+                    <option>default</option>
+                    <option>Rating</option>
+                    <option>Cost-High to Low</option>
+                    <option>Cost-Low to High</option>
+                </select>
+                </div>
+                </div>
+            </div>    
+            </form>
+            <br />
+            <div id="restCards">
+            </div>
+			
+  <!-- The Modal -->
+  <div class="modal" id="myModal">
+  </div>
+
+			
+        </div>
+            
+        <div id="firebaseui-auth-container"></div>
+        <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase.js"></script>
+        <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+        <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous'></script>
+        <script src="javascripts/myScript.js"></script>
+        <script src="javascripts/index.js"></script>
+        <script src="javascripts/search.js"></script>    
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRIt05f_gxZGvC0HTPpjxGh0hsglgl2I4"></script>        
+    </body>
+</html>
