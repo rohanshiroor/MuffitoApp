@@ -34,15 +34,6 @@ a {
 .tab button.active {
   background-color: #ccc;
 }
-
-#regWithPhone {
-  display: none;
-}
-
-#ph {
-  display: none;
-}
-
 #map {
   height: 50%;
 }
