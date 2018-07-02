@@ -1,16 +1,27 @@
-function getData(){
+
+  function Data(dataArray){ 
+    console.log("Yes");
+  }
+
+  function getData(){
     var dataArray = [];
-    imageArray = [];
-    var restRef = firebase.database().ref('restaurant')
+    var city = window.localStorage.getItem("minCity");
+    var latArray = [];
+    var lngArray = [];
+    var restRef = firebase.database().ref().child('restaurants').child(city)
     restRef.orderByValue().once('value',function(snapshot){
       snapshot.forEach(function(data){
           //console.log(data.key);
           dataArray.push(data.val());
+          //latArray.push(data.val().latitude);
+          //lngArray.push(data.val().longitude);
     }); 
-      //console.log(JSON.stringify(dataArray));
+      //console.log(JSON.stringify(latArray));
+      Data(dataArray);
       window.localStorage.setItem("snapshot",JSON.stringify(dataArray));
-    }); 
+    });
   }
+  
   $("#searchRest").change(function restSearch() {
     var data = JSON.parse(window.localStorage.getItem("snapshot"));
     //console.log(imageUrlArray);
@@ -33,7 +44,7 @@ function getData(){
     var openNow = document.forms["searchRest"]["openNowBox"].checked;
     var sort = document.getElementById("sort");
     var sortBy =  sort.options[sort.selectedIndex].innerHTML;
-    console.log(sortBy);
+    //console.log(sortBy);
     if(!ck_misctext.test(searText) && searText != ""){
             document.forms["searchRest"]["searchText"].style.borderColor = 'red';
             $("<span>Invalid Search Text</span>").addClass('error').insertAfter("#searchText");
