@@ -113,6 +113,8 @@
     var openNow = document.forms["searchRest"]["openNowBox"].checked;
     var sort = document.getElementById("sort");
     var sortBy =  sort.options[sort.selectedIndex].innerHTML;
+    var filter = document.getElementById("filter");
+    var filterBy = filter.options[filter.selectedIndex].innerHTML;
     //console.log(sortBy);
     if(!ck_misctext.test(searText) && searText != ""){
             document.forms["searchRest"]["searchText"].style.borderColor = 'red';
@@ -125,8 +127,27 @@
     var count = Object.keys(data).length;
     //console.log(count);
     var flag = 0;
+    var filterVal = 0;
     //console.log(data[0])
-    
+    switch(filterBy){
+      case "Within 10 km":
+      {
+        filterVal = 10;
+        break;
+      }
+      case "Within 15 km":
+      {
+        filterVal = 15;
+        break;
+      }
+      case "Within 25 km":
+      {
+        filterVal = 25;
+        break;
+      }
+      default:
+        filterVal = 10;
+    }
     for(var i=0;i<count;i++){
       for(key in data[i]){
         data[i][key] = data[i][key].toString();
