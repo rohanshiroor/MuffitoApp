@@ -350,7 +350,7 @@
       {
         for(var i=0;i<distanceArray.length;i++){
           for(var j=0;j<distanceArray.length-i-1;j++){
-              if(distToNum(distanceArray[j]) > distToNum(distanceArray[j+1])){  
+              if(distanceArray[j] > distanceArray[j+1]){  
                 temp = nameArray[j];
                 nameArray[j] = nameArray[j+1];
                 nameArray[j+1] = temp;
@@ -406,7 +406,7 @@
           </div>
           <br />
           <div class="row">
-          <div class="col-md-6 mr-auto"><p class="card-text">${distanceArray[i]}</p></div>
+          <div class="col-md-6 mr-auto"><p class="card-text">${distanceArray[i]} km</p></div>
           <div class="col-md-6 ml-auto"><p class="card-text">${duration[i]}</p></div>
           </div>
           <br />
@@ -534,7 +534,7 @@
       <div class="col-md-6 ml-auto"><h6>Stag Entry : ${stagEntry} </h6></div>
   </div><br>
   <div class="row">
-  <div class="col-md-6 mr-auto"><h6>Distance : ${distance} </h6></div>
+  <div class="col-md-6 mr-auto"><h6>Distance : ${distance} km </h6></div>
   <div class="col-md-6 ml-auto"><h6>ETA : ${duration} </h6></div>
 </div><br>
   <div >
