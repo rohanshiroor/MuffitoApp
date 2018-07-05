@@ -14,6 +14,29 @@
         <a class="nav-item nav-link" href="#signout" role="tab" data-toggle="tab" onclick="pageChange(event,'signout')">Sign Out</a>
         </nav>
         <br>
+        <form name="restDet" enctype='multipart/form-data' id="restDet">
+          <div class="form-group">
+            <label for="restName">Resteraunt Name:</label>
+            <input class="form-control" id="firstname" type="text" name="firstname" placeholder="First Name" required="" onblur="valInp('register','firstname')">
+          </div>
+          <div class="form-group">
+            <label for="restCity">City:</label>
+            <input class="form-control" id="restCity" type="text" name="restCity" placeholder="City" required onblur="valInp('restDet','restCity')">
+          </div>
+          <div class="form-group">
+            <label for="restArea">Area:</label>
+            <input class="form-control" id="restArea" type="text" name="restArea" placeholder="Area" required onblur="valInp('restDet','restArea')">
+          </div>
+          <div class="form-group">
+            <label for="restStreetName">Street Name:</label>
+            <input class="form-control" id="restStreetName" type="text" name="restStreetName" placeholder="Street Name" required onblur="valInp('restDet','restStreetName')">
+          </div>
+          <div class="form-group">
+            <label for="rating">Current Rating:</label>
+            <input class="form-control" id="rating" type="number" name="rating" placeholder="Current rating" required="" onblur="valInp('restDet','rating')">
+          </div>
+          <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
       </div>
       <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase.js"></script>
       <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>

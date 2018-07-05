@@ -34,15 +34,6 @@ a {
 .tab button.active {
   background-color: #ccc;
 }
-
-#regWithPhone {
-  display: none;
-}
-
-#ph {
-  display: none;
-}
-
 #map {
   height: 50%;
 }
@@ -102,3 +93,47 @@ However, delay the fade out process for 2.5 seconds */
   from {bottom: 30px; opacity: 1;}
   to {bottom: 0; opacity: 0;}
 }
+
+#infowindow-content .title {
+  font-weight: bold;
+}
+
+#infowindow-content {
+  display: none;
+}
+
+#map #infowindow-content {
+  display: inline;
+}
+
+.pac-card {
+  margin: 10px 10px 0 0;
+  border-radius: 2px 0 0 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  background-color: #fff;
+  font-family: Roboto;
+}
+
+#pac-container {
+  padding-bottom: 12px;
+  margin-right: 12px;
+}
+
+#locationSet {
+  background-color: #fff;
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+  margin-left: 12px;
+  padding: 0 11px 0 13px;
+  text-overflow: ellipsis;
+  width: 400px;
+}
+
+#locationSet:focus {
+  border-color: #4d90fe;
+}
+

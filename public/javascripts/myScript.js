@@ -22,8 +22,8 @@ function getParameterByName(name) {
 var map, infoWindow;
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 14
+          center: {lat: 20.5937, lng: 78.9629},
+          zoom: 6
         });
         infoWindow = new google.maps.InfoWindow;
 
@@ -35,7 +35,7 @@ var map, infoWindow;
               lng: position.coords.longitude
             };
             document.getElementById("latitude").value = position.coords.latitude;
-            document.getElementById("longitude").value = position.coords.longitude; 
+            document.getElementById("longitude").value = position.coords.longitude;
             infoWindow.setPosition(pos);
             infoWindow.setContent('Location found.');
             infoWindow.open(map);
@@ -67,8 +67,8 @@ function valInp(form,field) {
     var formInp = document.forms[form][field].value;
     formInp = $.sanitize(formInp);
     document.forms[form][field].value = formInp;
-    $(document.forms[form][field]).next().remove();
-    document.forms[form][field].style.borderColor = 'black';
+    //$(document.forms[form][field]).next().remove();
+    document.forms[form][field].classList.remove('input-error');
 }
 
 function val_phone() {  

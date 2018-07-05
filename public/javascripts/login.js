@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() 
 {
+$.backstretch("images/1.jpg");
+$('.login-form input[type="text"], .login-form input[type="password"], .login-form textarea').on('focus', function() {
+  $(this).removeClass('input-error');
+});
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
 // Initialize the FirebaseUI Widget using Firebase.
 if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
@@ -71,15 +75,15 @@ $('#login').on('submit',function(event){
     var emailOrPhone = document.forms["login"]["emailOrPhone"].value;
     if(!ck_email.test(emailOrPhone) && emailOrPhone!=''){
       if(!ck_phone.test(emailOrPhone) && phone!=''){
-            document.forms["login"]["emailOrPhone"].style.borderColor = 'red';
-            $("<span>Invalid Email</span>").addClass('error').insertAfter("#emailOrPhone");
+            //document.forms["login"]["emailOrPhone"].style.borderColor = 'red';
+            $("#emailOrPhone").addClass('input-error');
             error = true;
       }
     }
     var password = document.forms["login"]["password"].value;
     if(!ck_password.test(password)){
-            document.forms["login"]["password"].style.borderColor = 'red';
-            $("<span>Invalid Password</span>").addClass('error').insertAfter("#password");
+            //document.forms["login"]["password"].style.borderColor = 'red';
+            $("#password").addClass('input-error');
             error = true;
     }
     if (error){
