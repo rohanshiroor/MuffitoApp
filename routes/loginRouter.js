@@ -4,6 +4,7 @@ const firebase = require('firebase');
 const path = require('path'); 
 const validator = require('express-validator');
 const admin = require('firebase-admin');
+const Verify = require('./verify');
 //const firebaseui = require('firebaseui');
 const loginRouter = express.Router();
 loginRouter.use(bodyParser.json());
@@ -51,9 +52,13 @@ loginRouter.post('/',function(req,res){
             .then(function(snapshot) {
                var user = snapshot.val();
                password = user.password;
+               var macID = user.macID;
                console.log(password);
-               if(password == req.body.password && userRecord.emailVerified){
-                res.end('Success');
+               if(password == req.body.password && (userRecord.emailVerified || macID!=""))
+               {
+                var token = Verify.getToken({uid:userRecord.uid});
+                //console.log(token);
+                res.header('x-access-token',token).send('Success');
                 }
                 else {
                     res.end('Invalid Password or Phone Number Unverified');
@@ -64,7 +69,7 @@ loginRouter.post('/',function(req,res){
                 console.log("Error fetching user data:", error);
             });
         }
-        else {
+        if(1 != 1) {
             //console.log(User);
             //console.log(req.body.password);
             //var user = firebase.auth().currentUser;

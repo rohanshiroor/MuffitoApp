@@ -4,14 +4,19 @@ const firebase = require('firebase');
 const path = require('path'); 
 const validator = require('express-validator');
 const nodemailer = require('nodemailer');
+const Verify = require('./verify');
+
 // const flash = require('flash');
 //const firebaseui = require('firebaseui');
 const homeRouter = express.Router();
 homeRouter.use(bodyParser.json());
 homeRouter.use(validator());
 // homeRouter.use(flash());
-homeRouter.get('/',function(req,res){
-    res.redirect('/home/add');
+homeRouter.get('/',Verify.verifyUser,function(req,res){
+    //res.redirect('/home/add');
+    var token = req.headers['x-access-token'];
+    Verify.setOpts(token);
+    console.log(req.decoded);
 });
 homeRouter.get('/add',function(req,res){
     res.sendFile(path.join(__dirname,'../views/home_addRestaurant.html'));

@@ -44,7 +44,7 @@ callbacks: {
         window.location.origin = window.location.protocol + "//" 
         + window.location.hostname 
         + (window.location.port ? ':' + window.location.port : '');
-        window.location = window.location.origin+'/home';
+        window.location = window.location.origin+'/home/add';
       });  
     return false;
   },
@@ -98,13 +98,15 @@ $('#login').on('submit',function(event){
           emailOrPhone: emailOrPhone,
           password: password
         }),
-        success:function(response){
+        success:function(response,textStatus,xhr){
           console.log(response);
           if (response=='Success'){
+            var token = xhr.getResponseHeader('x-access-token');
+            window.localStorage.setItem("token",token);
             window.location.origin = window.location.protocol + "//" 
             + window.location.hostname 
             + (window.location.port ? ':' + window.location.port : '');
-            window.location = window.location.origin+'/home';
+            window.location = window.location.origin+'/home/add';
           }
         }
       });
