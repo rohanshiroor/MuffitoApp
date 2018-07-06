@@ -34,6 +34,9 @@ $('#contactus').on('submit',function(event){
     else {
     $.ajax({
       url: '/home/contactus',
+      headers: {
+        'x-access-token':window.localStorage.getItem("token")
+      },
       method:'POST',
       contentType:'application/json',
       data: JSON.stringify({
@@ -105,6 +108,9 @@ $('#contactus').on('submit',function(event){
       //console.log(ImagesRef.fullPath);
       $.ajax({
         url: '/home/add',
+        headers: {
+          'x-access-token':window.localStorage.getItem("token")
+        },
         method:'POST',
         contentType:'application/json',
         data: JSON.stringify({

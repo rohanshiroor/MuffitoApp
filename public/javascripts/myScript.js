@@ -120,6 +120,7 @@ function pageChange(evt,page){
   else {
     firebase.auth().signOut()
     .then(function() {
+      window.localStorage.setItem("token","");
       window.location.origin = window.location.protocol + "//" 
       + window.location.hostname 
       + (window.location.port ? ':' + window.location.port : '');

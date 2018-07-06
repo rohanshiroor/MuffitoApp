@@ -60,22 +60,22 @@
     for(var i=0;i<data.length;i++){
     if(distArray[i]<10.0){  
     bodyDiv.append(`
-        <div class="card">              
-        <img class="card-img-top" src = '${data[i].imageUri}' alt="Card image cap" height="300" > 
-        <div class="card-body">
-          <h5 class="card-title">${data[i].name}</h5>
+        <div class="thumbnail">              
+        <img src = '${data[i].imageUri}' alt="Card image cap" height="300" > 
+        <div class="caption">
+          <h3 >${data[i].name}</h3>
           <div class="row">
-          <div class="col-md-6 mr-auto"><p class="card-text">${data[i].ratting}</p></div>
-          <div class="col-md-6 ml-auto"><p class="card-text">${data[i]["restaurant type"]}</p></div>
+          <div class="col-md-6 mr-auto"><p>${data[i].ratting}</p></div>
+          <div class="col-md-6 ml-auto"><p>${data[i]["restaurant type"]}</p></div>
           </div>
           <br />
           <div class="row">
-          <div class="col-md-6 mr-auto"><p class="card-text">${distArray[i]} km</p></div>
-          <div class="col-md-6 ml-auto"><p class="card-text">${durArray[i]}</p></div>
+          <div class="col-md-6 mr-auto"><p>${distArray[i]} km</p></div>
+          <div class="col-md-6 ml-auto"><p>${durArray[i]}</p></div>
           </div>
           <br />
-          <p class="card-text">${data[i].street},${data[i].area}</p>
-          <p class="card-text">${data[i].city}</p>
+          <p>${data[i].street},${data[i].area}</p>
+          <p>${data[i].city}</p>
           <br />
         <button type="button" onclick = "knowMore(event,'${data[i].name}','${data[i].imageUri}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
         Know More
@@ -396,22 +396,22 @@
       for(var i=0;i<nameArray.length;i++){
         
         bodyDiv.append(`
-        <div class="card">              
-        <img class="card-img-top" src = '${imageUriArray[i]}' alt="Card image cap" height="300" > 
-        <div class="card-body">
-          <h5 class="card-title">${nameArray[i]}</h5>
+        <div class="thumbnail">              
+        <img src = '${imageUriArray[i]}' height="200" > 
+        <div class="caption">
+          <h3>${nameArray[i]}</h5>
           <div class="row">
-          <div class="col-md-6 mr-auto"><p class="card-text">${ratingArray[i]}</p></div>
-          <div class="col-md-6 ml-auto"><p class="card-text">${restaurantTypeArray[i]}</p></div>
+          <div class="col-md-6 mr-auto"><p >${ratingArray[i]}</p></div>
+          <div class="col-md-6 ml-auto"><p >${restaurantTypeArray[i]}</p></div>
           </div>
           <br />
           <div class="row">
-          <div class="col-md-6 mr-auto"><p class="card-text">${distanceArray[i]} km</p></div>
-          <div class="col-md-6 ml-auto"><p class="card-text">${duration[i]}</p></div>
+          <div class="col-md-6 mr-auto"><p >${distanceArray[i]} km</p></div>
+          <div class="col-md-6 ml-auto"><p >${duration[i]}</p></div>
           </div>
           <br />
-          <p class="card-text">${streetArray[i]},${areaArray[i]}</p>
-          <p class="card-text">${cityArray[i]}</p>
+          <p >${streetArray[i]},${areaArray[i]}</p>
+          <p >${cityArray[i]}</p>
           <br />
         <button type="button" onclick = "knowMore(event,'${nameArray[i]}','${imageUriArray[i]}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
         Know More
