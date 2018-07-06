@@ -198,21 +198,25 @@ $('#register').on('submit',function(event){
         phone:phone,
         password:password
       }),
-      success:function(response){
+      success:function(response,textStatus,xhr){
         console.log(response);
-        if (email && response=='sent'){
-          //console.log(response);
-          window.location.origin = window.location.protocol + "//" 
-          + window.location.hostname 
-          + (window.location.port ? ':' + window.location.port : '');
-          window.location = window.location.origin+'/login';
-          window.localStorage.setItem('emailForSignIn', email);
-        }
-        if(!email){
-          window.location.origin = window.location.protocol + "//" 
+        // if (email && response=='sent'){
+        //   //console.log(response);
+        //   window.location.origin = window.location.protocol + "//" 
+        //   + window.location.hostname 
+        //   + (window.location.port ? ':' + window.location.port : '');
+        //   window.location = window.location.origin+'/login';
+        //   window.localStorage.setItem('emailForSignIn', email);
+        // }
+        // if(!email){
+        if(response =="Success") {
+        var token = xhr.getResponseHeader('x-access-token');
+        window.localStorage.setItem("token",token);  
+        window.location.origin = window.location.protocol + "//" 
           + window.location.hostname 
           + (window.location.port ? ':' + window.location.port : '');
           window.location = window.location.origin+'/verify?num='+phone;
+        //}
         }
       }   
     });
@@ -248,7 +252,7 @@ $('#register').on('submit',function(event){
         window.location.origin = window.location.protocol + "//" 
             + window.location.hostname 
             + (window.location.port ? ':' + window.location.port : '');
-            window.location = window.location.origin+'/login';
+            window.location = window.location.origin+'/home/add';
       }
     }
    })

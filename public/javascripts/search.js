@@ -1,21 +1,37 @@
 
-  function Data(dataArray){ 
+  function calcDistTime(dataArray){ 
     //console.log("Yes");
-    var origin = new google.maps.LatLng(window.localStorage.getItem("lat"),window.localStorage.getItem("lng"));
-    var count = Object.keys(dataArray).length;
-    var service = new google.maps.DistanceMatrixService();
-    var destination = null;
-    window.count = count;
-    for(var i=0;i<count;i++){
-      window.localStorage.setItem("item",i);
-      destination = new google.maps.LatLng(dataArray[i].latitude,dataArray[i].longitude);
-      service.getDistanceMatrix(
-        {
-          origins: [origin],
-          destinations: [destination],
-          travelMode: 'DRIVING',
-        }, callback);
+    var distArray = [];
+    var durArray = [];
+    var origin = {
+    lat:window.localStorage.getItem("lat"),
+    lng:window.localStorage.getItem("lng")
     }
+    var count = Object.keys(dataArray).length;
+    //var service = new google.maps.DistanceMatrixService();
+    var destination = null;
+    //window.count = count;
+    const speed = 350;
+    for(var i=0;i<count;i++){
+      //window.localStorage.setItem("item",i);
+      destination = {
+        lat:dataArray[i].latitude,
+        lng:dataArray[i].longitude
+      };
+      //calcDistTime(origin,destination);
+      var theta = origin.lng - destination.lng;
+      var dist = Math.sin(deg2rad(origin.lat))*Math.sin(deg2rad(destination.lat))+Math.cos(deg2rad(origin.lat))*Math.cos(deg2rad(destination.lat))*Math.cos(deg2rad(theta));
+      dist = Math.acos(dist);
+      dist = rad2deg(dist);
+      dist = dist*60*1.515;
+      distArray.push((Math.round(dist*100)/100));
+      var time = (dist*1000/speed);
+      var strTime = parseInt((time/60)) + " hours " + parseInt((time%60)) + " min ";
+      durArray.push(strTime);
+      destination = null;
+    }
+    window.localStorage.setItem("distance",JSON.stringify(distArray));
+    window.localStorage.setItem("duration",JSON.stringify(durArray));
   }
 
   function distToNum(distance) {
@@ -25,51 +41,57 @@
     return dist;
   }
 
-  function callback(response,status){
+  function deg2rad(deg) {
+    return (deg * Math.PI / 100.0);
+  }
+
+  function rad2deg(rad) {
+    return (rad * 180.0 / Math.PI);
+  }
+
+  function Data(data) {
     //console.log("Yes");
-    if (status == 'OK') {
-    var results = response.rows[0].elements;
-    var element = results[0];
-    var distance = element.distance.text;
-    var duration = element.duration.text;
-    window.distTextArray.push(distance);
-    window.durationArray.push(duration);
+    //durationArray.push(duration);
     var bodyDiv = $('#restCards');
-    var data = JSON.parse(window.localStorage.getItem("snapshot"));
-    var itm = window.localStorage.getItem("item");
+    var distArray = JSON.parse(window.localStorage.getItem('distance'));
+    var durArray = JSON.parse(window.localStorage.getItem("duration"));
+    //var data = JSON.parse(window.localStorage.getItem("snapshot"));
+    //var itm = window.localStorage.getItem("item");
+    for(var i=0;i<data.length;i++){
+    if(distArray[i]<10.0){  
     bodyDiv.append(`
-        <div class="card">              
-        <img class="card-img-top" src = '${data[itm].imageUri}' alt="Card image cap" height="300" > 
-        <div class="card-body">
-          <h5 class="card-title">${data[itm].name}</h5>
+        <div class="thumbnail">              
+        <img src = '${data[i].imageUri}' alt="Card image cap" height="300" > 
+        <div class="caption">
+          <h3 >${data[i].name}</h3>
           <div class="row">
-          <div class="col-md-6 mr-auto"><p class="card-text">${data[itm].ratting}</p></div>
-          <div class="col-md-6 ml-auto"><p class="card-text">${data[itm]["restaurant type"]}</p></div>
+          <div class="col-md-6 mr-auto"><p>${data[i].ratting}</p></div>
+          <div class="col-md-6 ml-auto"><p>${data[i]["restaurant type"]}</p></div>
           </div>
           <br />
           <div class="row">
-          <div class="col-md-6 mr-auto"><p class="card-text">${distance}</p></div>
-          <div class="col-md-6 ml-auto"><p class="card-text">${duration}</p></div>
+          <div class="col-md-6 mr-auto"><p>${distArray[i]} km</p></div>
+          <div class="col-md-6 ml-auto"><p>${durArray[i]}</p></div>
           </div>
           <br />
-          <p class="card-text">${data[itm].street},${data[itm].area}</p>
-          <p class="card-text">${data[itm].city}</p>
+          <p>${data[i].street},${data[i].area}</p>
+          <p>${data[i].city}</p>
           <br />
-        <button type="button" onclick = "knowMore(event,'${data[itm].name}','${data[itm].imageUri}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        <button type="button" onclick = "knowMore(event,'${data[i].name}','${data[i].imageUri}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
         Know More
         </button>
         </div>
         `);
         bodyDiv.append(`<br />`);
-        //if(itm == window.count)
+        //if(i == count)
         // /  document.getElementById("searchText").disabled = false;
+        //console.log(i);
     }
+  }
   }
 
   function getData(){
     var dataArray = [];
-    window.distTextArray = [];
-    window.durationArray = [];
     var city = window.localStorage.getItem("minCity");
     //var latArray = [];
     //var lngArray = [];
@@ -80,10 +102,9 @@
           //console.log(data.key);
           dataArray.push(data.val());
     }); 
-      console.log(dataArray);
+      //console.log(dataArray);
+      calcDistTime(dataArray);
       Data(dataArray);
-      console.log(window);
-      console.log(window.distTextArray);
       window.localStorage.setItem("snapshot",JSON.stringify(dataArray));
     });
   }
@@ -103,8 +124,9 @@
     costArray = [];
     costArrayhigh = [];
     restaurantTypeArray = [];
-    distTextArray = window.distTextArray;
-    durationArray = window.durationArray;
+    distTextArray = JSON.parse(window.localStorage.getItem("distance"))//distTextArray;
+    durationArray = JSON.parse(window.localStorage.getItem("duration"));
+
     $('#restCards').empty();
     var ck_misctext = /^[A-Za-z0-9 ]+$/;
     var error = false;
@@ -113,6 +135,8 @@
     var openNow = document.forms["searchRest"]["openNowBox"].checked;
     var sort = document.getElementById("sort");
     var sortBy =  sort.options[sort.selectedIndex].innerHTML;
+    var filter = document.getElementById("filter");
+    var filterBy = filter.options[filter.selectedIndex].innerHTML;
     //console.log(sortBy);
     if(!ck_misctext.test(searText) && searText != ""){
             document.forms["searchRest"]["searchText"].style.borderColor = 'red';
@@ -125,9 +149,29 @@
     var count = Object.keys(data).length;
     //console.log(count);
     var flag = 0;
+    var filterVal = 0;
     //console.log(data[0])
-    
+    switch(filterBy){
+      case "Within 10 km":
+      {
+        filterVal = 10;
+        break;
+      }
+      case "Within 15 km":
+      {
+        filterVal = 15;
+        break;
+      }
+      case "Within 25 km":
+      {
+        filterVal = 25;
+        break;
+      }
+      default:
+        filterVal = 10;
+    }
     for(var i=0;i<count;i++){
+      if(distTextArray[i]<filterVal){
       for(key in data[i]){
         data[i][key] = data[i][key].toString();
         // console.log(data[i]);
@@ -156,6 +200,7 @@
         //console.log(data[i]);
       }
       flag = 0;
+    }
     }
     //console.log(extraImageArray);
     switch(sortBy) {
@@ -305,7 +350,7 @@
       {
         for(var i=0;i<distanceArray.length;i++){
           for(var j=0;j<distanceArray.length-i-1;j++){
-              if(distToNum(distanceArray[j]) > distToNum(distanceArray[j+1])){  
+              if(distanceArray[j] > distanceArray[j+1]){  
                 temp = nameArray[j];
                 nameArray[j] = nameArray[j+1];
                 nameArray[j+1] = temp;
@@ -351,22 +396,22 @@
       for(var i=0;i<nameArray.length;i++){
         
         bodyDiv.append(`
-        <div class="card">              
-        <img class="card-img-top" src = '${imageUriArray[i]}' alt="Card image cap" height="300" > 
-        <div class="card-body">
-          <h5 class="card-title">${nameArray[i]}</h5>
+        <div class="thumbnail">              
+        <img src = '${imageUriArray[i]}' height="200" > 
+        <div class="caption">
+          <h3>${nameArray[i]}</h5>
           <div class="row">
-          <div class="col-md-6 mr-auto"><p class="card-text">${ratingArray[i]}</p></div>
-          <div class="col-md-6 ml-auto"><p class="card-text">${restaurantTypeArray[i]}</p></div>
+          <div class="col-md-6 mr-auto"><p >${ratingArray[i]}</p></div>
+          <div class="col-md-6 ml-auto"><p >${restaurantTypeArray[i]}</p></div>
           </div>
           <br />
           <div class="row">
-          <div class="col-md-6 mr-auto"><p class="card-text">${distanceArray[i]}</p></div>
-          <div class="col-md-6 ml-auto"><p class="card-text">${duration[i]}</p></div>
+          <div class="col-md-6 mr-auto"><p >${distanceArray[i]} km</p></div>
+          <div class="col-md-6 ml-auto"><p >${duration[i]}</p></div>
           </div>
           <br />
-          <p class="card-text">${streetArray[i]},${areaArray[i]}</p>
-          <p class="card-text">${cityArray[i]}</p>
+          <p >${streetArray[i]},${areaArray[i]}</p>
+          <p >${cityArray[i]}</p>
           <br />
         <button type="button" onclick = "knowMore(event,'${nameArray[i]}','${imageUriArray[i]}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
         Know More
@@ -489,7 +534,7 @@
       <div class="col-md-6 ml-auto"><h6>Stag Entry : ${stagEntry} </h6></div>
   </div><br>
   <div class="row">
-  <div class="col-md-6 mr-auto"><h6>Distance : ${distance} </h6></div>
+  <div class="col-md-6 mr-auto"><h6>Distance : ${distance} km </h6></div>
   <div class="col-md-6 ml-auto"><h6>ETA : ${duration} </h6></div>
 </div><br>
   <div >

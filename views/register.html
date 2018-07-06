@@ -3,7 +3,7 @@
     <title>Registration</title>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="stylesheets/register_Style.css" type="text/css" media="all">
+    <link rel="stylesheet" href="stylesheets/register.css" type="text/css" media="all">
     <link href="//fonts.googleapis.com/css?family=Old+Standard+TT:400,400i,700" rel="stylesheet">
     <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
   </head>
@@ -15,7 +15,8 @@
       <div class="signup-wthreetop">
         <h2>Welcome to Registration</h2>
       <p>Get yourself registered and feed your hunger.</p>
-      </div>	
+      </div>
+      <!--	
       <div class=" btn-group btn-group-justified tab" role="group" >
           <div class="btn-group" role="group">
             <button class="btn btn-default tablinks active" onclick="tabChange(event, 'email')">Email</button>
@@ -24,15 +25,17 @@
           <button class="btn btn-default tablinks"  onclick="tabChange(event, 'phone')">Phone</button>
           </div>
         </div>
-     
+      -->
     <!--<div class="tab">
       <button class="tablinks active" onclick="tabChange(event, 'email')">Email</button>
       <button class="tablinks" onclick="tabChange(event, 'phone')">Phone</button>
     </div><br>-->
     <div class="contact-wthree">
     <form name="register" id="register">
+      <!--
       <h2 id="regWithEmail">Register with Email:</h2>
       <h2 id="regWithPhone">Register with Phone:</h2>
+      -->
       <h3>Step 1:</h3>
       <div class="form-step1">
         <input class="form-control" id="firstname" type="text" name="firstname" placeholder="First Name" required="" onblur="valInp('register','firstname')">
@@ -53,7 +56,7 @@
       <div class="form-step1 w3ls-formrow">
         <input class="form-control" id="dob" type="date" name="dob" placeholder="Date of Birth" required="" onblur="valInp('register','dob')">
       <div id="em">
-        <input class="form-control" id="email" type="email" name="email" placeholder="Email" required="" onblur="valInp('register','email')">
+        <input class="form-control" id="email" type="email" name="email" placeholder="Email" onblur="valInp('register','email')">
       </div>
         <input class="form-control" id="username" type="text" name="username" placeholder="Username" required="" onblur="valInp('register','username')">
       <div id="ph">
@@ -65,8 +68,15 @@
           <input type="checkbox" id="brand2" value="">
           <label for="brand2"><span></span>I accept the terms of Use</label> 
       </div>
+      <div class="row">
+        <div class="col-sm-3">
       <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
     </form>
+    <div class="col-sm-3">
+    <a href="/login" class="btn btn-primary" type="button">Back</a>
+  </div>
+  </div>
   </div>
   </div>
   </div>

@@ -4,7 +4,9 @@ const firebase = require('firebase');
 const registerRouter = express.Router();
 const path = require('path'); 
 const validator = require('express-validator');
-const admin = require('firebase-admin');
+//const admin = require('firebase-admin');
+const jwt = require('jsonwebtoken');
+const Verify = require('./verify');
 // const firebaseui = require('firebaseui');
 registerRouter.use(bodyParser.json());
 registerRouter.use(validator());
@@ -134,11 +136,13 @@ registerRouter.post('/',function(req,res){
             password: req.body.password,
             firstName:req.body.firstname,
             lastName: req.body.lastname,
-            phoneNumber: phone,
+            phone: phone,
             age: req.body.age,
             dateOfBirth:req.body.dob,
             state: req.body.state,
-            country: req.body.country
+            country: req.body.country,
+            profileUrl:"",
+            macID:""
           });
           firebase.database().ref('users/' + userRecord.uid +'/address/').set({
             flatNo: req.body.flatno,
@@ -148,14 +152,15 @@ registerRouter.post('/',function(req,res){
             pinCode: req.body.pincode
           });
           firebase.database().ref('phoneUidMap').child(phone).set(userRecord.uid)
-          res.end("Success");
+          var token = Verify.getToken({uid:userRecord.uid});
+          res.header('x-access-token',token).send('Success');
         })
         .catch(function(error) {
           //console.log("Error creating new user:", error);
           res.send("Error");
         });
     } 
-    else {
+    else if(!email && !phone) {
         //console.log("wwww");
         //console.log(email);
         //console.log(req.body.password);
@@ -176,7 +181,9 @@ registerRouter.post('/',function(req,res){
               age: req.body.age,
               dateOfBirth:req.body.dob,
               state: req.body.state,
-              country: req.body.country
+              country: req.body.country,
+              profileUrl:"",
+              macID:""
             };
             root.child("users").child(userId).set(postData);
             var postData1 = {
