@@ -68,7 +68,7 @@ function valInp(form,field) {
     formInp = $.sanitize(formInp);
     document.forms[form][field].value = formInp;
     //$(document.forms[form][field]).next().remove();
-    document.forms[form][field].classList.remove('input-error');
+    document.forms[form][field].classList.remove('error');
 }
 
 function val_phone() {  
@@ -77,7 +77,7 @@ function val_phone() {
     phone_num = $.sanitize(phone_num);
     document.forms["register"]["phone"].value = phone_num;
     $(document.forms["register"]["phone"]).next().remove();
-    document.forms[form][field].style.borderColor = 'black';
+    //document.forms[form][field].style.borderColor = 'black';
 }
 
 // Initialize Firebase
