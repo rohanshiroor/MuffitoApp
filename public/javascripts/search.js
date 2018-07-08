@@ -61,7 +61,7 @@
     if(distArray[i]<10.0){  
     bodyDiv.append(`
         <div class="thumbnail">              
-        <img src = '${data[i].imageUri}' alt="Card image cap" height="300" > 
+        <img src = '${data[i].imageUri}' alt="Card image cap"> 
         <div class="caption">
           <h3 >${data[i].name}</h3>
           <div class="row">
@@ -77,7 +77,7 @@
           <p>${data[i].street},${data[i].area}</p>
           <p>${data[i].city}</p>
           <br />
-        <button type="button" onclick = "knowMore(event,'${data[i].name}','${data[i].imageUri}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        <button type="button" onclick = "knowMore(event,'${data[i].imageUri}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
         Know More
         </button>
         </div>
@@ -124,7 +124,7 @@
     costArray = [];
     costArrayhigh = [];
     restaurantTypeArray = [];
-    distTextArray = JSON.parse(window.localStorage.getItem("distance"))//distTextArray;
+    distTextArray = JSON.parse(window.localStorage.getItem("distance"));//distTextArray;
     durationArray = JSON.parse(window.localStorage.getItem("duration"));
 
     $('#restCards').empty();
@@ -397,7 +397,7 @@
         
         bodyDiv.append(`
         <div class="thumbnail">              
-        <img src = '${imageUriArray[i]}' height="200" > 
+        <img src = '${imageUriArray[i]}'  > 
         <div class="caption">
           <h3>${nameArray[i]}</h5>
           <div class="row">
@@ -413,7 +413,7 @@
           <p >${streetArray[i]},${areaArray[i]}</p>
           <p >${cityArray[i]}</p>
           <br />
-        <button type="button" onclick = "knowMore(event,'${nameArray[i]}','${imageUriArray[i]}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        <button type="button" onclick = "knowMore(event,'${imageUriArray[i]}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
         Know More
         </button>
         </div>
@@ -426,7 +426,7 @@
     }
   });
 
- function knowMore(evt,name,imageURL){
+ function knowMore(evt,imageURL){
   var data = JSON.parse(window.localStorage.getItem("snapshot"));
   //console.log(name);
   var count = Object.keys(data).length;
@@ -456,10 +456,10 @@
   // fridayCloseArray;
   // saturdayCloseArray;
   // sundayCloseArray;
-  var distArray = window.distTextArray;
-  var durArray = window.durationArray;
+  var distArray = JSON.parse(window.localStorage.getItem("distance"));
+  var durArray = JSON.parse(window.localStorage.getItem("duration"));
   for(var i=0;i<count;i++){
-      if(data[i]["name"].indexOf(name)!=-1) {
+      if(data[i]["imageUri"].indexOf(imageURL)!=-1) {
         city = data[i].city;
         area = data[i].area;
         openInfo = data[i].openInfo;
@@ -500,15 +500,15 @@
 <li data-target="#model" data-slide-to="0" class="active"></li>
 </ul>
 <div class="carousel-inner">
-<div class="carousel-item active">
-  <img class="d-block w-100" src="${imageURL}" alt="Res 1" height="500">
+<div class="item active">
+  <img class="d-block w-100" src="${imageURL}" alt="Res 1">
   </div>
    </div>
-      <a class="carousel-control-prev" href="#model" data-slide="prev">
-          <span class="carousel-control-prev-icon"></span>
- 	    </a>
- 	    <a class="carousel-control-next" href="#model" data-slide="next">
- 		     <span class="carousel-control-next-icon"></span>
+      <a class="carousel-control left" href="#model" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </a>
+ 	    <a class="carousel-control right" href="#model" data-slide="next">
+ 		     <span class="glyphicon glyphicon-chevron-right"></span>
       </a>
   </div>
 <div class="container-fluid">
@@ -527,7 +527,6 @@
     </div><br>
     <div class="row">
       <div class="col-md-6 mr-auto"><h6>Location: ${street} ${area}</h6></div>
-      <div class="col-md-6 ml-auto"><h6>Distance</h6></div>
   </div><br>
   <div class="row">
       <div class="col-md-6 mr-auto"><h6>Open Info : ${openInfo} </h6></div>
@@ -570,7 +569,7 @@
     <li data-target="#model" data-slide-to="${count}" class="active"></li>
     `);
     addImages.append(`
-    <div class="carousel-item">
+    <div class="item">
     <img class="d-block w-100" src="${extraImage[key]}" alt="Res 1" height="500">
     </div>
     `);

@@ -247,13 +247,29 @@ $('#register').on('submit',function(event){
      hidden: $('#hidden').val(),
      num: phone
     }),
-    success:function(response){
+    success:function(response,textStatus,xhr){
       if(response=='Success'){
-        window.location.origin = window.location.protocol + "//" 
-            + window.location.hostname 
-            + (window.location.port ? ':' + window.location.port : '');
-            window.location = window.location.origin+'/home/add';
-      }
+        var token = xhr.getResponseHeader('x-access-token');
+            //console.log(token);
+            window.sessionStorage.setItem("token",token);
+            $.ajax({
+              url:'/home',
+              method:'GET',
+              headers: ({
+                'x-access-token':token
+              }),
+              success:function(response,textStatus,xhr){
+                if(response=="Success"){
+                  var uid = xhr.getResponseHeader('x-access-uid');
+                  window.sessionStorage.setItem("uid",uid);
+                  window.location.origin = window.location.protocol + "//" 
+                + window.location.hostname 
+                + (window.location.port ? ':' + window.location.port : '');
+                window.location = window.location.origin+'/home/update';
+                }
+              }
+            });
+        }
     }
    })
    });

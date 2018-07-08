@@ -145,4 +145,37 @@ loginRouter.post('/',function(req,res){
     //       //console.log("Done");
     //       res.end('Done');
     // })
+
+    loginRouter.post("/social",function(req,res){
+        //console.log("Social");
+        firebase.database().ref('users/' + req.body.uid).set({
+            email: req.body.email,
+            phone: req.body.phoneNumber,
+            displayName: req.body.displayName,
+            userName:"",
+            password: "",
+            age: "",
+            dateOfBirth:"",
+            state: "",
+            country: "",
+            profileUrl:"",
+            macID:""
+          });
+          firebase.database().ref('users/' + req.body.uid +'/address/').set({
+            flatNo: "",
+            streetName: "",
+            area: "",
+            city:"",
+            pinCode: ""
+          })
+          .then(function(){
+            console.log("Social");
+            var token = Verify.getToken({uid:req.body.uid});
+            res.header('x-access-token',token).send('Success');
+        })
+          .catch(function(error) {
+            console.log("Error creating new user:", error);
+            res.end("Error");
+          });
+    })
 module.exports = loginRouter;

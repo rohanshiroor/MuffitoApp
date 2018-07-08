@@ -8,17 +8,17 @@
   <body>
   <div class="container">
     <nav class="nav nav-pills nav-fill">
-    <a class="nav-item nav-link active" href="#add" role="tab" data-toggle="tab" onclick="pageChange(event,'add')">Add Resteraunt</a>
+    <a class="nav-item nav-link active" href="#add" role="tab" data-toggle="tab" onclick="pageChange(event,'add')">Add Restaurant</a>
     <a class="nav-item nav-link" href="#update" role="tab" data-toggle="tab" onclick="pageChange(event,'update')">Update Profile</a>
     <a class="nav-item nav-link" href="#contact" role="tab" data-toggle="tab" onclick="pageChange(event,'contactus')">Contact Us</a>
     <a class="nav-item nav-link" href="#signout" role="tab" data-toggle="tab" onclick="pageChange(event,'signout')">Sign Out</a>
     </nav>
     <br />
-      <h2>Add Your Resteraunt Details</h2>
+      <h2>Add Your Restaurant Details</h2>
       <form name="restDet" enctype='multipart/form-data' id="restDet">
         <div class="form-group">
-          <label for="restName">Resteraunt Name:</label>
-          <input class="form-control" id="restName" type="text" name="restName" placeholder="Resteraunt Name" required onblur="valInp('restDet','restName')">
+          <label for="restName">Restaurant Name:</label>
+          <input class="form-control" id="restName" type="text" name="restName" placeholder="Restaurant Name" required onblur="valInp('restDet','restName')">
         </div>
         <div class="form-group">
           <label for="restCity">City:</label>
@@ -37,7 +37,7 @@
         <input type="hidden" id="latitude" name="latitude">
         <input type="hidden" id="longitude" name="longitude">
         <div class='form-group'>
-          <label for='restImage'>Resteraunt Images</label>
+          <label for='restImage'>Restaurant Images</label>
           <input type='file' class='form-control-file' name='' id='restImage' multiple name='restImage'>
           </div>
         <div class="form-group">
@@ -45,7 +45,7 @@
           <input class="form-control" id="rating" type="number" name="rating" placeholder="Current rating" required="" onblur="valInp('restDet','rating')">
         </div>
         <div class="form-group">
-          <label for="restType">Resteraunt Type</label>
+          <label for="restType">Restaurant Type</label>
           <select class="form-control" id="restType" name="restType">
             <option>cheap</option>
             <option>moderate</option>
@@ -60,7 +60,7 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="restOpen">Resteraunt Open Info</label>
+          <label for="restOpen">Restaurant Open Info</label>
           <select class="form-control" id="restOpen" name="restOpen">
             <option>Open Now</option>
             <option>Closed</option>

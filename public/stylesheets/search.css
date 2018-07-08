@@ -2136,4 +2136,8 @@ body {
       margin-top: 10px;
     }
   }
-  
+
+  .thumbnail img {
+    height:300px;
+    width:100%;
+  }

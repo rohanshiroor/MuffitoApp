@@ -169,8 +169,7 @@ $('#contactus').on('submit',function(event){
                     }
                   });
                 })
-                console.log('Uploaded File');
-                
+                console.log('Uploaded File');   
                 //console.log(i,fileLength-1);
               });
             }
@@ -185,5 +184,15 @@ $('#contactus').on('submit',function(event){
         }
         }
   });
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (top.location.pathname === '/home/update'){
+      var userId = window.sessionStorage.getItem('uid');
+      firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
+        var user = snapshot.val();
+        
+      });
     }
   });
