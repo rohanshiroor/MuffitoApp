@@ -2,7 +2,6 @@
 <html>
     <head>
         <title>Search</title>
-        <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" />
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -110,7 +109,11 @@
                     <!-- responsive-nav -->
                     <div id="responsive-nav">
                         <!-- NAV -->
-                        <ul class="main-nav nav navbar-nav">
+                        <ul class="main-nav nav navbar-nav" id="searchTabs">
+                            <li><a  href="#search" role="tab" data-toggle="tab" onclick="pageChange(event,'search')">Search Restaurants</a></li>
+                            <li><a  href="#add" role="tab" data-toggle="tab" onclick="pageChange(event,'add')">Add Restaurant</a></li>
+                            <li><a  href="#update" role="tab" data-toggle="tab" onclick="pageChange(event,'update')">Update Profile</a></li>
+                            <li><a  href="#contact" role="tab" data-toggle="tab" onclick="pageChange(event,'contactus')">Contact Us</a></li>  
                             <li><a href="/login">Login</a></li>
                             <li><a href="/register">Signup</a></li>
                             </ul>
@@ -152,7 +155,6 @@
             
         <div id="firebaseui-auth-container"></div>
         <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase.js"></script>
-        <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous'></script>
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
