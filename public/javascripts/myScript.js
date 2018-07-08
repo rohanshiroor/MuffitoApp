@@ -111,20 +111,45 @@ function login(){
 }
 
 function pageChange(evt,page){
+  var token = window.sessionStorage.getItem("token");
   if(page!='signout'){
-  window.location.origin = window.location.protocol + "//" 
-  + window.location.hostname 
-  + (window.location.port ? ':' + window.location.port : '');
-  window.location = window.location.origin+'/home/'+page;
+  $.ajax({
+    url:'/home',
+    method:'GET',
+    headers: {
+      'x-access-token':token
+    },
+    success:function(response,textStatus,xhr){
+      if(response=="Success"){
+        var uid = xhr.getResponseHeader('x-access-uid');
+        window.sessionStorage.setItem("uid",uid);
+        + window.location.hostname 
+        + (window.location.port ? ':' + window.location.port : '');
+        window.location = window.location.origin+'/home/'+page;
+      }
+    }
+  });
   }
   else {
     firebase.auth().signOut()
     .then(function() {
-      window.localStorage.setItem("token","");
-      window.location.origin = window.location.protocol + "//" 
-      + window.location.hostname 
-      + (window.location.port ? ':' + window.location.port : '');
-      window.location = window.location.origin+'/login';
+      $.ajax({
+        url:'/home/signout',
+        method:'GET',
+        headers: {
+          'x-access-token':token
+        },
+        success:function(response){
+          if(response=='Success'){
+            window.sessionStorage.removeItem("token");
+            window.sessionStorage.removeItem("uid");
+            window.location.origin = window.location.protocol + "//" 
+            + window.location.hostname 
+            + (window.location.port ? ':' + window.location.port : '');
+            window.location = window.location.origin+'/login';
+          }
+        }
+      })  
     }).catch(function(error) {
       // An error happened.
       console.log(error);

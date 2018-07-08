@@ -22,30 +22,57 @@ callbacks: {
     // User successfully signed in.
     // Return type determines whether we continue the redirect automatically
     // or whether we leave that to developer to handle.
-      firebase.database().ref('users/' + currentUser.uid).set({
-        email: currentUser.email,
-        phoneNumber: currentUser.phoneNumber,
-        displayName: currentUser.displayName,
-        username:"",
-        password: "",
-        age: "",
-        dateOfBirth:"",
-        state: "",
-        country: ""
+      $.ajax({
+        url: '/login/social',
+        method:'POST',
+        contentType:'application/json',
+        data: JSON.stringify({
+            uid:currentUser.uid,
+            email: currentUser.email,
+            phoneNumber: currentUser.phoneNumber,
+            displayName: currentUser.displayName,
+            username:"",
+            password: "",
+            age: "",
+            dateOfBirth:"",
+            state: "",
+            country: "",
+            flatNo: "",
+            streetName: "",
+            area: "",
+            city:"",
+            pinCode: ""
+        }),
+        success:function(response,textStatus,xhr){
+          console.log(response);
+          if (response=='Success'){
+            var token = xhr.getResponseHeader('x-access-token');
+            // console.log(token);
+            window.sessionStorage.setItem("token",token);
+            $.ajax({
+              url:'/home',
+              method:'GET',
+              headers: ({
+                'x-access-token':token
+              }),
+              success:function(response,textStatus,xhr){
+                if(response=="Success"){
+                  var uid = xhr.getResponseHeader('x-access-uid');
+                  window.sessionStorage.setItem("uid",uid);
+                  window.location.origin = window.location.protocol + "//" 
+                + window.location.hostname 
+                + (window.location.port ? ':' + window.location.port : '');
+                window.location = window.location.origin+'/home/update';
+                }
+              }
+            });    
+          }
+        }
       });
-      firebase.database().ref('users/' + currentUser.uid +'/address/').set({
-        flatNo: "",
-        streetName: "",
-        area: "",
-        city:"",
-        pinCode: ""
-      })
-      .then(function(){
-        window.location.origin = window.location.protocol + "//" 
-        + window.location.hostname 
-        + (window.location.port ? ':' + window.location.port : '');
-        window.location = window.location.origin+'/home/add';
-      });  
+      //var token = window.localStorage.getItem("token");
+      //console.log(token);
+      //if (token) {
+    //}  
     return false;
   },
   uiShown: function() {
@@ -102,13 +129,30 @@ $('#login').on('submit',function(event){
           console.log(response);
           if (response=='Success'){
             var token = xhr.getResponseHeader('x-access-token');
-            window.localStorage.setItem("token",token);
-            window.location.origin = window.location.protocol + "//" 
-            + window.location.hostname 
-            + (window.location.port ? ':' + window.location.port : '');
-            window.location = window.location.origin+'/home/add';
+            window.sessionStorage.setItem("token",token);
+            $.ajax({
+              url:'/home',
+              method:'GET',
+              headers: ({
+                'x-access-token':token
+              }),
+              success:function(response,textStatus,xhr){
+                if(response=="Success"){
+                  var uid = xhr.getResponseHeader('x-access-uid');
+                  window.sessionStorage.setItem("uid",uid);
+                  window.location.origin = window.location.protocol + "//" 
+                + window.location.hostname 
+                + (window.location.port ? ':' + window.location.port : '');
+                window.location = window.location.origin+'/home/update';
+                }
+              }
+            });
           }
         }
       });
     }
+    //var token = window.localStorage.getItem("token");
+    //if (token) {
+    
+  //}
     });
