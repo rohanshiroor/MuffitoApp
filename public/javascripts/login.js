@@ -22,6 +22,7 @@ callbacks: {
     // User successfully signed in.
     // Return type determines whether we continue the redirect automatically
     // or whether we leave that to developer to handle.
+    var displayName = currentUser.displayName.split(" ");
       $.ajax({
         url: '/login/social',
         method:'POST',
@@ -30,7 +31,8 @@ callbacks: {
             uid:currentUser.uid,
             email: currentUser.email,
             phoneNumber: currentUser.phoneNumber,
-            displayName: currentUser.displayName,
+            firstName: displayName[0],
+            lastName: displayName[1],
             username:"",
             password: "",
             age: "",
@@ -57,12 +59,17 @@ callbacks: {
               }),
               success:function(response,textStatus,xhr){
                 if(response=="Success"){
-                  var uid = xhr.getResponseHeader('x-access-uid');
-                  window.sessionStorage.setItem("uid",uid);
+                  var userId = xhr.getResponseHeader('x-access-uid');
+                  //
+                  firebase.database().ref('/users/' + userId).once('value')
+                  .then(function(snapshot) {
+                    var user = snapshot.val();
+                  window.sessionStorage.setItem("user",JSON.stringify(user));            
                   window.location.origin = window.location.protocol + "//" 
                 + window.location.hostname 
                 + (window.location.port ? ':' + window.location.port : '');
                 window.location = window.location.origin+'/home/update';
+                  });
                 }
               }
             });    
@@ -138,13 +145,18 @@ $('#login').on('submit',function(event){
               }),
               success:function(response,textStatus,xhr){
                 if(response=="Success"){
-                  var uid = xhr.getResponseHeader('x-access-uid');
-                  window.sessionStorage.setItem("uid",uid);
-                  window.location.origin = window.location.protocol + "//" 
+                  var userId = xhr.getResponseHeader('x-access-uid');
+                  //
+                  firebase.database().ref('/users/' + userId).once('value')
+                  .then(function(snapshot) {
+                    var user = snapshot.val();
+                  window.sessionStorage.setItem("user",JSON.stringify(user));            
+                 window.location.origin = window.location.protocol + "//" 
                 + window.location.hostname 
                 + (window.location.port ? ':' + window.location.port : '');
                 window.location = window.location.origin+'/home/update';
-                }
+                  });  
+              }
               }
             });
           }

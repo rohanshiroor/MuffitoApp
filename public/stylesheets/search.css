@@ -2141,3 +2141,7 @@ body {
     height:300px;
     width:100%;
   }
+
+  .tabSearch {
+    display:none;
+  }

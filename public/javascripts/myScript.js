@@ -112,7 +112,7 @@ function login(){
 
 function pageChange(evt,page){
   var token = window.sessionStorage.getItem("token");
-  if(page!='signout'){
+  if(page!='search'){
   $.ajax({
     url:'/home',
     method:'GET',
@@ -123,6 +123,7 @@ function pageChange(evt,page){
       if(response=="Success"){
         var uid = xhr.getResponseHeader('x-access-uid');
         window.sessionStorage.setItem("uid",uid);
+        window.location.origin = window.location.protocol + "//" 
         + window.location.hostname 
         + (window.location.port ? ':' + window.location.port : '');
         window.location = window.location.origin+'/home/'+page;
@@ -131,7 +132,16 @@ function pageChange(evt,page){
   });
   }
   else {
-    firebase.auth().signOut()
+    window.location.origin = window.location.protocol + "//" 
+        + window.location.hostname 
+        + (window.location.port ? ':' + window.location.port : '');
+        window.location = window.location.origin+'/search';
+  }
+}
+
+function signOut(){
+  var token = window.sessionStorage.getItem("token");
+  firebase.auth().signOut()
     .then(function() {
       $.ajax({
         url:'/home/signout',
@@ -154,7 +164,6 @@ function pageChange(evt,page){
       // An error happened.
       console.log(error);
     });
-  }
 }
 
 

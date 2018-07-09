@@ -151,7 +151,8 @@ loginRouter.post('/',function(req,res){
         firebase.database().ref('users/' + req.body.uid).set({
             email: req.body.email,
             phone: req.body.phoneNumber,
-            displayName: req.body.displayName,
+            firstName: req.body.firstName,
+            lastName:req.body.lastName,
             userName:"",
             password: "",
             age: "",

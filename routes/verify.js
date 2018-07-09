@@ -4,7 +4,7 @@ var ExtractJwt = require('passport-jwt').ExtractJwt;
 var opts = null;
 
 exports.getToken = function(user) {
-  return jwt.sign(user,'muffito88994',{expiresIn:3600});
+  return jwt.sign(user,'muffito88994',{expiresIn:86400});
 };
 
 

@@ -187,12 +187,11 @@ $('#contactus').on('submit',function(event){
     }
   });
 
-  document.addEventListener('DOMContentLoaded', function() {
-    if (top.location.pathname === '/home/update'){
-      var userId = window.sessionStorage.getItem('uid');
-      firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
-        var user = snapshot.val();
-        
-      });
+  $(document).ready(function() {
+    if (top.location.pathname === '/home'){
+      //var userId = window.sessionStorage.getItem('uid');
+        console.log(user);
+        document.forms["updateProf"]["firstname"].value = user.firstName; 
+        document.forms["updateProf"]["lastname"].value = user.lastName;
     }
   });

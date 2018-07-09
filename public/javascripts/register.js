@@ -260,12 +260,17 @@ $('#register').on('submit',function(event){
               }),
               success:function(response,textStatus,xhr){
                 if(response=="Success"){
-                  var uid = xhr.getResponseHeader('x-access-uid');
-                  window.sessionStorage.setItem("uid",uid);
+                  var userId = xhr.getResponseHeader('x-access-uid');
+                  //
+                  firebase.database().ref('/users/' + userId).once('value')
+                  .then(function(snapshot) {
+                    var user = snapshot.val();
+                  window.sessionStorage.setItem("user",JSON.stringify(user));            
                   window.location.origin = window.location.protocol + "//" 
                 + window.location.hostname 
                 + (window.location.port ? ':' + window.location.port : '');
                 window.location = window.location.origin+'/home/update';
+                  });
                 }
               }
             });
