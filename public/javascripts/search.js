@@ -77,20 +77,20 @@
     if(distArray[i]<10.0){  
     bodyDiv.append(`
         <div class="thumbnail">              
-        <img src = '${data[i].imageUri}' alt="Card image cap"> 
+        <img src = '${data[i].imageUri}' onerror="this.onerror=null;this.src='images/bar_substitute.jpg';"> 
         <div class="caption">
           <h3 >${data[i].name}</h3>
           <div class="row">
-          <div class="col-md-6 mr-auto"><p>${data[i].ratting}</p></div>
-          <div class="col-md-6 ml-auto"><p>${data[i]["restaurant type"]}</p></div>
+          <div class="col-md-6 mr-auto"><h6>Rating  : </h6><p>${data[i].ratting}</p></div>
+          <div class="col-md-6 ml-auto"><h6>Category  : </h6><p>${data[i]["restaurant type"]}</p></div>
           </div>
           <br />
           <div class="row">
-          <div class="col-md-6 mr-auto"><p>${distArray[i]} km</p></div>
-          <div class="col-md-6 ml-auto"><p>${durArray[i]}</p></div>
+          <div class="col-md-6 mr-auto"><h6>Distance  : </h6><p>${distArray[i]} km</p></div>
+          <div class="col-md-6 ml-auto"><h6>ETA  : </h6><p>${durArray[i]}</p></div>
           </div>
           <br />
-          <p>${data[i].street},${data[i].area}</p>
+          <h6>Address  : </h6><p>${data[i].street},${data[i].area}</p>
           <p>${data[i].city}</p>
           <br />
         <button type="button" onclick = "knowMore(event,'${data[i].imageUri}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
@@ -413,7 +413,7 @@
         
         bodyDiv.append(`
         <div class="thumbnail">              
-        <img src = '${imageUriArray[i]}'  > 
+        <img src = '${imageUriArray[i]}'   > 
         <div class="caption">
           <h3>${nameArray[i]}</h5>
           <div class="row">
@@ -517,7 +517,7 @@
 </ul>
 <div class="carousel-inner">
 <div class="item active">
-  <img class="d-block w-100" src="${imageURL}" alt="Res 1">
+  <img class="d-block w-100"  src="${imageURL}" onerror="this.onerror=null;this.src='images/bar_substitute.jpg';"">
   </div>
    </div>
       <a class="carousel-control left" href="#model" data-slide="prev">
@@ -539,7 +539,7 @@
         <span class="fa fa-star"></span>
     </div><br>
     <div>
-        <h6>Adress Of the restraunts: ${street},${area},${city}</h6>
+        <h6>Address Of the restraunts: ${street},${area},${city}</h6>
     </div><br>
     <div class="row">
       <div class="col-md-6 mr-auto"><h6>Location: ${street} ${area}</h6></div>
