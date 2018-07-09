@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded",function() {
     for(var i=0;i<data.length;i++){
     if(distArray[i]<10.0){  
     bodyDiv.append(`
-	    <div class=" sized center-block thumbnail">              
+        <div class="thumbnail">              
         <img src = '${data[i].imageUri}' onerror="this.onerror=null;this.src='images/bar_substitute.jpg';"> 
         <div class="caption">
           <h3 >${data[i].name}</h3>
@@ -103,14 +103,14 @@ document.addEventListener("DOMContentLoaded",function() {
           <div class="col-md-6 mr-auto"><h6>Distance  : </h6><p>${distArray[i]} km</p></div>
           <div class="col-md-6 ml-auto"><h6>ETA  : </h6><p>${durArray[i]}</p></div>
           </div>
-          <br/>
+          <br />
           <h6>Address  : </h6><p>${data[i].street},${data[i].area}</p>
           <p>${data[i].city}</p>
           <br />
         <button type="button" onclick = "knowMore(event,'${data[i].imageUri}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
         Know More
         </button>
-    	</div>
+        </div>
         `);
         bodyDiv.append(`<br />`);
         //if(i == count)
@@ -430,8 +430,7 @@ else {
       for(var i=0;i<nameArray.length;i++){
         
         bodyDiv.append(`
-		
-        <div class="thumbnail center-block sized" >              
+        <div class="thumbnail">              
         <img src = '${imageUriArray[i]}'   > 
         <div class="caption">
           <h3>${nameArray[i]}</h5>
@@ -452,7 +451,7 @@ else {
         Know More
         </button>
         </div>
-		`);
+        `);
         bodyDiv.append(`<br />`);
       }
     }
