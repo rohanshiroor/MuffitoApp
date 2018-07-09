@@ -69,10 +69,12 @@
     //console.log("Yes");
     //durationArray.push(duration);
     var bodyDiv = $('#restCards');
+    $('#restCards').empty();
     var distArray = JSON.parse(window.localStorage.getItem('distance'));
     var durArray = JSON.parse(window.localStorage.getItem("duration"));
     //var data = JSON.parse(window.localStorage.getItem("snapshot"));
     //var itm = window.localStorage.getItem("item");
+    if(data.length!=0) {
     for(var i=0;i<data.length;i++){
     if(distArray[i]<10.0){  
     bodyDiv.append(`
@@ -104,6 +106,10 @@
         //console.log(i);
     }
   }
+}
+else {
+  bodyDiv.append(`<img src="./images/no_restaurant2.jpg" alt="No Results Found! Please Try Again!">`);
+}
   }
 
   function getData(){
@@ -438,7 +444,7 @@
       }
     }
     else {
-      bodyDiv.append(`<h3>No results found, Please Try Again</h3>`);
+      bodyDiv.append(`<img src="./images/no_restaurant2.jpg" alt="No Results Found! Please Try Again!">`);
     }
   });
 
