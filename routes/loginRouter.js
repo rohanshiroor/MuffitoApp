@@ -147,10 +147,10 @@ loginRouter.post('/',function(req,res){
     // })
 
     loginRouter.post("/social",function(req,res){
-        //console.log("Social");
+        console.log(req.body.phoneNumber);
         firebase.database().ref('users/' + req.body.uid).set({
             email: req.body.email,
-            phone: req.body.phoneNumber,
+            phone: "",
             firstName: req.body.firstName,
             lastName:req.body.lastName,
             userName:"",

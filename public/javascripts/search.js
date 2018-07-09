@@ -1,20 +1,32 @@
-//   $(document).ready(function(){
-//     var count = 1;
-//     var token = window.sessionStorage.getItem('token');
-//     //$('#searchTabs li').hide();
-//     $("#searchTabs li").each(function(n) {
-//     console.log($(this));
-//     if(token) {
-//       if(count == 5 || count == 6)
-//         $(this).hide();
-//     }
-//     else {
-//       if(count!= 5 || count != 6)
-//       $(this).hide();
-//     }
-//     count=count+1;
-//   });
-// });
+document.addEventListener("DOMContentLoaded",function() {
+    var count = 1;
+    var token = window.sessionStorage.getItem('token');
+    $('#searchTabs li').hide();
+    $("#searchTabs li").each(function(n) {
+      $(this).attr('id',"tab"+n);
+    //console.log($(this));
+    });
+    if(token) {
+     $("#tab0").show();
+     $("#tab1").show();
+     $("#tab2").show();
+     $("#tab3").show();
+     $("#tab4").hide();
+     $("#tab5").hide();
+     $("#signout").show(); 
+    }
+    else {
+     $("#signout").hide(); 
+     $("#tab0").hide();
+     $("#tab1").hide();
+     $("#tab2").hide();
+     $("#tab3").hide();
+     $("#tab4").show();
+     $("#tab5").show(); 
+    }
+    //count=count+1;
+  
+});
   function calcDistTime(dataArray){ 
     //console.log("Yes");
     var distArray = [];

@@ -2142,6 +2142,7 @@ body {
     width:100%;
   }
 
-  .tabSearch {
-    display:none;
+  #signout {
+    padding-left: 20px;
+    margin-left: 20px;
   }
