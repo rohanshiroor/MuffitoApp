@@ -13,10 +13,8 @@ document.addEventListener("DOMContentLoaded",function() {
    $("#tab3").show();
    $("#tab4").hide();
    $("#tab5").hide();
-   $("#signout").show(); 
   }
   else {
-   $("#signout").hide(); 
    $("#tab0").hide();
    $("#tab1").hide();
    $("#tab2").hide();
