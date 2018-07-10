@@ -134,8 +134,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="navbar-login navbar-login-session">
                     <div class="row">
                         <div class="col-lg-12">
-                        <p>
-                        <button id="signout" class="btn btn-danger" onclick="signOut()">Sign Out</button>
+                        <p>	
+						<button id="signout" class="btn btn-danger" onclick="signOut()">Sign Out</button>
                             </p>
                         </div>
                     </div>
