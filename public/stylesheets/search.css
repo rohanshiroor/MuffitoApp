@@ -2,7 +2,13 @@
 /*----------------------------*\
 	Typography
 \*----------------------------*/
-
+.sized img {
+  height: auto !important;
+  width: auto !important;
+  max-height: 1000px !important;
+  max-width: 1000px !important;
+}
+  
 body {
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
@@ -1951,7 +1957,12 @@ body {
   
   #footer {
     background: #15161D;
+    position: relative;
     color: #B9BABC;
+    /*height: 100%;
+    padding-bottom: 10px;
+    */
+
   }
   
   #bottom-footer {
