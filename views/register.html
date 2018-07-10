@@ -15,7 +15,8 @@
       <div class="signup-wthreetop">
         <h2>Welcome to Registration</h2>
       <p>Get yourself registered and feed your hunger.</p>
-      </div>	
+      </div>
+      <!--	
       <div class=" btn-group btn-group-justified tab" role="group" >
           <div class="btn-group" role="group">
             <button class="btn btn-default tablinks active" onclick="tabChange(event, 'email')">Email</button>
@@ -24,49 +25,58 @@
           <button class="btn btn-default tablinks"  onclick="tabChange(event, 'phone')">Phone</button>
           </div>
         </div>
-     
+      -->
     <!--<div class="tab">
       <button class="tablinks active" onclick="tabChange(event, 'email')">Email</button>
       <button class="tablinks" onclick="tabChange(event, 'phone')">Phone</button>
     </div><br>-->
     <div class="contact-wthree">
     <form name="register" id="register">
+      <!--
       <h2 id="regWithEmail">Register with Email:</h2>
       <h2 id="regWithPhone">Register with Phone:</h2>
+      -->
       <h3>Step 1:</h3>
       <div class="form-step1">
         <input class="form-control" id="firstname" type="text" name="firstname" placeholder="First Name" required="" onblur="valInp('register','firstname')">
         <input class="form-control" id="lastname" type="text" name="lastname" placeholder="Last Name" required="" onblur="valInp('register','lastname')">
-=        <input class="form-control" id="age" type="number" name="age" placeholder="Age" required="" onblur="valInp('register','age')">
+        <input class="form-control" id="age" type="number" name="age" placeholder="Age" required="" onblur="valInp('register','age')">
       </div>
       <h3>Step 2:</h3>
       <div class="form-step1">
         <input class="form-control" id="flatno" type="number" name="flatno" placeholder="Flat Number" required="" onblur="valInp('register','flatno')">
-        <input class="form-control" id="streetName" type="text" name="streetName" placeholder="Street Name" required="" onblur="valInp('register','streetName')">
+        <br><input class="form-control" id="streetName" type="text" name="streetName" placeholder="Street Name" required="" onblur="valInp('register','streetName')">
         <input class="form-control" id="area" type="text" name="area" placeholder="Area" required="" onblur="valInp('register','area')">
         <input class="form-control" id="city" type="text" name="city" placeholder="City" required="" onblur="valInp('register','city')">
         <input class="form-control" id="pincode" type="number" name="pincode" placeholder="Pincode" required="" onblur="valInp('register','pincode')">
-        <input class="form-control" id="state" type="text" name="state" placeholder="State" required="" onblur="valInp('register','state')">
+        <br><input class="form-control" id="state" type="text" name="state" placeholder="State" required="" onblur="valInp('register','state')">
         <input class="form-control" id="country" type="text" name="country" placeholder="Country" required="" onblur="valInp('register','country')">
       </div>
       <h3>Step 3:</h3>
       <div class="form-step1 w3ls-formrow">
         <input class="form-control" id="dob" type="date" name="dob" placeholder="Date of Birth" required="" onblur="valInp('register','dob')">
-      <div id="em">
-        <input class="form-control" id="email" type="email" name="email" placeholder="Email" required="" onblur="valInp('register','email')">
+      <br><div id="em">
+        <input class="form-control" id="email" type="email" name="email" placeholder="Email" onblur="valInp('register','email')">
       </div>
         <input class="form-control" id="username" type="text" name="username" placeholder="Username" required="" onblur="valInp('register','username')">
       <div id="ph">
         <input class="form-control" id="phone" type="tel" name="phone" placeholder="Phone Number" onblur="val_phone()">
-      </div>
+      </div><br>
         <input class="form-control" id="password" type="password" name="password" placeholder="Password" required="" onblur="valInp('register','password')">
       </div>
       <div class="agileits-row2 w3ls-formrow2">
           <input type="checkbox" id="brand2" value="">
           <label for="brand2"><span></span>I accept the terms of Use</label> 
       </div>
+      <div class="row">
+        <div class="col-sm-3">
       <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
     </form>
+    <div class="col-sm-3">
+    <a href="/login" class="btn btn-primary" type="button">Back</a>
+  </div>
+  </div>
   </div>
   </div>
   </div>

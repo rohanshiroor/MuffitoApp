@@ -68,7 +68,7 @@ function valInp(form,field) {
     formInp = $.sanitize(formInp);
     document.forms[form][field].value = formInp;
     //$(document.forms[form][field]).next().remove();
-    document.forms[form][field].classList.remove('input-error');
+    document.forms[form][field].classList.remove('error');
 }
 
 function val_phone() {  
@@ -77,7 +77,7 @@ function val_phone() {
     phone_num = $.sanitize(phone_num);
     document.forms["register"]["phone"].value = phone_num;
     $(document.forms["register"]["phone"]).next().remove();
-    document.forms[form][field].style.borderColor = 'black';
+    //document.forms[form][field].style.borderColor = 'black';
 }
 
 // Initialize Firebase
@@ -111,24 +111,59 @@ function login(){
 }
 
 function pageChange(evt,page){
-  if(page!='signout'){
-  window.location.origin = window.location.protocol + "//" 
-  + window.location.hostname 
-  + (window.location.port ? ':' + window.location.port : '');
-  window.location = window.location.origin+'/home/'+page;
+  var token = window.sessionStorage.getItem("token");
+  if(page!='search'){
+  $.ajax({
+    url:'/home',
+    method:'GET',
+    headers: {
+      'x-access-token':token
+    },
+    success:function(response,textStatus,xhr){
+      if(response=="Success"){
+        var uid = xhr.getResponseHeader('x-access-uid');
+        window.sessionStorage.setItem("uid",uid);
+        window.location.origin = window.location.protocol + "//" 
+        + window.location.hostname 
+        + (window.location.port ? ':' + window.location.port : '');
+        window.location = window.location.origin+'/home/'+page;
+      }
+    }
+  });
   }
   else {
-    firebase.auth().signOut()
+    window.location.origin = window.location.protocol + "//" 
+        + window.location.hostname 
+        + (window.location.port ? ':' + window.location.port : '');
+        window.location = window.location.origin+'/search';
+  }
+}
+
+function signOut(){
+  var token = window.sessionStorage.getItem("token");
+  firebase.auth().signOut()
     .then(function() {
-      window.location.origin = window.location.protocol + "//" 
-      + window.location.hostname 
-      + (window.location.port ? ':' + window.location.port : '');
-      window.location = window.location.origin+'/login';
+      $.ajax({
+        url:'/home/signout',
+        method:'GET',
+        headers: {
+          'x-access-token':token
+        },
+        success:function(response){
+          if(response=='Success'){
+            window.sessionStorage.removeItem("token");
+            window.sessionStorage.removeItem("uid");
+            window.location.origin = window.location.protocol + "//" 
+            + window.location.hostname 
+            + (window.location.port ? ':' + window.location.port : '');
+            window.location = window.location.origin+'/search';
+          }
+        }
+      })  
     }).catch(function(error) {
       // An error happened.
       console.log(error);
     });
-  }
 }
 
 

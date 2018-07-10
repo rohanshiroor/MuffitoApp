@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const path = require('path'); 
 //const admin = require('firebase-admin');
 //const firebaseui = require('firebaseui');
+const Verify = require('./verify');
 const firebase = require('firebase');
 const verifyRouter = express.Router();
 verifyRouter.use(bodyParser.json());
@@ -21,7 +22,9 @@ verifyRouter.post('/',function(req,res){
     .then(function(userRecord) {
         // See the UserRecord reference doc for the contents of userRecord.
         //console.log("Successfully updated user", userRecord.toJSON());
-        res.end('Success');
+        var token = Verify.getToken({uid:userRecord.uid});
+        res.header('x-access-token',token).send('Success');
+        //res.end('Success');
     })
     .catch(function(error) {
         console.log("Error updating user:", error);

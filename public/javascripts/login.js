@@ -22,30 +22,53 @@ callbacks: {
     // User successfully signed in.
     // Return type determines whether we continue the redirect automatically
     // or whether we leave that to developer to handle.
-      firebase.database().ref('users/' + currentUser.uid).set({
-        email: currentUser.email,
-        phoneNumber: currentUser.phoneNumber,
-        displayName: currentUser.displayName,
-        username:"",
-        password: "",
-        age: "",
-        dateOfBirth:"",
-        state: "",
-        country: ""
+    var displayName = currentUser.displayName.split(" ");
+    console.log(currentUser.phoneNumber)
+      $.ajax({
+        url: '/login/social',
+        method:'POST',
+        contentType:'application/json',
+        data: JSON.stringify({
+            uid:currentUser.uid,
+            email: currentUser.email,
+            firstName: displayName[0],
+            lastName: displayName[1],
+        }),
+        success:function(response,textStatus,xhr){
+          console.log(response);
+          if (response=='Success'){
+            var token = xhr.getResponseHeader('x-access-token');
+            // console.log(token);
+            window.sessionStorage.setItem("token",token);
+            $.ajax({
+              url:'/home',
+              method:'GET',
+              headers: ({
+                'x-access-token':token
+              }),
+              success:function(response,textStatus,xhr){
+                if(response=="Success"){
+                  var userId = xhr.getResponseHeader('x-access-uid');
+                  //
+                  firebase.database().ref('/users/' + userId).once('value')
+                  .then(function(snapshot) {
+                    var user = snapshot.val();
+                  window.sessionStorage.setItem("user",JSON.stringify(user));            
+                  window.location.origin = window.location.protocol + "//" 
+                + window.location.hostname 
+                + (window.location.port ? ':' + window.location.port : '');
+                window.location = window.location.origin+'/search';
+                  });
+                }
+              }
+            });    
+          }
+        }
       });
-      firebase.database().ref('users/' + currentUser.uid +'/address/').set({
-        flatNo: "",
-        streetName: "",
-        area: "",
-        city:"",
-        pinCode: ""
-      })
-      .then(function(){
-        window.location.origin = window.location.protocol + "//" 
-        + window.location.hostname 
-        + (window.location.port ? ':' + window.location.port : '');
-        window.location = window.location.origin+'/home';
-      });  
+      //var token = window.localStorage.getItem("token");
+      //console.log(token);
+      //if (token) {
+    //}  
     return false;
   },
   uiShown: function() {
@@ -98,15 +121,39 @@ $('#login').on('submit',function(event){
           emailOrPhone: emailOrPhone,
           password: password
         }),
-        success:function(response){
+        success:function(response,textStatus,xhr){
           console.log(response);
           if (response=='Success'){
-            window.location.origin = window.location.protocol + "//" 
-            + window.location.hostname 
-            + (window.location.port ? ':' + window.location.port : '');
-            window.location = window.location.origin+'/home';
+            var token = xhr.getResponseHeader('x-access-token');
+            window.sessionStorage.setItem("token",token);
+            $.ajax({
+              url:'/home',
+              method:'GET',
+              headers: ({
+                'x-access-token':token
+              }),
+              success:function(response,textStatus,xhr){
+                if(response=="Success"){
+                  var userId = xhr.getResponseHeader('x-access-uid');
+                  //
+                  firebase.database().ref('/users/' + userId).once('value')
+                  .then(function(snapshot) {
+                    var user = snapshot.val();
+                  window.sessionStorage.setItem("user",JSON.stringify(user));            
+                 window.location.origin = window.location.protocol + "//" 
+                + window.location.hostname 
+                + (window.location.port ? ':' + window.location.port : '');
+                window.location = window.location.origin+'/search';
+                  });  
+              }
+              }
+            });
           }
         }
       });
     }
+    //var token = window.localStorage.getItem("token");
+    //if (token) {
+    
+  //}
     });

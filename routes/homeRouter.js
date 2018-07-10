@@ -4,25 +4,48 @@ const firebase = require('firebase');
 const path = require('path'); 
 const validator = require('express-validator');
 const nodemailer = require('nodemailer');
+const Verify = require('./verify');
+
 // const flash = require('flash');
 //const firebaseui = require('firebaseui');
 const homeRouter = express.Router();
 homeRouter.use(bodyParser.json());
 homeRouter.use(validator());
 // homeRouter.use(flash());
-homeRouter.get('/',function(req,res){
-    res.redirect('/home/add');
+homeRouter.get('/',Verify.verifyUser,function(req,res){
+    //res.redirect('/home/add');
+    //console.log(req.decoded.uid);
+    var token = req.headers['x-access-token'];
+    var uid = req.decoded.uid
+    Verify.setOpts(token);
+    res.header('x-access-uid',uid).send('Success');
+});
+homeRouter.get('/signout',Verify.verifyUser,function(req,res){
+    //res.redirect('/home/add');
+    //var token = req.headers['x-access-token'];
+    //console.log(req.decoded.uid);
+    Verify.setOpts(null);
+    res.end("Success");
 });
 homeRouter.get('/add',function(req,res){
+    if (Verify.verifyOpts())
     res.sendFile(path.join(__dirname,'../views/home_addRestaurant.html'));
+    else 
+    res.redirect('/login');
 });
 homeRouter.get('/update',function(req,res){
+    if (Verify.verifyOpts())
     res.sendFile(path.join(__dirname,'../views/home_updateProfile.html'));
+    else 
+    res.redirect('/login');
 });
 homeRouter.get('/contactus',function(req,res){
+    if (Verify.verifyOpts())
     res.sendFile(path.join(__dirname,'../views/home_contactUs.html'));
+    else 
+    res.redirect('/login');
 });
-homeRouter.post('/add',function(req,res){
+homeRouter.post('/add',Verify.verifyUser,function(req,res){
     //var ck_misctext = /^[A-Za-z0-9 ]+$/;
     // req.checkBody('restName','Invalid Restaurant Name').trim().isAlphanumeric("en-IN");
     // req.checkBody('restCity','Invalid Restaurant City').trim().isAlphanumeric("en-IN");
@@ -60,7 +83,7 @@ homeRouter.post('/add',function(req,res){
     });
     res.end('Success');
 });
-homeRouter.post('/contactus',function(req,res){
+homeRouter.post('/contactus',Verify.verifyUser,function(req,res){
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {

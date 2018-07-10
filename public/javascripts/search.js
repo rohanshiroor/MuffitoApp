@@ -1,4 +1,36 @@
+<<<<<<< HEAD
 
+=======
+document.addEventListener("DOMContentLoaded",function() {
+    var count = 1;
+    var token = window.sessionStorage.getItem('token');
+    $('#searchTabs li').hide();
+    $("#searchTabs li").each(function(n) {
+      $(this).attr('id',"tab"+n);
+    //console.log($(this));
+    });
+    if(token) {
+     $("#tab0").show();
+     $("#tab1").show();
+     $("#tab2").show();
+     $("#tab3").show();
+     $("#tab4").hide();
+     $("#tab5").hide();
+     $("#signout").show(); 
+    }
+    else {
+     $("#signout").hide(); 
+     $("#tab0").hide();
+     $("#tab1").hide();
+     $("#tab2").hide();
+     $("#tab3").hide();
+     $("#tab4").show();
+     $("#tab5").show(); 
+    }
+    //count=count+1;
+  
+});
+>>>>>>> 08e2f5eabcd322bb5b57b58ba63eae033eae60a7
   function calcDistTime(dataArray){ 
     //console.log("Yes");
     var distArray = [];
@@ -53,10 +85,15 @@
     //console.log("Yes");
     //durationArray.push(duration);
     var bodyDiv = $('#restCards');
+<<<<<<< HEAD
+=======
+    $('#restCards').empty();
+>>>>>>> 08e2f5eabcd322bb5b57b58ba63eae033eae60a7
     var distArray = JSON.parse(window.localStorage.getItem('distance'));
     var durArray = JSON.parse(window.localStorage.getItem("duration"));
     //var data = JSON.parse(window.localStorage.getItem("snapshot"));
     //var itm = window.localStorage.getItem("item");
+<<<<<<< HEAD
     for(var i=0;i<data.length;i++){
     if(distArray[i]<10.0){  
     bodyDiv.append(`
@@ -78,6 +115,30 @@
           <p class="card-text">${data[i].city}</p>
           <br />
         <button type="button" onclick = "knowMore(event,'${data[i].name}','${data[i].imageUri}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+=======
+    if(data.length!=0) {
+    for(var i=0;i<data.length;i++){
+    if(distArray[i]<10.0){  
+    bodyDiv.append(`
+        <div class="thumbnail">              
+        <img src = '${data[i].imageUri}' onerror="this.onerror=null;this.src='images/bar_substitute.jpg';"> 
+        <div class="caption">
+          <h3 >${data[i].name}</h3>
+          <div class="row">
+          <div class="col-md-6 mr-auto"><h6>Rating  : </h6><p>${data[i].ratting}</p></div>
+          <div class="col-md-6 ml-auto"><h6>Category  : </h6><p>${data[i]["restaurant type"]}</p></div>
+          </div>
+          <br />
+          <div class="row">
+          <div class="col-md-6 mr-auto"><h6>Distance  : </h6><p>${distArray[i]} km</p></div>
+          <div class="col-md-6 ml-auto"><h6>ETA  : </h6><p>${durArray[i]}</p></div>
+          </div>
+          <br />
+          <h6>Address  : </h6><p>${data[i].street},${data[i].area}</p>
+          <p>${data[i].city}</p>
+          <br />
+        <button type="button" onclick = "knowMore(event,'${data[i].imageUri}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+>>>>>>> 08e2f5eabcd322bb5b57b58ba63eae033eae60a7
         Know More
         </button>
         </div>
@@ -88,6 +149,13 @@
         //console.log(i);
     }
   }
+<<<<<<< HEAD
+=======
+}
+else {
+  bodyDiv.append(`<img src="./images/no_restaurant2.jpg" alt="No Results Found! Please Try Again!">`);
+}
+>>>>>>> 08e2f5eabcd322bb5b57b58ba63eae033eae60a7
   }
 
   function getData(){
@@ -124,8 +192,14 @@
     costArray = [];
     costArrayhigh = [];
     restaurantTypeArray = [];
+<<<<<<< HEAD
     distTextArray = JSON.parse(window.localStorage.getItem("distance"))//distTextArray;
     durationArray = JSON.parse(window.localStorage.getItem("duration"));
+=======
+    distTextArray = JSON.parse(window.localStorage.getItem("distance"));//distTextArray;
+    durationArray = JSON.parse(window.localStorage.getItem("duration"));
+
+>>>>>>> 08e2f5eabcd322bb5b57b58ba63eae033eae60a7
     $('#restCards').empty();
     var ck_misctext = /^[A-Za-z0-9 ]+$/;
     var error = false;
@@ -134,6 +208,8 @@
     var openNow = document.forms["searchRest"]["openNowBox"].checked;
     var sort = document.getElementById("sort");
     var sortBy =  sort.options[sort.selectedIndex].innerHTML;
+    var filter = document.getElementById("filter");
+    var filterBy = filter.options[filter.selectedIndex].innerHTML;
     //console.log(sortBy);
     if(!ck_misctext.test(searText) && searText != ""){
             document.forms["searchRest"]["searchText"].style.borderColor = 'red';
@@ -146,9 +222,29 @@
     var count = Object.keys(data).length;
     //console.log(count);
     var flag = 0;
+    var filterVal = 0;
     //console.log(data[0])
-    
+    switch(filterBy){
+      case "Within 10 km":
+      {
+        filterVal = 10;
+        break;
+      }
+      case "Within 15 km":
+      {
+        filterVal = 15;
+        break;
+      }
+      case "Within 25 km":
+      {
+        filterVal = 25;
+        break;
+      }
+      default:
+        filterVal = 10;
+    }
     for(var i=0;i<count;i++){
+      if(distTextArray[i]<filterVal){
       for(key in data[i]){
         data[i][key] = data[i][key].toString();
         // console.log(data[i]);
@@ -179,6 +275,7 @@
         //console.log(data[i]);
       }
       flag = 0;
+    }
     }
     //console.log(extraImageArray);
     switch(sortBy) {
@@ -328,7 +425,7 @@
       {
         for(var i=0;i<distanceArray.length;i++){
           for(var j=0;j<distanceArray.length-i-1;j++){
-              if(distToNum(distanceArray[j]) > distToNum(distanceArray[j+1])){  
+              if(distanceArray[j] > distanceArray[j+1]){  
                 temp = nameArray[j];
                 nameArray[j] = nameArray[j+1];
                 nameArray[j+1] = temp;
@@ -374,24 +471,29 @@
       for(var i=0;i<nameArray.length;i++){
         
         bodyDiv.append(`
-        <div class="card">              
-        <img class="card-img-top" src = '${imageUriArray[i]}' alt="Card image cap" height="300" > 
-        <div class="card-body">
-          <h5 class="card-title">${nameArray[i]}</h5>
+        <div class="thumbnail">              
+        <img src = '${imageUriArray[i]}'   > 
+        <div class="caption">
+          <h3>${nameArray[i]}</h5>
           <div class="row">
-          <div class="col-md-6 mr-auto"><p class="card-text">${ratingArray[i]}</p></div>
-          <div class="col-md-6 ml-auto"><p class="card-text">${restaurantTypeArray[i]}</p></div>
+          <div class="col-md-6 mr-auto"><p >${ratingArray[i]}</p></div>
+          <div class="col-md-6 ml-auto"><p >${restaurantTypeArray[i]}</p></div>
           </div>
           <br />
           <div class="row">
+<<<<<<< HEAD
           <div class="col-md-6 mr-auto"><p class="card-text">${distanceArray[i]} km</p></div>
           <div class="col-md-6 ml-auto"><p class="card-text">${duration[i]}</p></div>
+=======
+          <div class="col-md-6 mr-auto"><p >${distanceArray[i]} km</p></div>
+          <div class="col-md-6 ml-auto"><p >${duration[i]}</p></div>
+>>>>>>> 08e2f5eabcd322bb5b57b58ba63eae033eae60a7
           </div>
           <br />
-          <p class="card-text">${streetArray[i]},${areaArray[i]}</p>
-          <p class="card-text">${cityArray[i]}</p>
+          <p >${streetArray[i]},${areaArray[i]}</p>
+          <p >${cityArray[i]}</p>
           <br />
-        <button type="button" onclick = "knowMore(event,'${nameArray[i]}','${imageUriArray[i]}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        <button type="button" onclick = "knowMore(event,'${imageUriArray[i]}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
         Know More
         </button>
         </div>
@@ -400,11 +502,11 @@
       }
     }
     else {
-      bodyDiv.append(`<h3>No results found, Please Try Again</h3>`);
+      bodyDiv.append(`<img src="./images/no_restaurant2.jpg" alt="No Results Found! Please Try Again!">`);
     }
   });
 
- function knowMore(evt,name,imageURL){
+ function knowMore(evt,imageURL){
   var data = JSON.parse(window.localStorage.getItem("snapshot"));
   //console.log(name);
   var count = Object.keys(data).length;
@@ -434,10 +536,10 @@
   // fridayCloseArray;
   // saturdayCloseArray;
   // sundayCloseArray;
-  var distArray = window.distTextArray;
-  var durArray = window.durationArray;
+  var distArray = JSON.parse(window.localStorage.getItem("distance"));
+  var durArray = JSON.parse(window.localStorage.getItem("duration"));
   for(var i=0;i<count;i++){
-      if(data[i]["name"].indexOf(name)!=-1) {
+      if(data[i]["imageUri"].indexOf(imageURL)!=-1) {
         city = data[i].city;
         area = data[i].area;
         openInfo = data[i].openInfo;
@@ -478,15 +580,15 @@
 <li data-target="#model" data-slide-to="0" class="active"></li>
 </ul>
 <div class="carousel-inner">
-<div class="carousel-item active">
-  <img class="d-block w-100" src="${imageURL}" alt="Res 1" height="500">
+<div class="item active">
+  <img class="d-block w-100"  src="${imageURL}" onerror="this.onerror=null;this.src='images/bar_substitute.jpg';"">
   </div>
    </div>
-      <a class="carousel-control-prev" href="#model" data-slide="prev">
-          <span class="carousel-control-prev-icon"></span>
- 	    </a>
- 	    <a class="carousel-control-next" href="#model" data-slide="next">
- 		     <span class="carousel-control-next-icon"></span>
+      <a class="carousel-control left" href="#model" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </a>
+ 	    <a class="carousel-control right" href="#model" data-slide="next">
+ 		     <span class="glyphicon glyphicon-chevron-right"></span>
       </a>
   </div>
 <div class="container-fluid">
@@ -501,18 +603,21 @@
         <span class="fa fa-star"></span>
     </div><br>
     <div>
-        <h6>Adress Of the restraunts: ${street},${area},${city}</h6>
+        <h6>Address Of the restraunts: ${street},${area},${city}</h6>
     </div><br>
     <div class="row">
       <div class="col-md-6 mr-auto"><h6>Location: ${street} ${area}</h6></div>
-      <div class="col-md-6 ml-auto"><h6>Distance</h6></div>
   </div><br>
   <div class="row">
       <div class="col-md-6 mr-auto"><h6>Open Info : ${openInfo} </h6></div>
       <div class="col-md-6 ml-auto"><h6>Stag Entry : ${stagEntry} </h6></div>
   </div><br>
   <div class="row">
+<<<<<<< HEAD
   <div class="col-md-6 mr-auto"><h6>Distance : ${distance} km</h6></div>
+=======
+  <div class="col-md-6 mr-auto"><h6>Distance : ${distance} km </h6></div>
+>>>>>>> 08e2f5eabcd322bb5b57b58ba63eae033eae60a7
   <div class="col-md-6 ml-auto"><h6>ETA : ${duration} </h6></div>
 </div><br>
   <div >
@@ -548,7 +653,7 @@
     <li data-target="#model" data-slide-to="${count}" class="active"></li>
     `);
     addImages.append(`
-    <div class="carousel-item">
+    <div class="item">
     <img class="d-block w-100" src="${extraImage[key]}" alt="Res 1" height="500">
     </div>
     `);
