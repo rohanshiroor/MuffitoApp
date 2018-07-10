@@ -97,6 +97,58 @@ document.addEventListener('DOMContentLoaded', function() {
     firebase.initializeApp(config);
     // var storage = firebase.storage();
     // var auth = app.auth();
+    var user = JSON.parse(window.sessionStorage.getItem("user"));
+    var userInfo = $("#userInfo"); 
+    if(user) {
+    console.log(user); 
+    userInfo.append(
+      `
+      <li class="main-nav dropdown ">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <span class="glyphicon glyphicon-user"></span> 
+          <strong>${user.username || user.firstName+" "+user.lastName}</strong>
+          <span class="glyphicon glyphicon-chevron-down"></span>
+      </a>
+      <ul class="main-nav dropdown-menu">
+          <li>
+              <div class="navbar-login">
+                  <div class="row">
+                      <div class="col-lg-4">
+                          <p class="text-center">
+                              <span class="glyphicon glyphicon-user icon-size"></span>
+                          </p>
+                      </div>
+                      <div class="col-lg-8">
+                          <p class="text-left userInfo"><strong>${user.firstName} ${user.lastName}</strong></p>
+                          <p class="text-left small userInfo">Email: ${user.email}</p>
+                          <p class="text-left small userInfo">Phone: ${user.phone}</p>
+                          <p class="text-left small userInfo">Address: ${user.address.streetName} ${user.address.area} ${user.address.city}</p>
+                          <p class="text-left small userInfo">Country : ${user.country}</p>
+                          
+                      </div>
+                  </div>
+              </div>
+              </li>
+              <li class="divider"></li>
+            <li>
+                <div class="navbar-login navbar-login-session">
+                    <div class="row">
+                        <div class="col-lg-12">
+                        <p>
+                        <button id="signout" class="btn btn-danger" onclick="signOut()">Sign Out</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+          </ul>
+      </li>
+      `
+    )
+  }
+  else{
+    userInfo.empty();
+  }
 });
 
 
@@ -119,10 +171,10 @@ function pageChange(evt,page){
     headers: {
       'x-access-token':token
     },
-    success:function(response,textStatus,xhr){
+    success:function(response){
       if(response=="Success"){
-        var uid = xhr.getResponseHeader('x-access-uid');
-        window.sessionStorage.setItem("uid",uid);
+        //var uid = xhr.getResponseHeader('x-access-uid');
+        //window.sessionStorage.setItem("uid",uid);
         window.location.origin = window.location.protocol + "//" 
         + window.location.hostname 
         + (window.location.port ? ':' + window.location.port : '');
@@ -152,7 +204,7 @@ function signOut(){
         success:function(response){
           if(response=='Success'){
             window.sessionStorage.removeItem("token");
-            window.sessionStorage.removeItem("uid");
+            window.sessionStorage.removeItem("user");
             window.location.origin = window.location.protocol + "//" 
             + window.location.hostname 
             + (window.location.port ? ':' + window.location.port : '');
@@ -165,6 +217,7 @@ function signOut(){
       console.log(error);
     });
 }
+
 
 
 
