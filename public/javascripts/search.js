@@ -88,7 +88,7 @@ function Data(data) {
   for(var i=0;i<data.length;i++){
   if(distArray[i]<10.0){  
   bodyDiv.append(`
-      <div class="thumbnail">              
+      <div class="thumbnail sized">              
       <img src = '${data[i].imageUri}' onerror="this.onerror=null;this.src='images/bar_substitute.jpg';"> 
       <div class="caption">
         <h3 >${data[i].name}</h3>
@@ -428,7 +428,7 @@ $("#searchRest").change(function restSearch() {
     for(var i=0;i<nameArray.length;i++){
       
       bodyDiv.append(`
-      <div class="thumbnail">              
+      <div class="thumbnail sized">              
       <img src = '${imageUriArray[i]}'   > 
       <div class="caption">
         <h3>${nameArray[i]}</h5>
