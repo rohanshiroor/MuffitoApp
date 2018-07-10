@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded",function() {
     //var service = new google.maps.DistanceMatrixService();
     var destination = null;
     //window.count = count;
-    const speed = 350;
+    const speed = 250;
     for(var i=0;i<count;i++){
       //window.localStorage.setItem("item",i);
       destination = {
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded",function() {
     for(var i=0;i<data.length;i++){
     if(distArray[i]<10.0){  
     bodyDiv.append(`
-        <div class="thumbnail">              
+        <div class="sized center-block thumbnail">              
         <img src = '${data[i].imageUri}' onerror="this.onerror=null;this.src='images/bar_substitute.jpg';"> 
         <div class="caption">
           <h3 >${data[i].name}</h3>
@@ -430,7 +430,7 @@ else {
       for(var i=0;i<nameArray.length;i++){
         
         bodyDiv.append(`
-        <div class="thumbnail">              
+        <div class="thumbnail center-block sized">              
         <img src = '${imageUriArray[i]}'   > 
         <div class="caption">
           <h3>${nameArray[i]}</h5>

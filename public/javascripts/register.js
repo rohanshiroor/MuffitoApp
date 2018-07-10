@@ -269,7 +269,7 @@ $('#register').on('submit',function(event){
                   window.location.origin = window.location.protocol + "//" 
                 + window.location.hostname 
                 + (window.location.port ? ':' + window.location.port : '');
-                window.location = window.location.origin+'/home/update';
+                window.location = window.location.origin+'/search';
                   });
                 }
               }

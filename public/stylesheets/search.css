@@ -3,11 +3,12 @@
 	Typography
 \*----------------------------*/
 .sized img {
- height: auto !important;
- width: auto !important;
- max-height: 1000px !important;
- max-width: 1000px !important;
+  height: auto !important;
+  width: auto !important;
+  max-height: 1000px !important;
+  max-width: 1000px !important;
 }
+  
 body {
     font-family: 'Montserrat', sans-serif;
     font-weight: 400;
@@ -1956,15 +1957,16 @@ body {
   
   #footer {
     background: #15161D;
-	position: relative;
-	height: 100%;
+    position: relative;
     color: #B9BABC;
-	padding-bottom: 10px;
+    /*height: 100%;
+    padding-bottom: 10px;
+    */
+
   }
   
   #bottom-footer {
     background: #1E1F29;
-
   }
   
   .footer {
@@ -2151,6 +2153,7 @@ body {
     width:100%;
   }
 
-  .tabSearch {
-    display:none;
+  #signout {
+    padding-left: 20px;
+    margin-left: 20px;
   }

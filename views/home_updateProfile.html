@@ -1,6 +1,8 @@
 <html>
    <head>
         <title>Home</title>
+        <link rel="dns-prefetch" href="https://www.gstatic.com/firebasejs/5.0.1">
+        <link rel="prefetch" href="../javascripts/home.js">
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link type="text/css" rel="stylesheet" href="../stylesheets/devesh.css"/>
@@ -69,6 +71,10 @@
               <label for="Last Name">Last Name:</label>
               <input class="form-control" id="lastname" type="text" name="lastname" placeholder="Last Name" required="" onblur="valInp('updateProf','lastname')">
             </div>
+            <div class="form-group">
+                    <label for="dob">Date of Birth:</label>
+                    <input class="form-control" id="dob" type="date" name="dob" placeholder="Date of Birth" required="" onblur="valInp('updateProf','dob')">
+                </div>      
           <div class="form-group">
               <label for="Age">Age:</label>
               <input class="form-control" id="age" type="number" name="age" placeholder="Age" required="" onblur="valInp('updateProf','age')">

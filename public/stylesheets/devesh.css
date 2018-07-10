@@ -1,25 +1,26 @@
 .sized   {
- max-height: 1000px !important;
- max-width: 1000px !important;
-}
-.navbar-login
-{
-    width: 305px;
-    padding: 10px;
-    padding-bottom: 0px;
-}
+     max-height: 1000px !important;
+     max-width: 1000px !important;
+    }
+    .navbar-login
+    {
+        width: 305px;
+        padding: 10px;
+        padding-bottom: 0px;
+    }
+    
+    .navbar-login-session
+    {
+        padding: 10px;
+        padding-bottom: 0px;
+        padding-top: 0px;
+    }
+    
+    .icon-size
+    {
+        font-size: 87px;
+    }
 
-.navbar-login-session
-{
-    padding: 10px;
-    padding-bottom: 0px;
-    padding-top: 0px;
-}
-
-.icon-size
-{
-    font-size: 87px;
-}
 .slick-slider
 {
     position: relative;

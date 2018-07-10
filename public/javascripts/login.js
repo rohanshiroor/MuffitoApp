@@ -23,6 +23,7 @@ callbacks: {
     // Return type determines whether we continue the redirect automatically
     // or whether we leave that to developer to handle.
     var displayName = currentUser.displayName.split(" ");
+    console.log(currentUser.phoneNumber)
       $.ajax({
         url: '/login/social',
         method:'POST',
@@ -30,20 +31,8 @@ callbacks: {
         data: JSON.stringify({
             uid:currentUser.uid,
             email: currentUser.email,
-            phoneNumber: currentUser.phoneNumber,
             firstName: displayName[0],
             lastName: displayName[1],
-            username:"",
-            password: "",
-            age: "",
-            dateOfBirth:"",
-            state: "",
-            country: "",
-            flatNo: "",
-            streetName: "",
-            area: "",
-            city:"",
-            pinCode: ""
         }),
         success:function(response,textStatus,xhr){
           console.log(response);
@@ -68,7 +57,7 @@ callbacks: {
                   window.location.origin = window.location.protocol + "//" 
                 + window.location.hostname 
                 + (window.location.port ? ':' + window.location.port : '');
-                window.location = window.location.origin+'/home/update';
+                window.location = window.location.origin+'/search';
                   });
                 }
               }
@@ -154,7 +143,7 @@ $('#login').on('submit',function(event){
                  window.location.origin = window.location.protocol + "//" 
                 + window.location.hostname 
                 + (window.location.port ? ':' + window.location.port : '');
-                window.location = window.location.origin+'/home/update';
+                window.location = window.location.origin+'/search';
                   });  
               }
               }
