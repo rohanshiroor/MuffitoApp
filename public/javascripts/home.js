@@ -34,6 +34,9 @@ $('#contactus').on('submit',function(event){
     else {
     $.ajax({
       url: '/home/contactus',
+      headers: {
+        'x-access-token':window.localStorage.getItem("token")
+      },
       method:'POST',
       contentType:'application/json',
       data: JSON.stringify({
@@ -105,6 +108,9 @@ $('#contactus').on('submit',function(event){
       //console.log(ImagesRef.fullPath);
       $.ajax({
         url: '/home/add',
+        headers: {
+          'x-access-token':window.localStorage.getItem("token")
+        },
         method:'POST',
         contentType:'application/json',
         data: JSON.stringify({
@@ -163,8 +169,7 @@ $('#contactus').on('submit',function(event){
                     }
                   });
                 })
-                console.log('Uploaded File');
-                
+                console.log('Uploaded File');   
                 //console.log(i,fileLength-1);
               });
             }
@@ -179,5 +184,27 @@ $('#contactus').on('submit',function(event){
         }
         }
   });
+    }
+  });
+
+document.addEventListener("DOMContentLoaded",function() {
+    if (top.location.pathname === '/home/update'){
+        var user = JSON.parse(window.sessionStorage.getItem('user'));
+        console.log(user);
+        document.forms["updateProf"]["firstname"].value = user.firstName; 
+        document.forms["updateProf"]["lastname"].value = user.lastName;
+        document.forms["updateProf"]["age"].value = user.age;
+        document.forms["updateProf"]["dob"].value = user.dateOfBirth;
+        document.forms["updateProf"]["flatno"].value = user.address.flatNo;
+        document.forms["updateProf"]["streetName"].value = user.address.streetName;
+        document.forms["updateProf"]["area"].value = user.address.area;
+        document.forms["updateProf"]["city"].value = user.address.city; 
+        document.forms["updateProf"]["pincode"].value = user.address.pinCode;
+        document.forms["updateProf"]["state"].value = user.state;
+        document.forms["updateProf"]["country"].value = user.country;
+        document.forms["updateProf"]["email"].value = user.email;
+        document.forms["updateProf"]["username"].value = user.userName;
+        document.forms["updateProf"]["phone"].value = user.phone;
+        document.forms["updateProf"]["password"].value = user.password;
     }
   });

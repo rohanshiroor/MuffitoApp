@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Search</title>
+        <link rel="dns-prefetch" href="https://www.gstatic.com/firebasejs/5.0.1">
+        <link rel="prefetch" href="../javascripts/search.js">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link type="text/css" rel="stylesheet" href="stylesheets/devesh.css"/>
+		<link type="text/css" rel="stylesheet" href="stylesheets/devesh-theme.css"/>
+		<link type="text/css" rel="stylesheet" href="stylesheets/devslider.min.css"/>
+        <link rel="shortcut icon" href="images/favicon.ico">
+        <link type="text/css" rel="stylesheet" href="stylesheets/search.css"/>
+
+    </head>
+    <body onload="getData()">  
+        <header>
+            <div id="header">
+        <div class="container">
+            <br />
+            <div class="row">
+                    <!-- LOGO -->
+                    <div class="col-md-3">
+                        <div class="header-logo  ">
+                            <a href="#" class="logo">
+                                <img height ="120" width = "120" src="images/logo.png" alt="MUFFITO">
+                            </a>
+            </div>
+            </div>
+           
+                    
+            <form name="searchRest" id="searchRest">
+                <div class="col-md-9">
+                    <div class="header-search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for Bars & Pubs" name="searchText" id="searchText">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                        <button id="signout" class="btn btn-primary" onclick="signOut()">Sign Out</button>
+                    </div>
+                </div>
+                </div>
+                <div class="col-sm-3 clearfix">
+                        <div class="header-ctn">
+                            <!-- Menu Toogle -->
+                            <div class="menu-toggle">
+                                <a href="#">
+                                    <i class="fa fa-bars"></i>
+                                    <span>Menu</span>
+                                </a>
+                            </div>
+                            <!-- /Menu Toogle -->
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class = "row">
+                    <div class="col-sm-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="stagEntryBox">
+                    <label class="form-check-label" for="stagEntryBox">
+                     <font color="White"> Stag Entry </font>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-sm-2">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="openNowBox">
+                    <label class="form-check-label" for="openNowBox">
+                            <font color="White">  Open Now </font>
+                    </label>
+                </div>
+                </div>
+                <div class="col-sm-2">
+                <div class="dropdown show">
+                  <!--  <a class="btn btn-primary dropdown-toggle" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Sort
+                    </a>  
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <li class="dropdown-item">Rating</li>
+                        <li class="dropdown-item">Cost-High to Low</li>
+                        <li class="dropdown-item">Cost-Low to High</li>
+                    </ul>
+                -->
+                <select id="sort" name="sort">
+                    <option>default</option>
+                    <option>Rating</option>
+                    <option>Distance</option>
+                    <option>Cost-High to Low</option>
+                    <option>Cost-Low to High</option>
+                </select>
+            </div>
+        </div> 
+        <div class="col-sm-2">
+                <select id="filter" name="filter">
+                    <option>Within 10 km</option>
+                    <option>Within 15 km</option>
+                    <option>Within 25 km</option>
+                </select>
+            </div>
+        </div>
+               
+            </form>
+        </div>
+        </div>
+        </div>
+        </header>
+        <br />
+        <nav id="navigation">
+                <!-- container -->
+                <div class="container">
+                    <!-- responsive-nav -->
+                    <div id="responsive-nav">
+                        <!-- NAV -->
+                        <ul class="main-nav nav navbar-nav" id="searchTabs">
+                            <li><a  href="#search" role="tab" data-toggle="tab" onclick="pageChange(event,'search')">Search Restaurants</a></li>
+                            <li><a  href="#add" role="tab" data-toggle="tab" onclick="pageChange(event,'add')">Add Restaurant</a></li>
+                            <li><a  href="#update" role="tab" data-toggle="tab" onclick="pageChange(event,'update')">Update Profile</a></li>
+                            <li><a  href="#contact" role="tab" data-toggle="tab" onclick="pageChange(event,'contactus')">Contact Us</a></li>  
+                            <li><a href="/login">Login</a></li>
+                            <li><a href="/register">Signup</a></li>
+                        </ul>
+                            <ul class="nav main-nav navbar-nav navbar-right" id="searchTabs">
+                            <li class="main-nav dropdown ">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <span class="glyphicon glyphicon-user"></span> 
+                                    <strong>User Name</strong>
+                                    <span class="glyphicon glyphicon-chevron-down"></span>
+                                </a>
+                                <ul class="main-nav dropdown-menu">
+                                    <li>
+                                        <div class="navbar-login">
+                                            <div class="row">
+                                                <div class="col-lg-4">
+                                                    <p class="text-center">
+                                                        <span class="glyphicon glyphicon-user icon-size"></span>
+                                                    </p>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <p class="text-left"><strong>Name</strong></p>
+                                                    <p class="text-left small">Email</p>
+                                                    <p class="text-left small">Phone :</p>
+                                                    <p class="text-left small">Address</p>
+                                                    <p class="text-left small">Country :</p>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <div class="navbar-login navbar-login-session">
+                                                <div class="row">
+                                                    <div class="col-lg-12">
+                                                    <p>
+                                                            <a href="#" class="btn btn-danger btn-block">Edit Details</a>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        <!-- /NAV -->
+                    </div>
+                    <!-- /responsive-nav -->
+                </div>
+                <!-- /container -->
+            </nav>
+            
+         <div class="container">   
+        <div id="restCards">
+            <img src="../images/loading_red.gif" alt="Loading Results!!! Please Wait" class="center-block">
+        </div>
+  <!-- The Modal -->
+        <div class="modal" id="myModal">
+        </div>
+        </div>
+        <footer id="footer">
+			
+                <!-- bottom footer -->
+                <div id="bottom-footer" class="section">
+                    <div class="container">
+                        <!-- row -->
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <span class="copyright">
+                                    © Muffito 2018. All Rights Reserved.| made with <i class="fa fa-heart-o" aria-hidden="true"></i> by Muffito.
+                                </span>
+                            </div>
+                        </div>
+                            <!-- /row -->
+                    </div>
+                    <!-- /container -->
+                </div>
+                <!-- /bottom footer -->
+            </footer>
+			
+        
+            
+        <div id="firebaseui-auth-container"></div>
+        <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase.js"></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<script src="javascripts/jquery.zoom.min.js"></script>
+        <script src="javascripts/myScript.js"></script>
+		<script src="javascripts/main.js"></script>
+        <script src="javascripts/search.js"></script>    
+    </body>
+</html>

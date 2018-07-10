@@ -1,0 +1,1 @@
+SET DEV=MuffitoApp:*   & npm run devstart

@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() 
 {
+$.backstretch("images/1.jpg");
+$('.login-form input[type="text"], .login-form input[type="password"], .login-form textarea').on('focus', function() {
+  $(this).removeClass('input-error');
+});
 var ui = new firebaseui.auth.AuthUI(firebase.auth());
 // Initialize the FirebaseUI Widget using Firebase.
 if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
@@ -18,30 +22,53 @@ callbacks: {
     // User successfully signed in.
     // Return type determines whether we continue the redirect automatically
     // or whether we leave that to developer to handle.
-      firebase.database().ref('users/' + currentUser.uid).set({
-        email: currentUser.email,
-        phoneNumber: currentUser.phoneNumber,
-        displayName: currentUser.displayName,
-        username:"",
-        password: "",
-        age: "",
-        dateOfBirth:"",
-        state: "",
-        country: ""
+    var displayName = currentUser.displayName.split(" ");
+    console.log(currentUser.phoneNumber)
+      $.ajax({
+        url: '/login/social',
+        method:'POST',
+        contentType:'application/json',
+        data: JSON.stringify({
+            uid:currentUser.uid,
+            email: currentUser.email,
+            firstName: displayName[0],
+            lastName: displayName[1],
+        }),
+        success:function(response,textStatus,xhr){
+          console.log(response);
+          if (response=='Success'){
+            var token = xhr.getResponseHeader('x-access-token');
+            // console.log(token);
+            window.sessionStorage.setItem("token",token);
+            $.ajax({
+              url:'/home',
+              method:'GET',
+              headers: ({
+                'x-access-token':token
+              }),
+              success:function(response,textStatus,xhr){
+                if(response=="Success"){
+                  var userId = xhr.getResponseHeader('x-access-uid');
+                  //
+                  firebase.database().ref('/users/' + userId).once('value')
+                  .then(function(snapshot) {
+                    var user = snapshot.val();
+                  window.sessionStorage.setItem("user",JSON.stringify(user));            
+                  window.location.origin = window.location.protocol + "//" 
+                + window.location.hostname 
+                + (window.location.port ? ':' + window.location.port : '');
+                window.location = window.location.origin+'/search';
+                  });
+                }
+              }
+            });    
+          }
+        }
       });
-      firebase.database().ref('users/' + currentUser.uid +'/address/').set({
-        flatNo: "",
-        streetName: "",
-        area: "",
-        city:"",
-        pinCode: ""
-      })
-      .then(function(){
-        window.location.origin = window.location.protocol + "//" 
-        + window.location.hostname 
-        + (window.location.port ? ':' + window.location.port : '');
-        window.location = window.location.origin+'/home';
-      });  
+      //var token = window.localStorage.getItem("token");
+      //console.log(token);
+      //if (token) {
+    //}  
     return false;
   },
   uiShown: function() {
@@ -71,15 +98,15 @@ $('#login').on('submit',function(event){
     var emailOrPhone = document.forms["login"]["emailOrPhone"].value;
     if(!ck_email.test(emailOrPhone) && emailOrPhone!=''){
       if(!ck_phone.test(emailOrPhone) && phone!=''){
-            document.forms["login"]["emailOrPhone"].style.borderColor = 'red';
-            $("<span>Invalid Email</span>").addClass('error').insertAfter("#emailOrPhone");
+            //document.forms["login"]["emailOrPhone"].style.borderColor = 'red';
+            $("#emailOrPhone").addClass('input-error');
             error = true;
       }
     }
     var password = document.forms["login"]["password"].value;
     if(!ck_password.test(password)){
-            document.forms["login"]["password"].style.borderColor = 'red';
-            $("<span>Invalid Password</span>").addClass('error').insertAfter("#password");
+            //document.forms["login"]["password"].style.borderColor = 'red';
+            $("#password").addClass('input-error');
             error = true;
     }
     if (error){
@@ -94,15 +121,39 @@ $('#login').on('submit',function(event){
           emailOrPhone: emailOrPhone,
           password: password
         }),
-        success:function(response){
+        success:function(response,textStatus,xhr){
           console.log(response);
           if (response=='Success'){
-            window.location.origin = window.location.protocol + "//" 
-            + window.location.hostname 
-            + (window.location.port ? ':' + window.location.port : '');
-            window.location = window.location.origin+'/home';
+            var token = xhr.getResponseHeader('x-access-token');
+            window.sessionStorage.setItem("token",token);
+            $.ajax({
+              url:'/home',
+              method:'GET',
+              headers: ({
+                'x-access-token':token
+              }),
+              success:function(response,textStatus,xhr){
+                if(response=="Success"){
+                  var userId = xhr.getResponseHeader('x-access-uid');
+                  //
+                  firebase.database().ref('/users/' + userId).once('value')
+                  .then(function(snapshot) {
+                    var user = snapshot.val();
+                  window.sessionStorage.setItem("user",JSON.stringify(user));            
+                 window.location.origin = window.location.protocol + "//" 
+                + window.location.hostname 
+                + (window.location.port ? ':' + window.location.port : '');
+                window.location = window.location.origin+'/search';
+                  });  
+              }
+              }
+            });
           }
         }
       });
     }
+    //var token = window.localStorage.getItem("token");
+    //if (token) {
+    
+  //}
     });

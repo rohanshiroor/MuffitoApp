@@ -198,21 +198,25 @@ $('#register').on('submit',function(event){
         phone:phone,
         password:password
       }),
-      success:function(response){
+      success:function(response,textStatus,xhr){
         console.log(response);
-        if (email && response=='sent'){
-          //console.log(response);
-          window.location.origin = window.location.protocol + "//" 
-          + window.location.hostname 
-          + (window.location.port ? ':' + window.location.port : '');
-          window.location = window.location.origin+'/login';
-          window.localStorage.setItem('emailForSignIn', email);
-        }
-        if(!email){
-          window.location.origin = window.location.protocol + "//" 
+        // if (email && response=='sent'){
+        //   //console.log(response);
+        //   window.location.origin = window.location.protocol + "//" 
+        //   + window.location.hostname 
+        //   + (window.location.port ? ':' + window.location.port : '');
+        //   window.location = window.location.origin+'/login';
+        //   window.localStorage.setItem('emailForSignIn', email);
+        // }
+        // if(!email){
+        if(response =="Success") {
+        var token = xhr.getResponseHeader('x-access-token');
+        window.localStorage.setItem("token",token);  
+        window.location.origin = window.location.protocol + "//" 
           + window.location.hostname 
           + (window.location.port ? ':' + window.location.port : '');
           window.location = window.location.origin+'/verify?num='+phone;
+        //}
         }
       }   
     });
@@ -243,13 +247,34 @@ $('#register').on('submit',function(event){
      hidden: $('#hidden').val(),
      num: phone
     }),
-    success:function(response){
+    success:function(response,textStatus,xhr){
       if(response=='Success'){
-        window.location.origin = window.location.protocol + "//" 
-            + window.location.hostname 
-            + (window.location.port ? ':' + window.location.port : '');
-            window.location = window.location.origin+'/login';
-      }
+        var token = xhr.getResponseHeader('x-access-token');
+            //console.log(token);
+            window.sessionStorage.setItem("token",token);
+            $.ajax({
+              url:'/home',
+              method:'GET',
+              headers: ({
+                'x-access-token':token
+              }),
+              success:function(response,textStatus,xhr){
+                if(response=="Success"){
+                  var userId = xhr.getResponseHeader('x-access-uid');
+                  //
+                  firebase.database().ref('/users/' + userId).once('value')
+                  .then(function(snapshot) {
+                    var user = snapshot.val();
+                  window.sessionStorage.setItem("user",JSON.stringify(user));            
+                  window.location.origin = window.location.protocol + "//" 
+                + window.location.hostname 
+                + (window.location.port ? ':' + window.location.port : '');
+                window.location = window.location.origin+'/search';
+                  });
+                }
+              }
+            });
+        }
     }
    })
    });

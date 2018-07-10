@@ -2,86 +2,90 @@
 <head>
     <title>Registration</title>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="stylesheets/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="stylesheets/register.css" type="text/css" media="all">
+    <link href="//fonts.googleapis.com/css?family=Old+Standard+TT:400,400i,700" rel="stylesheet">
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
   </head>
   <body>
   <div class="container">
-    <div class="tab">
+      <div class="main nav-bar main-agileits">
+      <h1>Muffito Signup Form</h1>
+      <div class="main-agilerow"> 
+      <div class="signup-wthreetop">
+        <h2>Welcome to Registration</h2>
+      <p>Get yourself registered and feed your hunger.</p>
+      </div>
+      <!--	
+      <div class=" btn-group btn-group-justified tab" role="group" >
+          <div class="btn-group" role="group">
+            <button class="btn btn-default tablinks active" onclick="tabChange(event, 'email')">Email</button>
+          </div>
+          <div class="btn-group" role="group">
+          <button class="btn btn-default tablinks"  onclick="tabChange(event, 'phone')">Phone</button>
+          </div>
+        </div>
+      -->
+    <!--<div class="tab">
       <button class="tablinks active" onclick="tabChange(event, 'email')">Email</button>
       <button class="tablinks" onclick="tabChange(event, 'phone')">Phone</button>
-    </div><br>
+    </div><br>-->
+    <div class="contact-wthree">
     <form name="register" id="register">
+      <!--
       <h2 id="regWithEmail">Register with Email:</h2>
       <h2 id="regWithPhone">Register with Phone:</h2>
-      <div class="form-group">
-        <label for="firstname">First Name:</label>
+      -->
+      <h3>Step 1:</h3>
+      <div class="form-step1">
         <input class="form-control" id="firstname" type="text" name="firstname" placeholder="First Name" required="" onblur="valInp('register','firstname')">
-      </div>
-      <div class="form-group">
-        <label for="lastname">Last Name:</label>
         <input class="form-control" id="lastname" type="text" name="lastname" placeholder="Last Name" required="" onblur="valInp('register','lastname')">
-      </div>
-      <div class="form-group">
-        <label for="age">Age:</label>
         <input class="form-control" id="age" type="number" name="age" placeholder="Age" required="" onblur="valInp('register','age')">
       </div>
-      <div class="form-group">
-        <label for="flatno">Flat Number:</label>
+      <h3>Step 2:</h3>
+      <div class="form-step1">
         <input class="form-control" id="flatno" type="number" name="flatno" placeholder="Flat Number" required="" onblur="valInp('register','flatno')">
-      </div>
-      <div class="form-group">
-        <label for="streetName">Street Name:</label>
-        <input class="form-control" id="streetName" type="text" name="streetName" placeholder="Street Name" required="" onblur="valInp('register','streetName')">
-      </div>
-      <div class="form-group">
-        <label for="area">Area:</label>
+        <br><input class="form-control" id="streetName" type="text" name="streetName" placeholder="Street Name" required="" onblur="valInp('register','streetName')">
         <input class="form-control" id="area" type="text" name="area" placeholder="Area" required="" onblur="valInp('register','area')">
-      </div>
-      <div class="form-group">
-        <label for="city">City:</label>
         <input class="form-control" id="city" type="text" name="city" placeholder="City" required="" onblur="valInp('register','city')">
-      </div>
-      <div class="form-group">
-        <label for="pincode">Pincode:</label>
         <input class="form-control" id="pincode" type="number" name="pincode" placeholder="Pincode" required="" onblur="valInp('register','pincode')">
-      </div>
-      <div class="form-group">
-        <label for="dob">Date of Birth:</label>
-        <input class="form-control" id="dob" type="date" name="dob" placeholder="Date of Birth" required="" onblur="valInp('register','dob')">
-      </div>
-      <div class="form-group">
-        <label for="state">State</label>
-        <input class="form-control" id="state" type="text" name="state" placeholder="State" required="" onblur="valInp('register','state')">
-      </div>
-      <div class="form-group">
-        <label for="country">Country:</label>
+        <br><input class="form-control" id="state" type="text" name="state" placeholder="State" required="" onblur="valInp('register','state')">
         <input class="form-control" id="country" type="text" name="country" placeholder="Country" required="" onblur="valInp('register','country')">
       </div>
-      <div class="form-group" id="em">
-        <label for="state">Email Address:</label>
-        <input class="form-control" id="email" type="email" name="email" placeholder="Email" required="" onblur="valInp('register','email')">
+      <h3>Step 3:</h3>
+      <div class="form-step1 w3ls-formrow">
+        <input class="form-control" id="dob" type="date" name="dob" placeholder="Date of Birth" required="" onblur="valInp('register','dob')">
+      <br><div id="em">
+        <input class="form-control" id="email" type="email" name="email" placeholder="Email" onblur="valInp('register','email')">
       </div>
-      <div class="form-group">
-        <label for="username">Username:</label>
         <input class="form-control" id="username" type="text" name="username" placeholder="Username" required="" onblur="valInp('register','username')">
-      </div>
-      <div class="form-group" id="ph">
-        <label for="phone">Phone Number:</label>
+      <div id="ph">
         <input class="form-control" id="phone" type="tel" name="phone" placeholder="Phone Number" onblur="val_phone()">
-      </div>
-      <div class="form-group">
-        <label for="password">Password:</label>
+      </div><br>
         <input class="form-control" id="password" type="password" name="password" placeholder="Password" required="" onblur="valInp('register','password')">
       </div>
+      <div class="agileits-row2 w3ls-formrow2">
+          <input type="checkbox" id="brand2" value="">
+          <label for="brand2"><span></span>I accept the terms of Use</label> 
+      </div>
+      <div class="row">
+        <div class="col-sm-3">
       <button class="btn btn-primary" type="submit">Submit</button>
+    </div>
     </form>
+    <div class="col-sm-3">
+    <a href="/login" class="btn btn-primary" type="button">Back</a>
   </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
   <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase.js"></script>
   <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <script src="javascripts/myScript.js"></script>
   <script src="javascripts/register.js"></script>
 </body>
