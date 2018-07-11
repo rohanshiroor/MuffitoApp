@@ -10,10 +10,12 @@
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../stylesheets/style.css">
     <link type="text/css" rel="stylesheet" href="../stylesheets/search.css"/>
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+
   </head>
-  <body>
+  <body >
       <header>
-          <div id="header">
+    <div id="header">
       <div class='container'>
           <br />
           <div class="row">
@@ -49,7 +51,7 @@
           </div>
           <!-- /container -->
       </nav>
-  <div class="container">
+  <div class="container-reg">
     <!--
     <nav class="nav nav-pills nav-fill">
     <a class="nav-item nav-link active" href="#add" role="tab" data-toggle="tab" onclick="pageChange(event,'add')">Add Restaurant</a>
@@ -59,9 +61,11 @@
     </nav>
     -->
     <br />
+	<div class="card wrapreg">
       <h2>Add Your Restaurant Details</h2>
-      <form name="restDet" enctype='multipart/form-data' id="restDet">
-        <div class="form-group">
+       <div class="fullwidth">
+		<form name="restDet" enctype='multipart/form-data' id="restDet">
+		<div class="form-group">
           <label for="restName">Restaurant Name:</label>
           <input class="form-control" id="restName" type="text" name="restName" placeholder="Restaurant Name" required onblur="valInp('restDet','restName')">
         </div>
@@ -111,12 +115,11 @@
             <option>Closed</option>
           </select>
         </div>
-        <h3>Hours:</h3>
+        <h4>Hours</h4>
         <div class="form-group">
           <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-2">
-              <h4>Monday:</h4>
+            <div class="col-md-4">
+              <h4>Monday : </h4>
             </div>
             <div class="col-md-3">
               <input class="form-control" id="monOp" type="time" name="monOp" required="">
@@ -128,9 +131,8 @@
         </div>
         <div class="form-group">
           <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-2">
-              <h4>Tuesday:</h4>
+            <div class="col-md-4">
+              <h4>Tuesday : </h4>
             </div>
             <div class="col-md-3">
               <input class="form-control" id="tueOp" type="time" name="tueOp" required="">
@@ -139,11 +141,11 @@
               <input class="form-control" id="tueCl" type="time" name="tueCl" required="">
             </div>
           </div>
+		  
         </div>
         <div class="form-group">
           <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-2">
+            <div class="col-md-4">
               <h4>Wednesday:</h4>
             </div>
             <div class="col-md-3">
@@ -156,9 +158,8 @@
         </div>
         <div class="form-group">
           <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-2">
-              <h4>Thursday:</h4>
+            <div class="col-md-4">
+              <h4>Thursday : </h4>
             </div>
             <div class="col-md-3">
               <input class="form-control" id="thOp" type="time" name="thOp" required="">
@@ -170,9 +171,8 @@
         </div>
         <div class="form-group">
           <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-2">
-              <h4>Friday:</h4>
+            <div class="col-md-4">
+              <h4>Friday : </h4>
             </div>
             <div class="col-md-3">
               <input class="form-control" id="friOp" type="time" name="friOp" required="">
@@ -184,9 +184,8 @@
         </div>
         <div class="form-group">
           <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-2">
-              <h4>Saturday:</h4>
+            <div class="col-md-4">
+              <h4>Saturday :</h4>
             </div>
             <div class="col-md-3">
               <input class="form-control" id="satOp" type="time" name="satOp" required="">
@@ -198,9 +197,8 @@
         </div>
         <div class="form-group">
           <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-2">
-              <h4>Sunday:</h4>
+            <div class="col-md-4">
+              <h4>Sunday :</h4>
             </div>
             <div class="col-md-3">
               <input class="form-control" id="sunOp" type="time" name="sunOp" required="">
@@ -210,9 +208,14 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <button class="btn btn-primary btn-block" type="submit">Submit</button>
       </form>
+	  		</div>
+
+	</div>
   </div>
+  
+  
   <footer id="footer">
 			
       <!-- bottom footer -->
@@ -242,5 +245,7 @@
       <script src="../javascripts/main.js"></script>
       <script src="../javascripts/home.js"></script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRIt05f_gxZGvC0HTPpjxGh0hsglgl2I4&callback=initMap"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+
 </body>
 </html>

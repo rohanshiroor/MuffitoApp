@@ -6,11 +6,16 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
         <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous'>
         <link rel="stylesheet" href="../stylesheets/style.css" />
+        <link rel="shortcut icon" href="../images/favicon.ico">
+
     </head>
     <body>
-            <div class = "row">
-                <div class="col-sm-2"></div>
-            <div class="col-sm-6">
+      <div class="container-reg">
+
+		<div class="card 	wraphome">
+		       <div class="fullwidth">
+            <div id="overmap" class = "row ">
+            <div class="col-sm-8">
             <div class="input-group"  id="pac-container">
                 <input type="text" class="form-control" placeholder="Set Location" name="locationSet" id="locationSet">
             </div>
@@ -20,11 +25,14 @@
         </div>
         </div>
             <br />
-            <div id="map" style="height:1000px"></div>
+            <div id="map"  style="height:1000px"></div>
             <div id="infowindow-content">
                     <span id="place-name"  class="title"></span><br>
                     <span id="place-address"></span>
             </div>
+		</div>
+    	</div>
+		</div>
               
         <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase.js"></script>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous'></script>

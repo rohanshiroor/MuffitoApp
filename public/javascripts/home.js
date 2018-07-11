@@ -186,6 +186,9 @@ $('#contactus').on('submit',function(event){
   });
     }
   });
+  $(document).ready(function(){
+    $('input.timepicker').timepicker({});
+
 
 document.addEventListener("DOMContentLoaded",function() {
     if (top.location.pathname === '/home/update'){
