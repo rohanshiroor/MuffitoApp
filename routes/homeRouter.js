@@ -105,6 +105,65 @@ homeRouter.post('/contactus',Verify.verifyUser,function(req,res){
         }
       });      
 });
+homeRouter.post('/update',Verify.verifyUser,function(req,res){
+    var uid = req.decoded.uid
+    var phone = req.body.phone;
+    if(phone)
+        phone = "+91"+phone;
+    firebase.database().ref('/users/' + uid).once('value')
+    .then(function(snapshot){
+        var user = snapshot.val();
+        if (phone!="" && user.phone!="" && user.phone != phone) {
+            admin_app.auth().updateUser(uid,{
+                phoneNumber:phone
+            })
+            .then(function(userRecord){
+                updateUser(uid,req);
+                firebase.database().ref('phoneUidMap').child(req.phone).remove();
+                firebase.database().ref('phoneUidMap').child(phone).set(uid)
+                res.end('Success');
+            });
+        }
+         else if(req.password!="" && user.password!="" && req.password!= user.password){
+            admin_app.auth().updateUser(uid,{
+                password:req.password
+            })
+            .then(function(snapshot){
+                updateUser(uid,req);
+                res.end('Success');
+            });
+        }
+        else {
+            updateUser(uid,req);
+            res.end('Success');
+        }
+    });
+
+    function updateUser(uid,req){
+        firebase.database().ref('users/' + uid).set({
+            userName:req.body.username,
+            password: req.body.password,
+            firstName:req.body.firstname,
+            lastName: req.body.lastname,
+            phone: phone,
+            email:req.body.email,
+            age: req.body.age,
+            dateOfBirth:req.body.dob,
+            state: req.body.state,
+            country: req.body.country,
+            profileUrl:"",
+            macID:""
+          });
+          firebase.database().ref('users/' + uid +'/address/').set({
+            flatNo: req.body.flatno,
+            streetName: req.body.streetName,
+            area: req.body.area,
+            city:req.body.city,
+            pinCode: req.body.pincode
+          });
+    }
+});
+
 module.exports = homeRouter;
 
 
