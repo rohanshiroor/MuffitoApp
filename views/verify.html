@@ -1,14 +1,52 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>OTP</title>
+        <title>Verify OTP</title>
         <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" />
-        <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous'>
-    </head>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link type="text/css" rel="stylesheet" href="../stylesheets/devesh.css"/>
+        <link type="text/css" rel="stylesheet" href="../stylesheets/devesh-theme.css"/>
+        <link type="text/css" rel="stylesheet" href="../stylesheets/devslider.min.css"/>
+        <link rel="shortcut icon" href="../images/favicon.ico">
+        <link rel="stylesheet" href="../stylesheets/style.css">
+        <link type="text/css" rel="stylesheet" href="../stylesheets/search.css"/>
+
+        </head>
     <body>       
-            <div class='container'>
-            <div id="phone-sign-in-recaptcha"></div>
-            <form name="otpverify" id="otpverify">
+        <header>
+          <div id="header">
+      <div class='container'>
+          <br />
+          <div class="row">
+                  <!-- LOGO -->
+          <div class="col-md-3 ">
+              <div class="header-logo ">
+                  <a href="#" class="logo">
+                      <img height ="120" width = "120" src="../images/logo.png" alt="MUFFITO">
+                  </a>
+              </div>
+          </div>
+      </div>
+      </div>
+      </div>
+      </header>
+      
+	  
+      <div class="container-reg">
+        <!--
+        <nav class="nav nav-pills nav-fill">
+        <a class="nav-item nav-link" href="#add" role="tab" data-toggle="tab" onclick="pageChange(event,'add')">Add Restaurant</a>
+        <a class="nav-item nav-link active" href="#update" role="tab" data-toggle="tab" onclick="pageChange(event,'update')">Update Profile</a>
+        <a class="nav-item nav-link" href="#contact" role="tab" data-toggle="tab" onclick="pageChange(event,'contactus')">Contact Us</a>
+        <a class="nav-item nav-link" href="#signout" role="tab" data-toggle="tab" onclick="pageChange(event,'signout')">Sign Out</a>
+        </nav>
+        -->
+        <br>
+		<div class="card wrapreg">
+		       <div class="fullwidth">
+				<div id="phone-sign-in-recaptcha"></div>
+				<form name="otpverify" id="otpverify">
                     <div class='form-group'>
                             <label for='otp'>Enter OTP:</label>
                             <input type='text' class='form-control' id='otp' name='otp' placeholder='Enter OTP' required onblur="valInp(otpverify,otp)">
@@ -19,12 +57,15 @@
                     <button type='submit' class='btn btn-primary'>Submit</button>
             </form>
             </div>
-        <div id="firebaseui-auth-container"></div>
-        <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase.js"></script>
+		</div>
+		</div>
+		<div id="firebaseui-auth-container"></div>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<script src="../javascripts/jquery.zoom.min.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/5.0.1/firebase.js"></script>
         <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous'></script>
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
-        <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js' integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous'></script>
         <script src="javascripts/myScript.js"></script>        
         <script src="javascripts/register.js"></script>    
     </body>
