@@ -4,9 +4,10 @@
 \*----------------------------*/
 .sized img {
   height: auto !important;
-  width: auto !important;
+  width: 100% !important;
   max-height: 1000px !important;
   max-width: 1000px !important;
+  overflow : hidden;
 }
   
 body {

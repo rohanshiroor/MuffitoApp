@@ -3,7 +3,7 @@
         <title>Home</title>
         <link rel="dns-prefetch" href="https://www.gstatic.com/firebasejs/5.0.1">
         <link rel="prefetch" href="../javascripts/home.js">
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link type="text/css" rel="stylesheet" href="../stylesheets/devesh.css"/>
         <link type="text/css" rel="stylesheet" href="../stylesheets/devesh-theme.css"/>
@@ -50,7 +50,7 @@
           </div>
           <!-- /container -->
       </nav>
-      <div class="container">
+      <div class="container-reg">
         <!--
         <nav class="nav nav-pills nav-fill">
         <a class="nav-item nav-link" href="#add" role="tab" data-toggle="tab" onclick="pageChange(event,'add')">Add Restaurant</a>
@@ -60,6 +60,8 @@
         </nav>
         -->
         <br>
+		<div class="card wrapreg">
+		       <div class="fullwidth">
         <form name="updateProf" id="updateProf">
           <div class="form-group">
             <label for="First Name">First Name:</label>
@@ -121,9 +123,11 @@
               <label for="Password">Password:</label>
               <input class="form-control" id="password" type="password" name="password" placeholder="Password" onblur="valInp('updateProf','password')">
             </div>
-          <button class="btn btn-primary" type="submit">Submit</button>
+          <button class="btn btn-primary btn-block" type="submit">Submit</button>
         </form>
       </div>
+	  </div>
+        </div>
       <footer id="footer">
           <!-- bottom footer -->
           <div id="bottom-footer" class="section">
