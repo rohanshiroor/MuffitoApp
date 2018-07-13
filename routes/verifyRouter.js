@@ -11,6 +11,10 @@ verifyRouter.get('/',function(req,res){
     //res.send('Correcto');
     res.sendFile(path.join(__dirname,'../views/verify.html'));
 });
+verifyRouter.get('/',function(req,res){
+    //res.send('Correcto');
+    res.sendFile(path.join(__dirname,'../views/reset.html'));
+});
 verifyRouter.post('/',function(req,res){
     if(req.body.hidden == 'wrong')
         res.end('Error');

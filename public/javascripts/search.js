@@ -493,7 +493,7 @@ var count = Object.keys(data).length;
 // sundayCloseArray;
 var distArray = JSON.parse(window.localStorage.getItem("distance"));
 var durArray = JSON.parse(window.localStorage.getItem("duration"));
-for(var i=0;i<count;i++){
+for(var i=2;i<count;i++){
     if(data[i]["imageUri"].indexOf(imageURL)!=-1) {
       city = data[i].city;
       area = data[i].area;
