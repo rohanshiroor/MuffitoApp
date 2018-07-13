@@ -198,7 +198,7 @@ $('#register').on('submit',function(event){
         phone:phone,
         password:password
       }),
-      success:function(response,textStatus,xhr){
+      success:function(response){
         console.log(response);
         // if (email && response=='sent'){
         //   //console.log(response);
@@ -210,8 +210,8 @@ $('#register').on('submit',function(event){
         // }
         // if(!email){
         if(response =="Success") {
-        var token = xhr.getResponseHeader('x-access-token');
-        window.localStorage.setItem("token",token);  
+        //var token = xhr.getResponseHeader('x-access-token');
+        //window.localStorage.setItem("token",token);  
         window.location.origin = window.location.protocol + "//" 
           + window.location.hostname 
           + (window.location.port ? ':' + window.location.port : '');
@@ -261,7 +261,6 @@ $('#register').on('submit',function(event){
               success:function(response,textStatus,xhr){
                 if(response=="Success"){
                   var userId = xhr.getResponseHeader('x-access-uid');
-                  //
                   firebase.database().ref('/users/' + userId).once('value')
                   .then(function(snapshot) {
                     var user = snapshot.val();

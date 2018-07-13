@@ -162,10 +162,21 @@ $('#contactus').on('submit',function(event){
                 snapshot.ref.getDownloadURL().then(function(downloadURL){
                   firebase.database().ref('restaurant').child(name).child('extraImage').push(downloadURL).then(function(){
                     if(i==fileLength){
-                      window.location.origin = window.location.protocol + "//" 
-                      + window.location.hostname 
-                      + (window.location.port ? ':' + window.location.port : '');
-                      window.location = window.location.origin+'/home/add';
+                      $.ajax({
+                        url:'/home',
+                        method:'GET',
+                        headers: ({
+                          'x-access-token':token
+                        }),
+                        success:function(response){
+                          if(response=="Success"){
+                            window.location.origin = window.location.protocol + "//" 
+                          + window.location.hostname 
+                          + (window.location.port ? ':' + window.location.port : '');
+                          window.location = window.location.origin+'/home/add';
+                          }
+                        }
+                      });
                     }
                   });
                 })
@@ -176,10 +187,21 @@ $('#contactus').on('submit',function(event){
             });
         } 
         else {
-          window.location.origin = window.location.protocol + "//" 
-          + window.location.hostname 
-          + (window.location.port ? ':' + window.location.port : '');
-          window.location = window.location.origin+'/home/add';
+          $.ajax({
+            url:'/home',
+            method:'GET',
+            headers: ({
+              'x-access-token':token
+            }),
+            success:function(response){
+              if(response=="Success"){
+                window.location.origin = window.location.protocol + "//" 
+              + window.location.hostname 
+              + (window.location.port ? ':' + window.location.port : '');
+              window.location = window.location.origin+'/home/add';
+              }
+            }
+          });
         }
         }
         }
@@ -188,12 +210,14 @@ $('#contactus').on('submit',function(event){
   });
   $(document).ready(function(){
     $('input.timepicker').timepicker({});
+  });
 
 
 document.addEventListener("DOMContentLoaded",function() {
     if (top.location.pathname === '/home/update'){
         var user = JSON.parse(window.sessionStorage.getItem('user'));
         console.log(user);
+        phone = user.phone.substring(3);
         document.forms["updateProf"]["firstname"].value = user.firstName; 
         document.forms["updateProf"]["lastname"].value = user.lastName;
         document.forms["updateProf"]["age"].value = user.age;
@@ -207,7 +231,165 @@ document.addEventListener("DOMContentLoaded",function() {
         document.forms["updateProf"]["country"].value = user.country;
         document.forms["updateProf"]["email"].value = user.email;
         document.forms["updateProf"]["username"].value = user.userName;
-        document.forms["updateProf"]["phone"].value = user.phone;
+        document.forms["updateProf"]["phone"].value = phone
         document.forms["updateProf"]["password"].value = user.password;
     }
+  });
+
+  $('#updateProf').on('submit',function(event){
+    event.preventDefault();
+    var ck_name = /^[A-Za-z]{2,20}$/;
+    var ck_email = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    var ck_username = /^[A-Za-z0-9_]{1,20}$/;
+    var ck_password =  /^[A-Za-z0-9!@#$%^&*()_]{6,20}$/;
+    var numbers = /^\d+$/;
+    var pin = /^[1-9][0-9]{5}$/;
+    var ck_phone = /^[1-9][0-9]{9}$/;
+    var ck_misctext = /^[A-Za-z0-9 ]+$/;
+    var error = false;
+    var fname = document.forms["updateProf"]["firstname"].value; 
+    if(!ck_name.test(fname)){
+            document.forms["updateProf"]["firstname"].style.borderColor = 'red';
+            $("<span>Invalid First Name</span>").addClass('error').insertAfter("#firstname");
+            error = true;
+    }
+    var lname = document.forms["updateProf"]["lastname"].value;
+    if(!ck_name.test(lname)){
+            document.forms["updateProf"]["lastname"].style.borderColor = 'red';
+            $("<span>Invalid Last Name</span>").addClass('error').insertAfter("#lastname");
+            error = true;
+    }
+    var age = document.forms["updateProf"]["age"].value;
+    if(age!="" && !numbers.test(age)){
+            document.forms["updateProf"]["age"].style.borderColor = 'red';
+            $("<span>Invalid Age</span>").addClass('error').insertAfter("#age");
+            error = true;
+    }
+    var flatno = document.forms["updateProf"]["flatno"].value;
+    if(flatno!="" && !numbers.test(flatno)){
+            document.forms["updateProf"]["flatno"].style.borderColor = 'red';
+            $("<span>Invalid Flat no</span>").addClass('error').insertAfter("#flatno");
+            error = true;
+    }
+    var streetName = document.forms["updateProf"]["streetName"].value;
+    if(streetName!="" && !ck_misctext.test(streetName)){
+            document.forms["updateProf"]["streetName"].style.borderColor = 'red';
+            $("<span>Invalid Street Name</span>").addClass('error').insertAfter("#streetName");
+            error = true;
+    }
+    var area = document.forms["updateProf"]["area"].value;
+    if(area!="" && !ck_misctext.test(area)){
+            document.forms["updateProf"]["area"].style.borderColor = 'red';
+            $("<span>Invalid Area</span>").addClass('error').insertAfter("#area");
+            error = true;
+    }
+    var city = document.forms["updateProf"]["city"].value; 
+    if(city!="" && !ck_name.test(city)){
+            document.forms["updateProf"]["city"].style.borderColor = 'red';
+            $("<span>Invalid City</span>").addClass('error').insertAfter("#city");
+            error = true;
+    }
+    var pincode = document.forms["updateProf"]["pincode"].value;
+    if(pincode!="" && !pin.test(pincode)){
+            document.forms["updateProf"]["pincode"].style.borderColor = 'red';
+            $("<span>Invalid Pincode</span>").addClass('error').insertAfter("#pincode");
+            error = true;
+    }
+    var dob = document.forms["updateProf"]["dob"].value;
+    var state = document.forms["updateProf"]["state"].value;
+    if(state!="" && !ck_name.test(state)){
+            document.forms["updateProf"]["state"].style.borderColor = 'red';
+            $("<span>Invalid State</span>").addClass('error').insertAfter("#state");
+            error = true;
+    }
+    var country = document.forms["updateProf"]["country"].value;
+    if(country!="" && !ck_name.test(country)){
+            document.forms["updateProf"]["country"].style.borderColor = 'red';
+            $("<span>Invalid Country</span>").addClass('error').insertAfter("#country");
+            error = true;
+    }
+    var username = document.forms["updateProf"]["username"].value;
+    if(!ck_username.test(username)){
+            document.forms["updateProf"]["username"].style.borderColor = 'red';
+            $("<span>Invalid Username</span>").addClass('error').insertAfter("#username");
+            error = true;
+    }
+    var email = document.forms["updateProf"]["email"].value;
+    var phone = document.forms["updateProf"]["phone"].value;
+    var password = document.forms["updateProf"]["password"].value;
+    if(email!='') {
+    if(!ck_email.test(email)){
+            document.forms["updateProf"]["email"].style.borderColor = 'red';
+            $("<span>Invalid Email</span>").addClass('error').insertAfter("#email");
+            error = true;
+    }
+  }
+   if(phone!='' || password!=''){ 
+    if(!ck_phone.test(phone)){
+            document.forms["updateProf"]["phone"].style.borderColor = 'red';
+            $("<span>Invalid Phone Number</span>").addClass('error').insertAfter("#phone");
+            error = true;
+    }
+    
+    if(!ck_password.test(password)){
+            document.forms["updateProf"]["password"].style.borderColor = 'red';
+            $("<span>Invalid Password</span>").addClass('error').insertAfter("#password");
+            error = true;
+    }
+  }
+    if (error){
+      return false;
+    }
+    else { 
+    var token = window.sessionStorage.getItem('token');
+    $.ajax({
+      url: '/home/update',
+      method:'POST',
+      contentType:'application/json',
+      headers:{
+        'x-access-token':token
+      },
+      data: JSON.stringify({
+        firstname:fname,
+        lastname:lname,
+        age: age,
+        flatno: flatno,
+        streetName: streetName,
+        area: area,
+        city:city,
+        pincode:pincode,
+        dob:dob,
+        state:state,
+        country:country,
+        email:email,
+        username:username,
+        phone:phone,
+        password:password
+      }),
+      success:function(response,textStatus,xhr){
+        console.log(response);
+        $.ajax({
+          url:'/home',
+          method:'GET',
+          headers: ({
+            'x-access-token':token
+          }),
+          success:function(response,textStatus,xhr){
+            if(response=="Success"){
+              var userId = xhr.getResponseHeader('x-access-uid');
+              firebase.database().ref('/users/' + userId).once('value')
+              .then(function(snapshot) {
+                var user = snapshot.val();
+              window.sessionStorage.setItem("user",JSON.stringify(user));            
+              window.location.origin = window.location.protocol + "//" 
+            + window.location.hostname 
+            + (window.location.port ? ':' + window.location.port : '');
+            window.location = window.location.origin+'/home/update';
+              });
+            }
+          }
+        });
+      }   
+    });
+  }
   });

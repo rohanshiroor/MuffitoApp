@@ -9,18 +9,21 @@ document.addEventListener("DOMContentLoaded",function() {
   if(token) {
    $("#tab0").show();
    $("#tab1").show();
-   $("#tab2").show();
+   $("#tab2").hide();
    $("#tab3").show();
-   $("#tab4").hide();
+   $("#tab4").show();
    $("#tab5").hide();
+   $("#tab6").hide();
   }
   else {
    $("#tab0").hide();
    $("#tab1").hide();
-   $("#tab2").hide();
+   $("#tab2").show();
    $("#tab3").hide();
-   $("#tab4").show();
-   $("#tab5").show(); 
+   $("#tab4").hide();
+   $("#tab5").show();
+   $("#tab6").show();
+   $('[data-toggle="tooltip"]').tooltip(); 
   }
   //count=count+1;
 
@@ -85,7 +88,7 @@ function Data(data) {
   //var data = JSON.parse(window.localStorage.getItem("snapshot"));
   //var itm = window.localStorage.getItem("item");
   if(data.length!=0) {
-  for(var i=0;i<data.length;i++){
+  for(var i=2;i<data.length;i++){
   if(distArray[i]<10.0){  
   bodyDiv.append(`
       <div class="thumbnail sized">              
@@ -134,7 +137,7 @@ function getData(){
         //console.log(data.key);
         dataArray.push(data.val());
   }); 
-    //console.log(dataArray);
+    console.log(dataArray);
     calcDistTime(dataArray);
     Data(dataArray);
     window.localStorage.setItem("snapshot",JSON.stringify(dataArray));
@@ -202,7 +205,7 @@ $("#searchRest").change(function restSearch() {
     default:
       filterVal = 10;
   }
-  for(var i=0;i<count;i++){
+  for(var i=2;i<count;i++){
     if(distTextArray[i]<filterVal){
     for(key in data[i]){
       data[i][key] = data[i][key].toString();
@@ -490,7 +493,7 @@ var count = Object.keys(data).length;
 // sundayCloseArray;
 var distArray = JSON.parse(window.localStorage.getItem("distance"));
 var durArray = JSON.parse(window.localStorage.getItem("duration"));
-for(var i=0;i<count;i++){
+for(var i=2;i<count;i++){
     if(data[i]["imageUri"].indexOf(imageURL)!=-1) {
       city = data[i].city;
       area = data[i].area;
