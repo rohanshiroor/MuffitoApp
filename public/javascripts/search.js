@@ -144,7 +144,15 @@ function getData(){
   });
 }
 
-$("#searchRest").change(function restSearch() {
+$("#searchRest").on('change',function(){
+  restSearch();
+});
+
+$("#searchText").on('input',function(){
+  restSearch();
+});
+
+function restSearch() {
   var data = JSON.parse(window.localStorage.getItem("snapshot"));
   //console.log(imageUrlArray);
   nameArray = [];
@@ -459,7 +467,7 @@ $("#searchRest").change(function restSearch() {
   else {
     bodyDiv.append(`<img src="./images/no_restaurant2.jpg" alt="No Results Found! Please Try Again!">`);
   }
-});
+}
 
 function knowMore(evt,imageURL){
 var data = JSON.parse(window.localStorage.getItem("snapshot"));
