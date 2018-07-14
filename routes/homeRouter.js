@@ -113,20 +113,22 @@ homeRouter.post('/update',Verify.verifyUser,function(req,res){
     firebase.database().ref('/users/' + uid).once('value')
     .then(function(snapshot){
         var user = snapshot.val();
-        if (phone!="" && user.phone!="" && user.phone != phone) {
+        //console.log(user);
+        if (phone!="" && user.phone != phone) {
             admin_app.auth().updateUser(uid,{
                 phoneNumber:phone
             })
             .then(function(userRecord){
                 updateUser(uid,req);
-                firebase.database().ref('phoneUidMap').child(req.phone).remove();
+                if(user.phone!="")
+                    firebase.database().ref('phoneUidMap').child(user.phone).remove();
                 firebase.database().ref('phoneUidMap').child(phone).set(uid)
                 res.end('Success');
             });
         }
-         else if(req.password!="" && user.password!="" && req.password!= user.password){
+         else if(req.body.password!="" && req.body.password!= user.password){
             admin_app.auth().updateUser(uid,{
-                password:req.password
+                password:req.body.password
             })
             .then(function(snapshot){
                 updateUser(uid,req);
@@ -145,7 +147,7 @@ homeRouter.post('/update',Verify.verifyUser,function(req,res){
             password: req.body.password,
             firstName:req.body.firstname,
             lastName: req.body.lastname,
-            phone: phone,
+            phone: req.body.phone,
             email:req.body.email,
             age: req.body.age,
             dateOfBirth:req.body.dob,
