@@ -127,10 +127,13 @@ bodyDiv.append(`<img src="./images/no_restaurant2.jpg" alt="No Results Found! Pl
 
 function getData(){
   var dataArray = [];
+  window.localStorage.removeItem('snapshot');
   var city = window.localStorage.getItem("minCity");
+  var dist = window.localStorage.getItem("minDist")
   //var latArray = [];
   //var lngArray = [];
-  console.log(city);
+  // console.log(city);
+  if(dist < 100){
   var restRef = firebase.database().ref().child('restaurants').child(city)
   restRef.orderByValue().once('value',function(snapshot){
     snapshot.forEach(function(data){
@@ -142,6 +145,12 @@ function getData(){
     Data(dataArray);
     window.localStorage.setItem("snapshot",JSON.stringify(dataArray));
   });
+}
+else {
+  var bodyDiv = $('#restCards');
+  $('#restCards').empty();
+  bodyDiv.append(`<img src="./images/no_restaurant2.jpg" alt="No Results Found! Please Try Again!">`);
+}
 }
 
 // $("#searchRest").on('change',function(){
@@ -189,7 +198,8 @@ function restSearch() {
   if (error) {
     return false
   }
-  var count = Object.keys(data).length;
+  if(data)
+    var count = Object.keys(data).length;
   //console.log(count);
   var flag = 0;
   var filterVal = 0;
@@ -206,7 +216,7 @@ function restSearch() {
       break;
     }
     case "Within 25 km":
-    {
+    {   
       filterVal = 25;
       break;
     }
@@ -248,7 +258,7 @@ function restSearch() {
       streetArray.push(data[i].street);
       distanceArray.push(distTextArray[i]);
       duration.push(durationArray[i]);
-      console.log(data[i]);
+      //console.log(data[i]);
     }
     flag = 0;
   }
@@ -576,9 +586,7 @@ modal.append(`
   <div>
       <h6>Address Of the restraunts: ${street},${area},${city}</h6>
   </div><br>
-  <div class="row">
-    <div class="col-md-6 mr-auto"><h6>Location: ${street} ${area}</h6></div>
-</div><br>
+  <br>
 <div class="row">
     <div class="col-md-6 mr-auto"><h6>Open Info : ${openInfo} </h6></div>
     <div class="col-md-6 ml-auto"><h6>Stag Entry : ${stagEntry} </h6></div>
@@ -602,7 +610,6 @@ modal.append(`
           <div class="col-md-6 mr-auto"><h6>Friday : ${fridayOpen}-${fridayClose} </h6></div>
           <div class="col-md-6 ml-auto"><h6>Saturday : ${saturdayOpen}-${saturdayClose} </h6></div>
       </div>
-
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-danger" id="close" data-dismiss="modal">Close</button>
