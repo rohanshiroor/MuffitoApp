@@ -137,20 +137,20 @@ function getData(){
         //console.log(data.key);
         dataArray.push(data.val());
   }); 
-    console.log(dataArray);
+    //console.log(dataArray);
     calcDistTime(dataArray);
     Data(dataArray);
     window.localStorage.setItem("snapshot",JSON.stringify(dataArray));
   });
 }
 
-$("#searchRest").on('change',function(){
-  restSearch();
-});
+// $("#searchRest").on('change',function(){
+//   restSearch();
+// });
 
-$("#searchText").on('input',function(){
-  restSearch();
-});
+// $("#searchText").on('input',function(){
+//   restSearch();
+// });
 
 function restSearch() {
   var data = JSON.parse(window.localStorage.getItem("snapshot"));
@@ -217,19 +217,27 @@ function restSearch() {
     if(distTextArray[i]<filterVal){
     for(key in data[i]){
       data[i][key] = data[i][key].toString();
-      // console.log(data[i]);
-      if(data[i][key].indexOf(searText)!=-1) {
+      if((data[i][key].toLowerCase()).indexOf(searText.toLowerCase())!=-1) {
         flag = 1;
       }
-      else if(stagEntry && (data[i].stagEntry == "yes" || data[i].stagEntry == "Yes"))
+      //console.log(data[i].stagEntry=="yes");
+      if(stagEntry){
+      if(data[i].stagEntry == "yes")
         flag = 1;
-      else if(openNow && data[i].openInfo == "open now" )
+      else 
+        flag = 0;
+      }
+      if(openNow){
+      if(data[i].openInfo == "open now" )
         flag = 1;
+      else  
+        flag = 0;
+      }
     } 
-    if(stagEntry && (data[i].stagEntry != "yes" || data[i].stagEntry != "Yes"))
-          flag = 0;
-    if(openNow && data[i].openInfo != "open now" )
-          flag = 0;
+    // if(stagEntry && (data[i].stagEntry != "yes" || data[i].stagEntry != "Yes"))
+    //       flag = 0;
+    // if(openNow && data[i].openInfo != "open now" )
+    //       flag = 0;
     if (flag == 1) {
       nameArray.push(data[i].name);
       imageUriArray.push(data[i].imageUri);
@@ -240,7 +248,7 @@ function restSearch() {
       streetArray.push(data[i].street);
       distanceArray.push(distTextArray[i]);
       duration.push(durationArray[i]);
-      //console.log(data[i]);
+      console.log(data[i]);
     }
     flag = 0;
   }
