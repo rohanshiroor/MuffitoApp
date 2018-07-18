@@ -19,43 +19,193 @@ function getParameterByName(name) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
-var map, infoWindow;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 20.5937, lng: 78.9629},
-          zoom: 6
+document.addEventListener('DOMContentLoaded', function() {
+  const config = {
+    apiKey: 'AIzaSyBRIt05f_gxZGvC0HTPpjxGh0hsglgl2I4',
+    authDomain: 'muffito-88994.firebaseapp.com',
+    databaseURL: 'https://muffito-88994.firebaseio.com',
+    projectId: 'muffito-88994',
+    storageBucket: 'muffito-88994.appspot.com',
+    messagingSenderId: '1072542373026'
+};
+firebase.initializeApp(config);
+// var storage = firebase.storage();
+// var auth = app.auth();
+var user = JSON.parse(window.sessionStorage.getItem("user"));
+var userInfo = $("#userInfo"); 
+if(user) {
+console.log(user); 
+userInfo.append(
+  `
+  <li class="main-nav dropdown ">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+      <span class="glyphicon glyphicon-user"></span> 
+      <strong>${user.username || user.firstName+" "+user.lastName}</strong>
+      <span class="glyphicon glyphicon-chevron-down"></span>
+  </a>
+  <ul class="main-nav dropdown-menu">
+      <li>
+          <div class="navbar-login">
+              <div class="row">
+                  <div class="col-lg-4">
+                      <p class="text-center">
+                          <span class="glyphicon glyphicon-user icon-size"></span>
+                      </p>
+                  </div>
+                  <div class="col-lg-8">
+                      <p class="text-left userInfo"><strong>${user.firstName} ${user.lastName}</strong></p>
+                      <p class="text-left small userInfo">Email: ${user.email}</p>
+                      <p class="text-left small userInfo">Phone: ${user.phone}</p>
+                      <p class="text-left small userInfo">Address: ${user.address.streetName} ${user.address.area} ${user.address.city}</p>
+                      <p class="text-left small userInfo">Country : ${user.country}</p>
+                      
+                  </div>
+              </div>
+          </div>
+          </li>
+          <li class="divider"></li>
+        <li>
+            <div class="navbar-login navbar-login-session">
+                <div class="row">
+                    <div class="col-lg-12">
+                    <p>	
+        <button id="signout" class="btn btn-danger" onclick="signOut()">Sign Out</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </li>
+      </ul>
+  </li>
+  `
+)
+}
+else{
+userInfo.empty();
+}
+if(top.location.pathname == '/home/add'){
+  var map, infoWindow,geocoder,location;
+  window.onload = getMyLocation;
+  function getMyLocation() {
+    if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(displayLocation);
+}
+else {
+  // Browser doesn't support Geolocation
+  handleLocationError(false, infoWindow, map.getCenter());
+}    
+}
+function displayLocation(position) {
+  var pos = {
+    lat: position.coords.latitude,
+    lng: position.coords.longitude
+  };
+  showMap(pos,map);
+}
+
+
+
+function showMap(pos){
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: pos,
+    zoom: 14
+  });
+  geocoder = new google.maps.Geocoder;
+  infoWindow = new google.maps.InfoWindow;
+  geocoder.geocode({'location': pos}, 
+  function(results, status) {
+    if (status === 'OK') {
+      if (results[0]) {
+        var marker = new google.maps.Marker({
+          position: pos,
+          map: map,
+          draggable:true,
+          title:'drag me'
         });
-        infoWindow = new google.maps.InfoWindow;
+        //console.log(results);
+        var card = document.getElementById('pac-card');
+        location = document.getElementById("restCity");
 
-        // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-            document.getElementById("latitude").value = position.coords.latitude;
-            document.getElementById("longitude").value = position.coords.longitude;
-            infoWindow.setPosition(pos);
-            infoWindow.setContent('Location found.');
-            infoWindow.open(map);
-            map.setCenter(pos);
-          }, function() {
-            handleLocationError(true, infoWindow, map.getCenter());
-          });
-        } else {
-          // Browser doesn't support Geolocation
-          handleLocationError(false, infoWindow, map.getCenter());
+        window.sessionStorage.setItem("restLat",pos.lat);
+        window.sessionStorage.setItem("restLng",pos.lng);
+        //;
+        //
+        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
+        var autocomplete = new google.maps.places.Autocomplete(location);
+        //var marker = new google.maps.Marker({
+          //map:map,
+          //anchorPoint: new google.maps.Point(pos.lat,pos.lng)
+        // });
+        // var address = '';
+          if (results[0].address_components) {
+             address = [
+               (results[0].address_components[0] && results[0].address_components[0].short_name || ''),
+               (results[0].address_components[1] && results[0].address_components[1].short_name || ''),
+               (results[0].address_components[2] && results[0].address_components[2].short_name || '')
+             ].join(' ');
+           }
+        marker.setVisible(false);
+        var locationSet = false;
+        $("#curLoc").on('click',function(){
+          //showMap(pos,map);
+          marker.setVisible(true);
+          infoWindow.setContent(address);
+          infoWindow.open(map, marker);
+          console.log(results[0].address_components);
+          locationSet = true;
+        });
+        //location.value=results[0].formatted_address;
+
+        autocomplete.addListener('place_changed',function(){
+         var place = autocomplete.getPlace();
+         if (!place.geometry) {
+          // User entered the name of a Place that was not suggested and
+          // pressed the Enter key, or the Place Details request failed.
+          window.alert("No details available for input: '" + place.name + "'");
+          return;
+         }
+         if(!locationSet){   
+         infoWindow.close();
+         marker.setVisible(false);
+              
+          map.setCenter(place.geometry.location);
+          map.setZoom(14);  // Why 17? Because it looks good.
+          marker.setPosition(place.geometry.location);
+          marker.setVisible(true);
+          // infowindowContent.children['place-name'].textContent = place.name;
+          // infowindowContent.children['place-address'].textContent = address;
+          infoWindow.setContent('Please drag the marker to your restaurant location');
+          infoWindow.open(map, marker);
         }
+         window.sessionStorage.setItem("cityLat",place.geometry.location.lat());
+         window.sessionStorage.setItem("cityLng",place.geometry.location.lng());
+      });
+        google.maps.event.addListener(marker,'dragend',function(){
+            if(!locationSet) {
+            position = marker.getPosition();
+            window.sessionStorage.setItem("restLat",position.lat());
+            window.sessionStorage.setItem("restLng",position.lng());
+            //console.log(position);
+            }
+        });
+      } else {
+        window.alert('No results found');
       }
+    } else {
+      window.alert('Geocoder failed due to: ' + status);
+    }
 
-      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-        infoWindow.setPosition(pos);
-        infoWindow.setContent(browserHasGeolocation ?
-                              'Error: The Geolocation service failed.' :
-                              'Error: Your browser doesn\'t support geolocation.');
-        infoWindow.open(map);
-      }  
+  });
+}
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+infoWindow.setPosition(pos);
+infoWindow.setContent(browserHasGeolocation ?
+                    'Error: The Geolocation service failed.' :
+                    'Error: Your browser doesn\'t support geolocation.');
+infoWindow.open(map);
+}
+  } 
+});
 $('#myTabs a').click(function (e) {
     e.preventDefault()
     $(this).tab('show')
@@ -84,72 +234,10 @@ function val_phone() {
 // TODO: Replace with your project's customized code snippet
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    //console.log("Ready");
-    const config = {
-        apiKey: 'AIzaSyBRIt05f_gxZGvC0HTPpjxGh0hsglgl2I4',
-        authDomain: 'muffito-88994.firebaseapp.com',
-        databaseURL: 'https://muffito-88994.firebaseio.com',
-        projectId: 'muffito-88994',
-        storageBucket: 'muffito-88994.appspot.com',
-        messagingSenderId: '1072542373026'
-    };
-    firebase.initializeApp(config);
-    // var storage = firebase.storage();
-    // var auth = app.auth();
-    var user = JSON.parse(window.sessionStorage.getItem("user"));
-    var userInfo = $("#userInfo"); 
-    if(user) {
-    console.log(user); 
-    userInfo.append(
-      `
-      <li class="main-nav dropdown ">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          <span class="glyphicon glyphicon-user"></span> 
-          <strong>${user.username || user.firstName+" "+user.lastName}</strong>
-          <span class="glyphicon glyphicon-chevron-down"></span>
-      </a>
-      <ul class="main-nav dropdown-menu">
-          <li>
-              <div class="navbar-login">
-                  <div class="row">
-                      <div class="col-lg-4">
-                          <p class="text-center">
-                              <span class="glyphicon glyphicon-user icon-size"></span>
-                          </p>
-                      </div>
-                      <div class="col-lg-8">
-                          <p class="text-left userInfo"><strong>${user.firstName} ${user.lastName}</strong></p>
-                          <p class="text-left small userInfo">Email: ${user.email}</p>
-                          <p class="text-left small userInfo">Phone: ${user.phone}</p>
-                          <p class="text-left small userInfo">Address: ${user.address.streetName} ${user.address.area} ${user.address.city}</p>
-                          <p class="text-left small userInfo">Country : ${user.country}</p>
-                          
-                      </div>
-                  </div>
-              </div>
-              </li>
-              <li class="divider"></li>
-            <li>
-                <div class="navbar-login navbar-login-session">
-                    <div class="row">
-                        <div class="col-lg-12">
-                        <p>	
-						<button id="signout" class="btn btn-danger" onclick="signOut()">Sign Out</button>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </li>
-          </ul>
-      </li>
-      `
-    )
-  }
-  else{
-    userInfo.empty();
-  }
-});
+// document.addEventListener('DOMContentLoaded', function() {
+//     //console.log("Ready");
+    
+// });
 
 
 

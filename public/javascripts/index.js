@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var geocoder;
     var searchBox;
     var location;
-    if (top.location.pathname != '/search'){
+    if (top.location.pathname != '/search' && top.location.pathname != '/home/add'){
       window.onload = getMyLocation;
       function getMyLocation() {
           if (navigator.geolocation) {

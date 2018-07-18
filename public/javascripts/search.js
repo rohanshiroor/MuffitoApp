@@ -81,6 +81,7 @@ function rad2deg(rad) {
 function Data(data) {
   //console.log("Yes");
   //durationArray.push(duration);
+  //console.log(data);
   var bodyDiv = $('#restCards');
   $('#restCards').empty();
   var distArray = JSON.parse(window.localStorage.getItem('distance'));
@@ -88,7 +89,7 @@ function Data(data) {
   //var data = JSON.parse(window.localStorage.getItem("snapshot"));
   //var itm = window.localStorage.getItem("item");
   if(data.length!=0) {
-  for(var i=2;i<data.length;i++){
+  for(var i=0;i<data.length;i++){
   if(distArray[i]<10.0){  
   bodyDiv.append(`
       <div class="thumbnail sized">              
@@ -118,6 +119,9 @@ function Data(data) {
       // /  document.getElementById("searchText").disabled = false;
       //console.log(i);
   }
+  else {
+    bodyDiv.append(`<img src="./images/no_restaurant2.jpg" alt="No Results Found! Please Try Again!">`);
+    }
 }
 }
 else {
@@ -132,7 +136,7 @@ function getData(){
   var dist = window.localStorage.getItem("minDist")
   //var latArray = [];
   //var lngArray = [];
-  // console.log(city);
+  console.log(city);
   if(dist < 100){
   var restRef = firebase.database().ref().child('restaurants').child(city)
   restRef.orderByValue().once('value',function(snapshot){
@@ -458,7 +462,7 @@ function restSearch() {
       
       bodyDiv.append(`
       <div class="thumbnail sized">              
-      <img src = '${imageUriArray[i]}'   > 
+      <img src = '${imageUriArray[i]}' onerror="this.onerror=null;this.src='images/bar_substitute.jpg';"> 
       <div class="caption">
         <h3>${nameArray[i]}</h5>
         <div class="row">
@@ -519,7 +523,7 @@ var count = Object.keys(data).length;
 // sundayCloseArray;
 var distArray = JSON.parse(window.localStorage.getItem("distance"));
 var durArray = JSON.parse(window.localStorage.getItem("duration"));
-for(var i=2;i<count;i++){
+for(var i=0;i<count;i++){
     if(data[i]["imageUri"].indexOf(imageURL)!=-1) {
       city = data[i].city;
       area = data[i].area;
