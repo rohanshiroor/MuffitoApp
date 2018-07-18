@@ -23,7 +23,7 @@
                   <!-- LOGO -->
           <div class="col-md-3">
               <div class="header-logo  ">
-                  <a href="#" class="logo">
+                  <a href="/" class="logo">
                       <img height ="120" width = "120" src="../images/logo.png" alt="MUFFITO">
                   </a>
               </div>
@@ -70,28 +70,23 @@
           <label for="restName">Restaurant Name:</label>
           <input class="form-control" id="restName" type="text" name="restName" placeholder="Restaurant Name" required onblur="valInp('restDet','restName')">
         </div>
-        <div class="form-group">
-          <label for="restCity">City:</label>
-          <input class="form-control" id="restCity" type="text" name="restCity" placeholder="City" required onblur="valInp('restDet','restCity')">
+        <button class="btn btn-danger btn-block" id="curLoc">Use Current Location</button>
+        <br />
+        <label for='location'>Set Location of Restaurant:</label>
+        <div id="map"></div>
+        <br /></i>
+        <label for="restCity">City:</label>
+        <div class="form-group" id="pac-container">
+            <input class="form-control" id="restCity" type="text" name="restCity" placeholder="City" required onblur="valInp('restDet','restCity')">
         </div>
         <div class="form-group">
-          <label for="restArea">Area:</label>
-          <input class="form-control" id="restArea" type="text" name="restArea" placeholder="Area" required onblur="valInp('restDet','restArea')">
+            <label for="restArea">Area:</label>
+            <input class="form-control" id="restArea" type="text" name="restArea" placeholder="Area" required onblur="valInp('restDet','restArea')">
         </div>
         <div class="form-group">
           <label for="restStreetName">Street Name:</label>
-          <input class="form-control" id="restStreetName" type="text" name="restStreetName" placeholder="Street Name" required onblur="valInp('restDet','restStreetName')">
-        </div>
-		<a class="btn" href="#"><i class="fas fa-map-marker-alt "  style="font-size:28px;"></i></a>
-
-        <div id="map"></div>
-        <br /></i>
-
-        <input type="hidden" id="latitude" name="latitude">
-        <input type="hidden" id="longitude" name="longitude">
-
-
-        
+        <input class="form-control" id="restStreetName" type="text" name="restStreetName" placeholder="Street Name" required onblur="valInp('restDet','restStreetName')">
+    </div>    
 		<div class='form-group'>
           <label for='restImage'>Restaurant Images</label>
           <input type='file' class='form-control-file' name='' id='restImage' multiple name='restImage'>
@@ -113,13 +108,6 @@
           <select class="form-control" id="stagEntry" name="stagEntry">
             <option>Yes</option>
             <option>No</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="restOpen">Restaurant Open Info</label>
-          <select class="form-control" id="restOpen" name="restOpen">
-            <option>Open Now</option>
-            <option>Closed</option>
           </select>
         </div>
         <h4>Hours</h4>
@@ -251,8 +239,8 @@
       <script src="../javascripts/myScript.js"></script>
       <script src="../javascripts/main.js"></script>
       <script src="../javascripts/home.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRIt05f_gxZGvC0HTPpjxGh0hsglgl2I4&callback=initMap"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRIt05f_gxZGvC0HTPpjxGh0hsglgl2I4&libraries=places"></script>     
+      <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 
 </body>
 </html>

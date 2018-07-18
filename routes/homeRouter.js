@@ -55,14 +55,24 @@ homeRouter.post('/add',Verify.verifyUser,function(req,res){
     // if(errors){
     //     res.render('home',{ flash: { type: 'alert-danger', messages: errors }});
     // }
-    firebase.database().ref('restaurant/' + req.body.restName).set({
+    console.log(req.body);
+    if(!req.body.exists){
+        firebase.database().ref('cities/'+req.body.city).set({
+            latitude:req.body.cityLat,
+            longitude:req.body.cityLng
+        })
+        console.log("Yo");
+    }
+    var restDataRef = firebase.database().ref('restaurants/' + req.body.city).push();
+    //console.log(restDataRef); 
+    restDataRef.set({
         area:req.body.restArea,
         city:req.body.restCity,
         street:req.body.restStreetName,
-        rating: req.body.rating,
-        restaurantType: req.body.restType,
+        ratting: req.body.rating,
+        openInfo:"open now",
+        "restaurant type": req.body.restType,
         stagEntry: req.body.stagEntry,
-        openInfo:req.body.restOpen,
         name: req.body.restName,
         latitude: req.body.latitude,
         longitude: req.body.longitude,
@@ -80,8 +90,15 @@ homeRouter.post('/add',Verify.verifyUser,function(req,res){
         saturdayClose: req.body.satCl,
         sundayOpen: req.body.sunOp,
         sundayClose: req.body.sunCl
+    })
+    .then(function(){
+        console.log(restDataRef.key);
+        res.end(restDataRef.key);
+    })
+    .catch(function(error){
+        console.log(error);
+        res.end('Error');
     });
-    res.end('Success');
 });
 homeRouter.post('/contactus',Verify.verifyUser,function(req,res){
     var transporter = nodemailer.createTransport({
@@ -113,20 +130,22 @@ homeRouter.post('/update',Verify.verifyUser,function(req,res){
     firebase.database().ref('/users/' + uid).once('value')
     .then(function(snapshot){
         var user = snapshot.val();
-        if (phone!="" && user.phone!="" && user.phone != phone) {
+        //console.log(user);
+        if (phone!="" && user.phone != phone) {
             admin_app.auth().updateUser(uid,{
                 phoneNumber:phone
             })
             .then(function(userRecord){
                 updateUser(uid,req);
-                firebase.database().ref('phoneUidMap').child(req.phone).remove();
+                if(user.phone!="")
+                    firebase.database().ref('phoneUidMap').child(user.phone).remove();
                 firebase.database().ref('phoneUidMap').child(phone).set(uid)
                 res.end('Success');
             });
         }
-         else if(req.password!="" && user.password!="" && req.password!= user.password){
+         else if(req.body.password!="" && req.body.password!= user.password){
             admin_app.auth().updateUser(uid,{
-                password:req.password
+                password:req.body.password
             })
             .then(function(snapshot){
                 updateUser(uid,req);
@@ -145,7 +164,7 @@ homeRouter.post('/update',Verify.verifyUser,function(req,res){
             password: req.body.password,
             firstName:req.body.firstname,
             lastName: req.body.lastname,
-            phone: phone,
+            phone: req.body.phone,
             email:req.body.email,
             age: req.body.age,
             dateOfBirth:req.body.dob,

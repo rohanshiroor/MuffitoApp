@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var geocoder;
     var searchBox;
     var location;
-    if (top.location.pathname != '/search'){
+    if (top.location.pathname != '/search' && top.location.pathname != '/home/add'){
       window.onload = getMyLocation;
       function getMyLocation() {
           if (navigator.geolocation) {
@@ -151,79 +151,147 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   function setLocation() {
-    
-    var Ahmedabad = new google.maps.LatLng(23.033863,72.585022);
-    var Bangalore = new google.maps.LatLng(12.972442,77.580643);
-    var Chennai = new google.maps.LatLng(13.067439,80.237617);
-    var Faridabad = new google.maps.LatLng(28.341639,77.325348);
-    var Ghaziabad = new google.maps.LatLng(28.667856,77.449791);
-    var Gurgaon = new google.maps.LatLng(28.457523,77.026344);
-    var Howrah = new google.maps.LatLng(22.595770,88.263641);
-    var Hyderabad= new google.maps.LatLng(17.387140,78.491684);
-    var Kolkata = new google.maps.LatLng(22.572645,88.363892);
-    var Mumbai = new google.maps.LatLng(19.07283,72.88261);
-    var Navi_Mumbai = new google.maps.LatLng(19.077065,72.998993);
-    var New_Delhi= new google.maps.LatLng(28.644800,77.216721);
-    var Noida = new google.maps.LatLng(28.535517,77.391029);
-    var Pune = new google.maps.LatLng(18.516726,73.856255);
-    var Secunderabad = new google.maps.LatLng(17.439930,78.498276);
-    var Thane = new google.maps.LatLng(19.218330,72.978088);
-    
-    var service = new google.maps.DistanceMatrixService();
+    var LatLngArray = [];
+    var cities = [];
     var pos3 = {
       lat:window.localStorage.getItem("lat"),
       lng:window.localStorage.getItem("lng")
     };
-    var city = new google.maps.LatLng(pos3.lat,pos3.lng);
-      service.getDistanceMatrix(
-        {
-          origins: [city],
-          destinations: [Ahmedabad,Bangalore,Chennai,Faridabad,Ghaziabad,Gurgaon,Howrah,Hyderabad,Kolkata,Mumbai,Navi_Mumbai,New_Delhi,Noida,Pune,Secunderabad,Thane],
-          travelMode: 'DRIVING',
-        },calcDistance);      
+    // var Ahmedabad = new google.maps.LatLng(23.033863,72.585022);
+    // var Bangalore = new google.maps.LatLng(12.972442,77.580643);
+    // var Chennai = new google.maps.LatLng(13.067439,80.237617);
+    // var Faridabad = new google.maps.LatLng(28.341639,77.325348);
+    // var Ghaziabad = new google.maps.LatLng(28.667856,77.449791);
+    // var Gurgaon = new google.maps.LatLng(28.457523,77.026344);
+    // var Howrah = new google.maps.LatLng(22.595770,88.263641);
+    // var Hyderabad= new google.maps.LatLng(17.387140,78.491684);
+    // var Kolkata = new google.maps.LatLng(22.572645,88.363892);
+    // var Mumbai = new google.maps.LatLng(19.07283,72.88261);
+    // var Navi_Mumbai = new google.maps.LatLng(19.077065,72.998993);
+    // var New_Delhi= new google.maps.LatLng(28.644800,77.216721);
+    // var Noida = new google.maps.LatLng(28.535517,77.391029);
+    // var Pune = new google.maps.LatLng(18.516726,73.856255);
+    // var Secunderabad = new google.maps.LatLng(17.439930,78.498276);
+    // var Thane = new google.maps.LatLng(19.218330,72.978088);
+    var cityRef = firebase.database().ref().child('cities')
+    cityRef.orderByValue().once('value',function(snapshot){
+    snapshot.forEach(function(data){
+      LatLngArray.push(data.val());
+      cities.push(data.key);
+    });
+      //console.log(cities);
+      calcDistance(LatLngArray,cities,pos3);
+    }); 
+    //var service = new google.maps.DistanceMatrixService();
+    
+    //var city = new google.maps.LatLng(pos3.lat,pos3.lng);
+      // service.getDistanceMatrix(
+      //   {
+      //     origins: [city],
+      //     destinations: [Ahmedabad,Bangalore,Chennai,Faridabad,Ghaziabad,Gurgaon,Howrah,Hyderabad,Kolkata,Mumbai,Navi_Mumbai,New_Delhi,Noida,Pune,Secunderabad,Thane],
+      //     travelMode: 'DRIVING',
+      //   },calcDistance);      
     }
-
-  function calcDistance(response,status){
-    var cities = ["Ahmedabad","Bangalore","Chennai","Faridabad","Ghaziabad","Gurgaon","Howrah","Hyderabad","Kolkata","Mumbai","Navi Mumbai","New Delhi","Noida","Pune","Secunderabad","Thane"];
-    if (status == 'OK') {
-      var destinations = response.destinationAddresses;
-      //console.log(destination[0].indexOf("Thane"));
-      var origins = response.originAddresses;
-      //console.log(destinations);
-      //console.log(response);
+    function calcDistance(LatLngArray,cities,pos3){ 
+      //console.log("Yes");
+      var count = Object.keys(LatLngArray).length;
+      //var service = new google.maps.DistanceMatrixService();
+      var destination = null;
+      //window.count = count;
       var min_dist = 0
       var min_city = "";
-      //for(var i=0;i < destinations.length;i++) {
-      var results = response.rows[0].elements;
-      //console.log(results);
-      for(var j=0;j < results.length;j++) {
-      var element = results[j];
-      var distance = element.distance.text;
-      //var dist = parseInt(distance.match(/\d+/)[0]);
-      var temp_dist = distance.split(" ");
-      temp_dist[0] = temp_dist[0].replace(",","");
-      var dist = parseFloat(temp_dist[0]);
-      if(j==0){
+      //console.log(LatLngArray);
+      for(var i=0;i<count;i++){
+        //window.localStorage.setItem("item",i);
+        
+        destination = {
+          lat:LatLngArray[i].latitude,
+          lng:LatLngArray[i].longitude
+        };
+        //console.log(destination);
+        //calcDistTime(origin,destination);
+        var theta = pos3.lng - destination.lng;
+        var dist = Math.sin(deg2rad(pos3.lat))*Math.sin(deg2rad(destination.lat))+Math.cos(deg2rad(pos3.lat))*Math.cos(deg2rad(destination.lat))*Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist*60*1.515;
+        dist = (Math.round(dist*100)/100);
+        //console.log(dist);
+        if(i==0){
+          min_dist = dist;
+          min_city = cities[0];
+          //console.log(min_dist);
+        }
+        else if(i!=0 && dist < min_dist){
         min_dist = dist;
-        min_city = cities[0];
-      }
-      else if(j!=0 && dist < min_dist){
-        min_dist = dist;
-        min_city = cities[j];
+        min_city = cities[i];
         console.log(min_dist);
         console.log(min_city)
+        }
+        // if(j==(results.length-1)){
+        //  
+        // }
+        destination = null;
       }
-      if(j==(results.length-1)){
-        window.localStorage.setItem("minDist",min_dist);
+      window.localStorage.setItem("minDist",min_dist);
         window.localStorage.setItem("minCity",min_city);
         window.location.origin = window.location.protocol + "//" 
       + window.location.hostname 
       + (window.location.port ? ':' + window.location.port : '');
       window.location = window.location.origin+'/search';
-      } 
+      // window.localStorage.setItem("distance",JSON.stringify(distArray));
+      // window.localStorage.setItem("duration",JSON.stringify(durArray));
     }
-  }
-}     
+    
+    function deg2rad(deg) {
+      return (deg * Math.PI / 100.0);
+    }
+    
+    function rad2deg(rad) {
+      return (rad * 180.0 / Math.PI);
+    }
+    
+//   function calcDistance(response,status){
+//     var cities = ["Ahmedabad","Bangalore","Chennai","Faridabad","Ghaziabad","Gurgaon","Howrah","Hyderabad","Kolkata","Mumbai","Navi Mumbai","New Delhi","Noida","Pune","Secunderabad","Thane"];
+//     if (status == 'OK') {
+//       var destinations = response.destinationAddresses;
+//       //console.log(destination[0].indexOf("Thane"));
+//       var origins = response.originAddresses;
+//       //console.log(destinations);
+//       //console.log(response);
+//       var min_dist = 0
+//       var min_city = "";
+//       //for(var i=0;i < destinations.length;i++) {
+//       var results = response.rows[0].elements;
+//       //console.log(results);
+//       for(var j=0;j < results.length;j++) {
+//       var element = results[j];
+//       var distance = element.distance.text;
+//       //var dist = parseInt(distance.match(/\d+/)[0]);
+//       var temp_dist = distance.split(" ");
+//       temp_dist[0] = temp_dist[0].replace(",","");
+//       var dist = parseFloat(temp_dist[0]);
+//       if(j==0){
+//         min_dist = dist;
+//         min_city = cities[0];
+//       }
+//       else if(j!=0 && dist < min_dist){
+//         min_dist = dist;
+//         min_city = cities[j];
+//         console.log(min_dist);
+//         console.log(min_city)
+//       }
+//       if(j==(results.length-1)){
+//         window.localStorage.setItem("minDist",min_dist);
+//         window.localStorage.setItem("minCity",min_city);
+//         window.location.origin = window.location.protocol + "//" 
+//       + window.location.hostname 
+//       + (window.location.port ? ':' + window.location.port : '');
+//       window.location = window.location.origin+'/search';
+//       } 
+//     }
+//   }
+// }     
       //console.log(dist);
       //if(destination[0].indexOf("Ahmedabad")!=-1) {
       //}

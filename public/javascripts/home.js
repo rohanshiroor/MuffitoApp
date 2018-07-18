@@ -35,7 +35,7 @@ $('#contactus').on('submit',function(event){
     $.ajax({
       url: '/home/contactus',
       headers: {
-        'x-access-token':window.localStorage.getItem("token")
+        'x-access-token':window.sessionStorage.getItem("token")
       },
       method:'POST',
       contentType:'application/json',
@@ -75,8 +75,10 @@ $('#contactus').on('submit',function(event){
             $("<span>Invalid Area</span>").addClass('error').insertAfter("#restArea");
             error = true;
     }
-    var city = document.forms["restDet"]["restCity"].value; 
-    if(!ck_misctext.test(city)){
+    var loc = document.forms["restDet"]["restCity"].value;
+    loc = loc.split(',');
+    var restCity = loc[0]; 
+    if(!ck_misctext.test(restCity)){
             document.forms["restDet"]["restCity"].style.borderColor = 'red';
             $("<span>Invalid City</span>").addClass('error').insertAfter("#restCity");
             error = true;
@@ -104,26 +106,79 @@ $('#contactus').on('submit',function(event){
       return false;
     }
     else {
-      
+    var LatLngArray = [];
+    var cities = [];
+    var destination = null;
+    var city;
+    var min_dist = 0
+    var min_city = "";
+    var exists = null;
+    pos = {
+      lat: window.sessionStorage.getItem('cityLat'),
+      lng: window.sessionStorage.getItem('cityLng')
+    }
+    var cityRef = firebase.database().ref().child('cities')
+    cityRef.orderByValue().once('value',function(snapshot){
+    snapshot.forEach(function(data){
+      LatLngArray.push(data.val());
+      cities.push(data.key);
+    });
+      var count = Object.keys(LatLngArray).length;
+      for(var i=0;i<count;i++){
+        
+        destination = {
+          lat:LatLngArray[i].latitude,
+          lng:LatLngArray[i].longitude
+        };
+        var theta = pos.lng - destination.lng;
+        var dist = Math.sin(deg2rad(pos.lat))*Math.sin(deg2rad(destination.lat))+Math.cos(deg2rad(pos.lat))*Math.cos(deg2rad(destination.lat))*Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist*60*1.515;
+        dist = (Math.round(dist*100)/100);
+        if(i==0){
+          min_dist = dist;
+          min_city = cities[0];
+        }
+        else if(i!=0 && dist < min_dist){
+        min_dist = dist;
+        min_city = cities[i];
+        console.log(min_dist);
+        console.log(min_city)
+        }
+        destination = null;
+      }
+      if(min_dist < 30){
+        city = min_city
+        exists = true;
+      }
+      else {
+        city = restCity;
+        exists = false;
+      }  
       //console.log(ImagesRef.fullPath);
+      var token = window.sessionStorage.getItem("token")
       $.ajax({
         url: '/home/add',
         headers: {
-          'x-access-token':window.localStorage.getItem("token")
+          'x-access-token':token
         },
         method:'POST',
         contentType:'application/json',
         data: JSON.stringify({
           restName: name,
-          restCity: city,
+          restCity: restCity,
           restArea: area,
           restStreetName: streetName,
           rating: rating,
+          city:city,
+          exists: exists,
           restType: document.forms["restDet"]["restType"].value,
           stagEntry: document.forms["restDet"]["stagEntry"].value, 
-          restOpen: document.forms["restDet"]["restOpen"].value,
-          latitude: document.forms["restDet"]["latitude"].value,
-          longitude: document.forms["restDet"]["longitude"].value,
+          latitude: window.sessionStorage.getItem('restLat'),
+          longitude: window.sessionStorage.getItem('restLng'),
+          cityLat:window.sessionStorage.getItem('cityLat'),
+          cityLng:window.sessionStorage.getItem('cityLng'),
           monOp: document.forms["restDet"]["monOp"].value,
           monCl: document.forms["restDet"]["monCl"].value,
           tueOp: document.forms["restDet"]["tueOp"].value,
@@ -140,8 +195,8 @@ $('#contactus').on('submit',function(event){
           sunCl: document.forms["restDet"]["sunCl"].value
         }),
         success:function(response){
-          if(response=='Success'){
-            
+          console.log(response);
+          if(response!='Error'){ 
             var selectedFile = document.getElementById('restImage');
             if(selectedFile.files.length != 0){
             var storageRef = firebase.storage().ref();
@@ -150,7 +205,7 @@ $('#contactus').on('submit',function(event){
             ImagesRef.put(selectedFile.files[0])
             .then(function(snapshot){
               snapshot.ref.getDownloadURL().then(function(downloadURL){
-                firebase.database().ref('restaurant').child(name).child('restImage').set(downloadURL);
+                firebase.database().ref('restaurants').child(city).child(response).child('restImage').set(downloadURL);
               });
               console.log('Uploaded File');
               var fileLength = selectedFile.files.length;
@@ -160,7 +215,7 @@ $('#contactus').on('submit',function(event){
               ImagesRef.put(selectedFile.files[i])
               .then(function(snapshot){
                 snapshot.ref.getDownloadURL().then(function(downloadURL){
-                  firebase.database().ref('restaurant').child(name).child('extraImage').push(downloadURL).then(function(){
+                  firebase.database().ref('restaurants').child(city).child(response).child('extraImage').push(downloadURL).then(function(){
                     if(i==fileLength){
                       $.ajax({
                         url:'/home',
@@ -187,6 +242,8 @@ $('#contactus').on('submit',function(event){
             });
         } 
         else {
+          firebase.database().ref('restaurants').child(city).child(response).child('restImage').set("");
+          firebase.database().ref('restaurants').child(city).child(response).child('extraImage').push("").then(function(){
           $.ajax({
             url:'/home',
             method:'GET',
@@ -202,12 +259,28 @@ $('#contactus').on('submit',function(event){
               }
             }
           });
+        });
         }
         }
         }
+  });
   });
     }
   });
+  // function setCity(city) {
+    
+  //     return city;
+    
+  // }
+
+  function deg2rad(deg) {
+    return (deg * Math.PI / 100.0);
+  }
+  
+  function rad2deg(rad) {
+    return (rad * 180.0 / Math.PI);
+  }
+
   $(document).ready(function(){
     $('input.timepicker').timepicker({});
   });
@@ -393,3 +466,4 @@ document.addEventListener("DOMContentLoaded",function() {
     });
   }
   });
+  

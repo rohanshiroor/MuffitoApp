@@ -81,6 +81,7 @@ function rad2deg(rad) {
 function Data(data) {
   //console.log("Yes");
   //durationArray.push(duration);
+  //console.log(data);
   var bodyDiv = $('#restCards');
   $('#restCards').empty();
   var distArray = JSON.parse(window.localStorage.getItem('distance'));
@@ -88,7 +89,7 @@ function Data(data) {
   //var data = JSON.parse(window.localStorage.getItem("snapshot"));
   //var itm = window.localStorage.getItem("item");
   if(data.length!=0) {
-  for(var i=2;i<data.length;i++){
+  for(var i=0;i<data.length;i++){
   if(distArray[i]<10.0){  
   bodyDiv.append(`
       <div class="thumbnail sized">              
@@ -118,6 +119,9 @@ function Data(data) {
       // /  document.getElementById("searchText").disabled = false;
       //console.log(i);
   }
+  else {
+    bodyDiv.append(`<img src="./images/no_restaurant2.jpg" alt="No Results Found! Please Try Again!">`);
+    }
 }
 }
 else {
@@ -127,24 +131,41 @@ bodyDiv.append(`<img src="./images/no_restaurant2.jpg" alt="No Results Found! Pl
 
 function getData(){
   var dataArray = [];
+  window.localStorage.removeItem('snapshot');
   var city = window.localStorage.getItem("minCity");
+  var dist = window.localStorage.getItem("minDist")
   //var latArray = [];
   //var lngArray = [];
   console.log(city);
+  if(dist < 100){
   var restRef = firebase.database().ref().child('restaurants').child(city)
   restRef.orderByValue().once('value',function(snapshot){
     snapshot.forEach(function(data){
         //console.log(data.key);
         dataArray.push(data.val());
   }); 
-    console.log(dataArray);
+    //console.log(dataArray);
     calcDistTime(dataArray);
     Data(dataArray);
     window.localStorage.setItem("snapshot",JSON.stringify(dataArray));
   });
 }
+else {
+  var bodyDiv = $('#restCards');
+  $('#restCards').empty();
+  bodyDiv.append(`<img src="./images/no_restaurant2.jpg" alt="No Results Found! Please Try Again!">`);
+}
+}
 
-$("#searchRest").change(function restSearch() {
+// $("#searchRest").on('change',function(){
+//   restSearch();
+// });
+
+// $("#searchText").on('input',function(){
+//   restSearch();
+// });
+
+function restSearch() {
   var data = JSON.parse(window.localStorage.getItem("snapshot"));
   //console.log(imageUrlArray);
   nameArray = [];
@@ -181,7 +202,8 @@ $("#searchRest").change(function restSearch() {
   if (error) {
     return false
   }
-  var count = Object.keys(data).length;
+  if(data)
+    var count = Object.keys(data).length;
   //console.log(count);
   var flag = 0;
   var filterVal = 0;
@@ -198,7 +220,7 @@ $("#searchRest").change(function restSearch() {
       break;
     }
     case "Within 25 km":
-    {
+    {   
       filterVal = 25;
       break;
     }
@@ -209,19 +231,27 @@ $("#searchRest").change(function restSearch() {
     if(distTextArray[i]<filterVal){
     for(key in data[i]){
       data[i][key] = data[i][key].toString();
-      // console.log(data[i]);
-      if(data[i][key].indexOf(searText)!=-1) {
+      if((data[i][key].toLowerCase()).indexOf(searText.toLowerCase())!=-1) {
         flag = 1;
       }
-      else if(stagEntry && (data[i].stagEntry == "yes" || data[i].stagEntry == "Yes"))
+      //console.log(data[i].stagEntry=="yes");
+      if(stagEntry){
+      if(data[i].stagEntry == "yes")
         flag = 1;
-      else if(openNow && data[i].openInfo == "open now" )
+      else 
+        flag = 0;
+      }
+      if(openNow){
+      if(data[i].openInfo == "open now" )
         flag = 1;
+      else  
+        flag = 0;
+      }
     } 
-    if(stagEntry && (data[i].stagEntry != "yes" || data[i].stagEntry != "Yes"))
-          flag = 0;
-    if(openNow && data[i].openInfo != "open now" )
-          flag = 0;
+    // if(stagEntry && (data[i].stagEntry != "yes" || data[i].stagEntry != "Yes"))
+    //       flag = 0;
+    // if(openNow && data[i].openInfo != "open now" )
+    //       flag = 0;
     if (flag == 1) {
       nameArray.push(data[i].name);
       imageUriArray.push(data[i].imageUri);
@@ -432,7 +462,7 @@ $("#searchRest").change(function restSearch() {
       
       bodyDiv.append(`
       <div class="thumbnail sized">              
-      <img src = '${imageUriArray[i]}'   > 
+      <img src = '${imageUriArray[i]}' onerror="this.onerror=null;this.src='images/bar_substitute.jpg';"> 
       <div class="caption">
         <h3>${nameArray[i]}</h5>
         <div class="row">
@@ -459,7 +489,7 @@ $("#searchRest").change(function restSearch() {
   else {
     bodyDiv.append(`<img src="./images/no_restaurant2.jpg" alt="No Results Found! Please Try Again!">`);
   }
-});
+}
 
 function knowMore(evt,imageURL){
 var data = JSON.parse(window.localStorage.getItem("snapshot"));
@@ -493,7 +523,7 @@ var count = Object.keys(data).length;
 // sundayCloseArray;
 var distArray = JSON.parse(window.localStorage.getItem("distance"));
 var durArray = JSON.parse(window.localStorage.getItem("duration"));
-for(var i=2;i<count;i++){
+for(var i=0;i<count;i++){
     if(data[i]["imageUri"].indexOf(imageURL)!=-1) {
       city = data[i].city;
       area = data[i].area;
@@ -560,9 +590,7 @@ modal.append(`
   <div>
       <h6>Address Of the restraunts: ${street},${area},${city}</h6>
   </div><br>
-  <div class="row">
-    <div class="col-md-6 mr-auto"><h6>Location: ${street} ${area}</h6></div>
-</div><br>
+  <br>
 <div class="row">
     <div class="col-md-6 mr-auto"><h6>Open Info : ${openInfo} </h6></div>
     <div class="col-md-6 ml-auto"><h6>Stag Entry : ${stagEntry} </h6></div>
@@ -586,7 +614,6 @@ modal.append(`
           <div class="col-md-6 mr-auto"><h6>Friday : ${fridayOpen}-${fridayClose} </h6></div>
           <div class="col-md-6 ml-auto"><h6>Saturday : ${saturdayOpen}-${saturdayClose} </h6></div>
       </div>
-
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-danger" id="close" data-dismiss="modal">Close</button>

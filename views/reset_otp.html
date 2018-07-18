@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Phone Number</title>
+        <title>OTP</title>
         <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' integrity='sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm' crossorigin='anonymous'>
     </head>
     <body>       
             <div class='container'>
-                <br />
-                <br />   
+            <div id="phone-reset-recaptcha"></div>
                     <div class='form-group'>
-                            <label for='phone'>Enter Phone Number:</label>
-                            <input type='text' class='form-control' id='reset_phone' name='reset_phone' placeholder='Enter Phone Number' required>
+                            <label for='otp'>Enter OTP:</label>
+                            <input type='text' class='form-control' id='reset_otp' name='reset_otp' placeholder='Enter OTP' required>
                     </div>
-                    <button id='reset_submit' type='submit' class='btn btn-primary'>Submit</button>
-            </div>
+                    <button id='otp_submit' type='submit' class='btn btn-primary'>Submit</button>
             </div>
         <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase.js"></script>
         <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js' integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q' crossorigin='anonymous'></script>
