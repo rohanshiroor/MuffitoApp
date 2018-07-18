@@ -90,7 +90,7 @@ function Data(data) {
   //var itm = window.localStorage.getItem("item");
   if(data.length!=0) {
   for(var i=0;i<data.length;i++){
-  if(distArray[i]<10.0){  
+  if(distArray[i]<10.0 && data[i].name){  
   bodyDiv.append(`
       <div class="thumbnail sized">              
       <img src = '${data[i].imageUri}' onerror="this.onerror=null;this.src='images/bar_substitute.jpg';"> 
@@ -109,7 +109,7 @@ function Data(data) {
         <h6>Address  : </h6><p>${data[i].street},${data[i].area}</p>
         <p>${data[i].city}</p>
         <br />
-      <button type="button" onclick = "knowMore(event,'${data[i].imageUri}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+      <button type="button" onclick = "knowMore(event,'${i}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
       Know More
       </button>
       </div>
@@ -119,9 +119,6 @@ function Data(data) {
       // /  document.getElementById("searchText").disabled = false;
       //console.log(i);
   }
-  else {
-    bodyDiv.append(`<img src="./images/no_restaurant2.jpg" alt="No Results Found! Please Try Again!">`);
-    }
 }
 }
 else {
@@ -140,11 +137,12 @@ function getData(){
   if(dist < 100){
   var restRef = firebase.database().ref().child('restaurants').child(city)
   restRef.orderByValue().once('value',function(snapshot){
+    //console.log(snapshot.val());
     snapshot.forEach(function(data){
         //console.log(data.key);
         dataArray.push(data.val());
   }); 
-    //console.log(dataArray);
+    console.log(dataArray);
     calcDistTime(dataArray);
     Data(dataArray);
     window.localStorage.setItem("snapshot",JSON.stringify(dataArray));
@@ -180,6 +178,7 @@ function restSearch() {
   costArray = [];
   costArrayhigh = [];
   restaurantTypeArray = [];
+  restId = [];
   distTextArray = JSON.parse(window.localStorage.getItem("distance"));//distTextArray;
   durationArray = JSON.parse(window.localStorage.getItem("duration"));
 
@@ -227,8 +226,8 @@ function restSearch() {
     default:
       filterVal = 10;
   }
-  for(var i=2;i<count;i++){
-    if(distTextArray[i]<filterVal){
+  for(var i=0;i<count;i++){
+    if(distTextArray[i]<filterVal && data[i].name){
     for(key in data[i]){
       data[i][key] = data[i][key].toString();
       if((data[i][key].toLowerCase()).indexOf(searText.toLowerCase())!=-1) {
@@ -262,6 +261,7 @@ function restSearch() {
       streetArray.push(data[i].street);
       distanceArray.push(distTextArray[i]);
       duration.push(durationArray[i]);
+      restId.push(i);
       //console.log(data[i]);
     }
     flag = 0;
@@ -478,7 +478,7 @@ function restSearch() {
         <p >${streetArray[i]},${areaArray[i]}</p>
         <p >${cityArray[i]}</p>
         <br />
-      <button type="button" onclick = "knowMore(event,'${imageUriArray[i]}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+      <button type="button" onclick = "knowMore(event,'${restId[i]}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
       Know More
       </button>
       </div>
@@ -491,7 +491,7 @@ function restSearch() {
   }
 }
 
-function knowMore(evt,imageURL){
+function knowMore(evt,id){
 var data = JSON.parse(window.localStorage.getItem("snapshot"));
 //console.log(name);
 var count = Object.keys(data).length;
@@ -523,34 +523,37 @@ var count = Object.keys(data).length;
 // sundayCloseArray;
 var distArray = JSON.parse(window.localStorage.getItem("distance"));
 var durArray = JSON.parse(window.localStorage.getItem("duration"));
-for(var i=0;i<count;i++){
-    if(data[i]["imageUri"].indexOf(imageURL)!=-1) {
-      city = data[i].city;
-      area = data[i].area;
-      openInfo = data[i].openInfo;
-      rating = data[i].ratting;
-      restaurantType = data[i].restaurantType;
-      stagEntry = data[i].stagEntry;
-      street = data[i].street;
-      mondayOpen = data[i].mondayOpen;
-      tuesdayOpen = data[i].tuesdayOpen;
-      wednesdayOpen = data[i].wednesdayOpen;
-      thursdayOpen = data[i].thursdayOpen;
-      fridayOpen = data[i].fridayOpen;
-      saturdayOpen = data[i].saturdayOpen;
-      sundayOpen = data[i].sundayOpen;
-      mondayClose = data[i].mondayClose;
-      tuesdayClose = data[i].tuesdayClose;
-      wednesdayClose = data[i].wednesdayClose;
-      thursdayClose = data[i].thursdayClose;
-      fridayClose = data[i].fridayClose;
-      saturdayClose = data[i].saturdayClose;
-      sundayClose = data[i].sundayClose;
-      extraImage = data[i].extraImage;
-      distance = distArray[i];
-      duration = durArray[i];
-    }
-  }
+
+//for(var i=0;i<count;i++){
+    //if(data[i]["imageUri"].indexOf(imageURL)!=-1) {
+      name = data[id].name
+      city = data[id].city;
+      area = data[id].area;
+      openInfo = data[id].openInfo;
+      rating = data[id].ratting;
+      restaurantType = data[id].restaurantType;
+      stagEntry = data[id].stagEntry;
+      street = data[id].street;
+      mondayOpen = data[id].mondayOpen;
+      tuesdayOpen = data[id].tuesdayOpen;
+      wednesdayOpen = data[id].wednesdayOpen;
+      thursdayOpen = data[id].thursdayOpen;
+      fridayOpen = data[id].fridayOpen;
+      saturdayOpen = data[id].saturdayOpen;
+      sundayOpen = data[id].sundayOpen;
+      mondayClose = data[id].mondayClose;
+      tuesdayClose = data[id].tuesdayClose;
+      wednesdayClose = data[id].wednesdayClose;
+      thursdayClose = data[id].thursdayClose;
+      fridayClose = data[id].fridayClose;
+      saturdayClose = data[id].saturdayClose;
+      sundayClose = data[id].sundayClose;
+      extraImage = data[id].extraImage;
+      distance = distArray[id];
+      duration = durArray[id];
+      imageURL = data[id].imageUri;
+    //}
+  //}
 var modal = $('#myModal');
 modal.append(`
 <div  class="modal-dialog modal-lg" >
@@ -615,6 +618,12 @@ modal.append(`
           <div class="col-md-6 ml-auto"><h6>Saturday : ${saturdayOpen}-${saturdayClose} </h6></div>
       </div>
 </div>
+<br />
+<div id="reviewRest">
+<br />
+<div class='modal' id='modalRev'></div>
+<li class="divider"></li>
+</div>
 <div class="modal-footer">
     <button type="button" class="btn btn-danger" id="close" data-dismiss="modal">Close</button>
   </div>
@@ -623,6 +632,52 @@ modal.append(`
 </div>
 </div>
 `);
+var user = window.sessionStorage.getItem('user');
+var review = $("#reviewRest");
+if(user){
+  review.prepend(`
+  <button class="btn btn-danger btn-block" id="reviewBut" data-toggle="modal" data-target="#modalRev">REVIEW RESTAURANT</button>
+  `);
+}
+else {
+  review.prepend(`
+  <button class="btn btn-danger btn-block" data-toggle="tooltip" id="revTemp" title="Please Login to Review" data-placement="bottom">REVIEW RESTAURANT</button>
+  `)
+  $('#revTemp').tooltip();
+}
+var username = null;
+if(!user.username){
+  username = "Muffito User"
+} 
+else {
+  username = user.username;
+}
+var revModal = $("#modalRev");
+revModal.append(`
+<div  class="modal-dialog" >
+<div class="modal-content">
+<div class="modal-header">
+    <h4 class="modal-title">${username}</h4>
+</div>
+<div class="modal-body">
+<div class='row'>
+<div class="col-md-6 mr-auto"><h3>Review</h3></div>
+<div class="col-md-6 ml-auto"><select id="restRate" name="restRate">
+<option>1</option>
+<option>2</option>
+<option>3</option>
+<option>4</option>
+<option>5</option>
+</select>
+</div>
+</div>
+<div class="form-group">
+<label for="message">Review</label>
+<textarea class="form-control" id="review" name="review" rows="3"></textarea>
+</div>
+<button type="button" class="btn btn-primary">Submit</button>
+`)
+
 var indicator = $("ul.carousel-indicators");
 var addImages = $("div.carousel-inner");
 var count = 1;

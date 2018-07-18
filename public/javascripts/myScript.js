@@ -34,13 +34,20 @@ firebase.initializeApp(config);
 var user = JSON.parse(window.sessionStorage.getItem("user"));
 var userInfo = $("#userInfo"); 
 if(user) {
-console.log(user); 
+console.log(user);
+var username = null;
+if(!user.username){
+  username = "Muffito User"
+} 
+else {
+  username = user.username;
+}
 userInfo.append(
   `
   <li class="main-nav dropdown ">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown">
       <span class="glyphicon glyphicon-user"></span> 
-      <strong>${user.username || user.firstName+" "+user.lastName}</strong>
+      <strong>${username}</strong>
       <span class="glyphicon glyphicon-chevron-down"></span>
   </a>
   <ul class="main-nav dropdown-menu">
