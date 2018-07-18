@@ -560,7 +560,6 @@ modal.append(`
 <div class="modal-content">
 <div class="modal-header">
     <h4 class="modal-title">${name}</h4>
-    <button type="button" class="close" data-dismiss="modal">&times;</button>
 </div>
 <div class="modal-body">
 <div id="model" class="carousel slide" data-ride="carousel">
@@ -620,18 +619,20 @@ modal.append(`
 </div>
 <br />
 <div id="reviewRest">
-<br />
-<div class='modal' id='modalRev'></div>
 <li class="divider"></li>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-danger" id="close" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-danger" id="myModalClose">Close</button>
   </div>
 </div>
 </div>  
 </div>
 </div>
 `);
+$("#myModalClose").on('click',function(){
+    console.log('Modal code');
+    $("#myModal").modal('hide')
+});
 var user = window.sessionStorage.getItem('user');
 var review = $("#reviewRest");
 if(user){
@@ -675,9 +676,15 @@ revModal.append(`
 <label for="message">Review</label>
 <textarea class="form-control" id="review" name="review" rows="3"></textarea>
 </div>
-<button type="button" class="btn btn-primary">Submit</button>
+<button type="button" class="btn btn-primary" id="submitRev">Submit</button>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger" id="modalRevClose">Close</button>
+</div>
 `)
-
+$("#modalRevClose").on('click',function(){
+  console.log('modal 2');
+  $("#modalRev").modal('hide');
+});
 var indicator = $("ul.carousel-indicators");
 var addImages = $("div.carousel-inner");
 var count = 1;
@@ -695,7 +702,9 @@ for(key in extraImage){
 $('#myModal').on('hidden.bs.modal', function () {
   $('#myModal').empty();
 });
-
+$('#modalRev').on('hidden.bs.modal', function () {
+  $('#modalRev').empty();
+});
 //var carousel
 }
 
