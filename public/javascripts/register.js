@@ -1,42 +1,42 @@
-function tabChange(evt, met) {
-    // Declare all variables
-    var i, tabcontent, tablinks;
+// function tabChange(evt, met) {
+//     // Declare all variables
+//     var i, tabcontent, tablinks;
 
-    // Get all elements with class="tabcontent" and hide them
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
+//     // Get all elements with class="tabcontent" and hide them
+//     tabcontent = document.getElementsByClassName("tabcontent");
+//     for (i = 0; i < tabcontent.length; i++) {
+//         tabcontent[i].style.display = "none";
+//     }
 
-    // Get all elements with class="tablinks" and remove the class "active"
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
+//     // Get all elements with class="tablinks" and remove the class "active"
+//     tablinks = document.getElementsByClassName("tablinks");
+//     for (i = 0; i < tablinks.length; i++) {
+//         tablinks[i].className = tablinks[i].className.replace(" active", "");
+//     }
 
-    // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(met).style.display = "block";
-    evt.currentTarget.className += " active";
-    console.log(met=='phone');
-    if(met=='phone'){
-        document.getElementById('ph').style.display = "block";
-        document.getElementById('regWithPhone').style.display = "block";
-        document.getElementById('regWithEmail').style.display = "none";
-        document.getElementById('em').style.display = "none";
-        document.getElementById('phone').required = true;
-        document.getElementById('email').required = false;
-        document.getElementById('email').value = "";
-    }
-    else {
-        document.getElementById('em').style.display = "block";
-        document.getElementById('regWithEmail').style.display = "block";
-        document.getElementById('regWithPhone').style.display = "none";
-        document.getElementById('ph').style.display = "none";
-        document.getElementById('email').required = true;
-        document.getElementById('phone').required = false;
-        document.getElementById('phone').value = "";
-    }
-}
+//     // Show the current tab, and add an "active" class to the button that opened the tab
+//     document.getElementById(met).style.display = "block";
+//     evt.currentTarget.className += " active";
+//     console.log(met=='phone');
+//     if(met=='phone'){
+//         document.getElementById('ph').style.display = "block";
+//         document.getElementById('regWithPhone').style.display = "block";
+//         document.getElementById('regWithEmail').style.display = "none";
+//         document.getElementById('em').style.display = "none";
+//         document.getElementById('phone').required = true;
+//         document.getElementById('email').required = false;
+//         document.getElementById('email').value = "";
+//     }
+//     else {
+//         document.getElementById('em').style.display = "block";
+//         document.getElementById('regWithEmail').style.display = "block";
+//         document.getElementById('regWithPhone').style.display = "none";
+//         document.getElementById('ph').style.display = "none";
+//         document.getElementById('email').required = true;
+//         document.getElementById('phone').required = false;
+//         document.getElementById('phone').value = "";
+//     }
+// }
 
 document.addEventListener('DOMContentLoaded', function() {
 if (top.location.pathname === '/verify'){
@@ -58,9 +58,9 @@ if (top.location.pathname === '/verify'){
         }
       });
       var appVerifier = window.recaptchaVerifier;
-      phone = getParameterByName("num");
+      phone = window.localStorage.getItem('regPhone');
       //console.log(phone);
-      console.log(window);
+      //console.log(window);
       phone = "+91"+phone;
         firebase.auth().signInWithPhoneNumber(phone, appVerifier)
         .then(function (confirmationResult) {
@@ -79,7 +79,7 @@ if (top.location.pathname === '/verify'){
 
 $('#register').on('submit',function(event){
     event.preventDefault();
-    var ck_name = /^[A-Za-z]{3,20}$/;
+    var ck_name = /^[A-Za-z]{2,20}$/;
     var ck_email = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     var ck_username = /^[A-Za-z0-9_]{1,20}$/;
     var ck_password =  /^[A-Za-z0-9!@#$%^&*()_]{6,20}$/;
@@ -101,17 +101,7 @@ $('#register').on('submit',function(event){
             error = true;
     }
     var age = document.forms["register"]["age"].value;
-    if(!numbers.test(age)){
-            document.forms["register"]["age"].style.borderColor = 'red';
-            $("<span>Invalid Age</span>").addClass('error').insertAfter("#age");
-            error = true;
-    }
     var flatno = document.forms["register"]["flatno"].value;
-    if(!numbers.test(flatno)){
-            document.forms["register"]["flatno"].style.borderColor = 'red';
-            $("<span>Invalid Flat no</span>").addClass('error').insertAfter("#flatno");
-            error = true;
-    }
     var streetName = document.forms["register"]["streetName"].value;
     if(!ck_misctext.test(streetName)){
             document.forms["register"]["streetName"].style.borderColor = 'red';
@@ -211,11 +201,11 @@ $('#register').on('submit',function(event){
         // if(!email){
         if(response =="Success") {
         //var token = xhr.getResponseHeader('x-access-token');
-        //window.localStorage.setItem("token",token);  
+        window.localStorage.setItem("regPhone",phone);  
         window.location.origin = window.location.protocol + "//" 
           + window.location.hostname 
           + (window.location.port ? ':' + window.location.port : '');
-          window.location = window.location.origin+'/verify?num='+phone;
+          window.location = window.location.origin+'/verify';
         //}
         }
       }   
@@ -226,7 +216,7 @@ $('#register').on('submit',function(event){
   $('#otpverify').on('submit',function(event){
     event.preventDefault();
     var code = document.forms['otpverify']['otp'].value;
-    phone = getParameterByName("num");
+    phone = window.localStorage.getItem('regPhone')
     console.log(phone);
     confirmationResult.confirm(code).then(function (result) {
     // User signed in successfully.

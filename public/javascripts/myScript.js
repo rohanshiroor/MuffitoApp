@@ -217,8 +217,9 @@ function valInp(form,field) {
     var formInp = document.forms[form][field].value;
     formInp = $.sanitize(formInp);
     document.forms[form][field].value = formInp;
-    //$(document.forms[form][field]).next().remove();
-    document.forms[form][field].classList.remove('error');
+    $(document.forms[form][field]).next('.error').remove();
+    document.forms[form][field].style.borderColor = '#fff';
+    //$(document.forms[form][field]).empty();
 }
 
 function val_phone() {  
@@ -226,7 +227,8 @@ function val_phone() {
     //alert(phone);
     phone_num = $.sanitize(phone_num);
     document.forms["register"]["phone"].value = phone_num;
-    $(document.forms["register"]["phone"]).next().remove();
+    $(document.forms["register"]["phone"]).next('.error').remove();
+    document.forms["register"]["phone"].style.borderColor = '#fff';
     //document.forms[form][field].style.borderColor = 'black';
 }
 
