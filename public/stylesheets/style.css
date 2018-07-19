@@ -1,6 +1,11 @@
 body {
   font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
 }
+
+input[type=search]::-webkit-search-cancel-button {
+    -webkit-appearance: searchfield-cancel-button;
+}
+
 .fullwidth {
 width:100%;
 margin-left:0;

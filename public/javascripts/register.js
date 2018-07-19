@@ -91,13 +91,13 @@ $('#register').on('submit',function(event){
     var fname = document.forms["register"]["firstname"].value; 
     if(!ck_name.test(fname)){
             document.forms["register"]["firstname"].style.borderColor = 'red';
-            $("<span>Invalid First Name</span>").addClass('error').insertAfter("#firstname");
+            $("<span>Invalid First Name</span>").addClass('error badge badge-light').insertAfter("#firstname");
             error = true;
     }
     var lname = document.forms["register"]["lastname"].value;
     if(!ck_name.test(lname)){
             document.forms["register"]["lastname"].style.borderColor = 'red';
-            $("<span>Invalid Last Name</span>").addClass('error').insertAfter("#lastname");
+            $("<span>Invalid Last Name</span>").addClass('error badge badge-light').insertAfter("#lastname");
             error = true;
     }
     var age = document.forms["register"]["age"].value;
@@ -105,62 +105,62 @@ $('#register').on('submit',function(event){
     var streetName = document.forms["register"]["streetName"].value;
     if(!ck_misctext.test(streetName)){
             document.forms["register"]["streetName"].style.borderColor = 'red';
-            $("<span>Invalid Street Name</span>").addClass('error').insertAfter("#streetName");
+            $("<span>Invalid Street Name</span>").addClass('error badge badge-light').insertAfter("#streetName");
             error = true;
     }
     var area = document.forms["register"]["area"].value;
     if(!ck_misctext.test(area)){
             document.forms["register"]["area"].style.borderColor = 'red';
-            $("<span>Invalid Area</span>").addClass('error').insertAfter("#area");
+            $("<span>Invalid Area</span>").addClass('error badge badge-light').insertAfter("#area");
             error = true;
     }
     var city = document.forms["register"]["city"].value; 
     if(!ck_name.test(city)){
             document.forms["register"]["city"].style.borderColor = 'red';
-            $("<span>Invalid City</span>").addClass('error').insertAfter("#city");
+            $("<span>Invalid City</span>").addClass('error badge badge-light').insertAfter("#city");
             error = true;
     }
     var pincode = document.forms["register"]["pincode"].value;
     if(!pin.test(pincode)){
             document.forms["register"]["pincode"].style.borderColor = 'red';
-            $("<span>Invalid Pincode</span>").addClass('error').insertAfter("#pincode");
+            $("<span>Invalid Pincode</span>").addClass('error badge badge-light').insertAfter("#pincode");
             error = true;
     }
     var dob = document.forms["register"]["dob"].value;
     var state = document.forms["register"]["state"].value;
     if(!ck_name.test(state)){
             document.forms["register"]["state"].style.borderColor = 'red';
-            $("<span>Invalid State</span>").addClass('error').insertAfter("#state");
+            $("<span>Invalid State</span>").addClass('error badge badge-light').insertAfter("#state");
             error = true;
     }
     var country = document.forms["register"]["country"].value;
     if(!ck_name.test(country)){
             document.forms["register"]["country"].style.borderColor = 'red';
-            $("<span>Invalid Country</span>").addClass('error').insertAfter("#country");
+            $("<span>Invalid Country</span>").addClass('error badge badge-light').insertAfter("#country");
             error = true;
     }
     var email = document.forms["register"]["email"].value;
     if(!ck_email.test(email) && email!=''){
             document.forms["register"]["email"].style.borderColor = 'red';
-            $("<span>Invalid Email</span>").addClass('error').insertAfter("#email");
+            $("<span>Invalid Email</span>").addClass('error badge badge-light').insertAfter("#email");
             error = true;
     }
     var username = document.forms["register"]["username"].value;
     if(!ck_username.test(username)){
             document.forms["register"]["username"].style.borderColor = 'red';
-            $("<span>Invalid Username</span>").addClass('error').insertAfter("#username");
+            $("<span>Invalid Username</span>").addClass('error badge badge-light').insertAfter("#username");
             error = true;
     }
     var phone = document.forms["register"]["phone"].value;
     if(!ck_phone.test(phone) && phone!=''){
             document.forms["register"]["phone"].style.borderColor = 'red';
-            $("<span>Invalid Phone Number</span>").addClass('error').insertAfter("#phone");
+            $("<span>Invalid Phone Number</span>").addClass('error badge badge-light').insertAfter("#phone");
             error = true;
     }
     var password = document.forms["register"]["password"].value;
     if(!ck_password.test(password)){
             document.forms["register"]["password"].style.borderColor = 'red';
-            $("<span>Invalid Password</span>").addClass('error').insertAfter("#password");
+            $("<span>Invalid Password</span>").addClass('error  badge badge-light').insertAfter("#password");
             error = true;
     }
     if (error){
