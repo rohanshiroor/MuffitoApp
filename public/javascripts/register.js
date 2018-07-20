@@ -161,6 +161,7 @@ $('#register').on('submit',function(event){
     if(!ck_password.test(password)){
             document.forms["register"]["password"].style.borderColor = 'red';
             $("<span>Invalid Password</span>").addClass('error  badge badge-light').insertAfter("#password");
+
             error = true;
     }
     if (error){
@@ -251,6 +252,7 @@ $('#register').on('submit',function(event){
               success:function(response,textStatus,xhr){
                 if(response=="Success"){
                   var userId = xhr.getResponseHeader('x-access-uid');
+                  window.sessionStorage.setItem('uid',userId);
                   firebase.database().ref('/users/' + userId).once('value')
                   .then(function(snapshot) {
                     var user = snapshot.val();

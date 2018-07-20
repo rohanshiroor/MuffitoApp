@@ -49,6 +49,7 @@ callbacks: {
               success:function(response,textStatus,xhr){
                 if(response=="Success"){
                   var userId = xhr.getResponseHeader('x-access-uid');
+                  window.sessionStorage.setItem('uid',userId);
                   firebase.database().ref('/users/' + userId).once('value')
                   .then(function(snapshot) {
                     var user = snapshot.val();
@@ -134,6 +135,7 @@ $('#login').on('submit',function(event){
               success:function(response,textStatus,xhr){
                 if(response=="Success"){
                   var userId = xhr.getResponseHeader('x-access-uid');
+                  window.sessionStorage.setItem('uid',userId);
                   firebase.database().ref('/users/' + userId).once('value')
                   .then(function(snapshot) {
                     var user = snapshot.val();

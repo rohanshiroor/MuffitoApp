@@ -40,17 +40,15 @@ body {
     padding: 0;
     list-style: none
   }
- 
- .rating {
-  font-size: 48px;
-  color: orange;
-  display: inline-block;
-  overflow: hidden;
-}
-.rating::before { 
-  content: "★★★★★" 
-}
-  
+  .rating {
+      font-size: 48px;
+      color: orange;
+      display: inline-block;
+      overflow: hidden;
+    }
+    .rating::before { 
+      content: "★★★★★" 
+    }
   /*----------------------------*\
       Buttons
   \*----------------------------*/

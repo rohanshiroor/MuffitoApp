@@ -289,19 +289,17 @@ function pageChange(evt,page){
 }
 
 function signOut(){
-  var token = window.sessionStorage.getItem("token");
+  //var token = window.sessionStorage.getItem("token");
   firebase.auth().signOut()
     .then(function() {
       $.ajax({
         url:'/home/signout',
         method:'GET',
-        headers: {
-          'x-access-token':token
-        },
         success:function(response){
           if(response=='Success'){
             window.sessionStorage.removeItem("token");
             window.sessionStorage.removeItem("user");
+            window.sessionStorage.removeItem('uid');
             window.location.origin = window.location.protocol + "//" 
             + window.location.hostname 
             + (window.location.port ? ':' + window.location.port : '');
