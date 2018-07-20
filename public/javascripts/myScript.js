@@ -55,8 +55,9 @@ userInfo.append(
           <div class="navbar-login">
               <div class="row">
                   <div class="col-lg-4">
-                      <p class="text-center">
-                          <span class="glyphicon glyphicon-user icon-size"></span>
+                      <p class="text-center ">
+                        <img src = '' class=" img-rounded img-responsive aria-hidden="true"" onerror="this.onerror=null;this.src='images/bar_substitute.jpg'; "> 
+
                       </p>
                   </div>
                   <div class="col-lg-8">

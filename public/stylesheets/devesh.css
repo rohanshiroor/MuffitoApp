@@ -19,8 +19,8 @@
     
     .icon-size
     {
-        font-size: 87px;
-    }
+	max-height: 315px ;
+     max-width: 315px ;	 }
 
 .slick-slider
 {
