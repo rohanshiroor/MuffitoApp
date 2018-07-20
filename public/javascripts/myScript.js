@@ -10,6 +10,17 @@ var restData;
 	};
 })(jQuery);
 
+function snackbar() {
+    // Get the snackbar DIV
+    var x = document.getElementById("snackbar");
+
+    // Add the "show" class to DIV
+    x.className = "show";
+
+    // After 3 seconds, remove the show class from DIV
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+
 function getParameterByName(name) {
     url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
@@ -55,8 +66,9 @@ userInfo.append(
           <div class="navbar-login">
               <div class="row">
                   <div class="col-lg-4">
-                      <p class="text-center">
-                          <span class="glyphicon glyphicon-user icon-size"></span>
+                      <p class="text-center ">
+                        <img src = '' class=" img-rounded img-responsive aria-hidden="true"" onerror="this.onerror=null;this.src='images/bar_substitute.jpg'; "> 
+
                       </p>
                   </div>
                   <div class="col-lg-8">
