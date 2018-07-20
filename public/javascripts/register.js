@@ -160,7 +160,8 @@ $('#register').on('submit',function(event){
     var password = document.forms["register"]["password"].value;
     if(!ck_password.test(password)){
             document.forms["register"]["password"].style.borderColor = 'red';
-            $("<span>Invalid Password</span>").addClass('error badge badge-light').insertAfter("#password");
+            $("<span>Invalid Password</span>").addClass('error  badge badge-light').insertAfter("#password");
+
             error = true;
     }
     if (error){
