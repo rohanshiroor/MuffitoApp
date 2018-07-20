@@ -10,7 +10,8 @@
         <link type="text/css" rel="stylesheet" href="../stylesheets/devslider.min.css"/>
         <link rel="shortcut icon" href="../images/favicon.ico">
         <link rel="stylesheet" href="../stylesheets/style.css">
-        <link type="text/css" rel="stylesheet" href="../stylesheets/search.css"/>
+   		<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+		<link type="text/css" rel="stylesheet" href="../stylesheets/search.css"/>
    </head>
    <body>
       <header>
@@ -63,7 +64,8 @@
 		<div class="card wrapreg">
 		       <div class="fullwidth">
         <form name="updateProf" id="updateProf">
-          <div class="form-group">
+          <h2>Update Your Profile Details</h2>
+		  <div class="form-group">
             <label for="First Name">First Name:</label>
             <input class="form-control" id="firstname" type="text" name="firstname" placeholder="First Name" required="" onblur="valInp('updateProf','firstname')">
           </div>
@@ -79,6 +81,10 @@
               <label for="Age">Age:</label>
               <input class="form-control" id="age" type="number" name="age" placeholder="Age" onblur="valInp('updateProf','age')">
             </div>
+			<div class='form-group'>
+          <label for=''>Change Profile Picture</label>
+          <input type='file' class='form-control-file' name='' id='' multiple name=''>
+          </div>
           <div class="form-group">
               <label for="Flat No.">Flat No:</label>
               <input class="form-control" id="flatno" type="number" name="flatno" placeholder="Flat Number" onblur="valInp('updateProf','flatno')">

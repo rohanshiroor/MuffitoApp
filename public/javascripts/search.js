@@ -660,7 +660,26 @@ modal.append(`
 </div>
 <br />
 <div id="reviewRest">
-<li class="divider"></li>
+<br>
+ 
+ <h4><strong>Reviews</strong></h4>
+ 
+ <div class="modal-footer" style="text-align:left;">
+        <strong>Username :</strong>
+			4.2
+	<span class="fa fa-star checked" style="color: orange;"></span>
+    
+	: REVIEW2An example of Bootstrap modal With custom header and content in the body.
+      </div>
+ 
+ <div class="modal-footer" style="text-align:left;">
+        <strong>Username :</strong>
+		3.6
+	<span class="fa fa-star checked" style="color: orange;"></span>
+     : REVIEW2An example of Bootstrap modal With custom header and content in the body.
+      </div>
+
+
 <div id='userReview'></div>
 </div>
 <div class="modal-footer">
