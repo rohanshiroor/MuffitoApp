@@ -28,6 +28,10 @@ document.addEventListener("DOMContentLoaded",function() {
   //count=count+1;
 
 });
+var cw = window.rating1.clientWidth; // save original 100% pixel width
+function rating( rating ) {
+  window.rating1.style.width = Math.round(cw * (rating / 5)) + 'px';
+}
 function calcDistTime(dataArray){ 
   //console.log("Yes");
   var distArray = [];
@@ -617,14 +621,10 @@ modal.append(`
     <h5 class="modal-title">${name}</h5>
   </div><br>
   <div  class= "col-md-6 mr-auto row">   <h6>Rating  : </h6>
+      ${rating}
       <span class="fa fa-star checked" style="color: orange;"></span>
-      <span class="fa fa-star checked"  style="color: orange;"></span>
-      <span class="fa fa-star checked"style="color: orange;"></span>
-      <span class="fa fa-star"></span>
-      <span class="fa fa-star"></span>
-  </div><br>
   <div>
-      <h6>Address Of the restraunts: ${street},${area},${city}</h6>
+      <h6>Address Of the restraunts:<br> ${street},${area},${city}</h6>
   </div><br>
   <br>
 <div class="row">
