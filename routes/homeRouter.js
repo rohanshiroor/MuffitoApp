@@ -20,7 +20,7 @@ homeRouter.get('/',Verify.verifyUser,function(req,res){
     Verify.setOpts(token);
     res.header('x-access-uid',uid).send('Success');
 });
-homeRouter.get('/signout',Verify.verifyUser,function(req,res){
+homeRouter.get('/signout',function(req,res){
     //res.redirect('/home/add');
     //var token = req.headers['x-access-token'];
     //console.log(req.decoded.uid);

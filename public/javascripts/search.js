@@ -128,7 +128,8 @@ bodyDiv.append(`<img src="./images/no_restaurant2.jpg" alt="No Results Found! Pl
 
 function getData(){
   var dataArray = [];
-  window.localStorage.removeItem('snapshot');
+  var restKeys = [];
+  //window.localStorage.removeItem('snapshot');
   var city = window.localStorage.getItem("minCity");
   var dist = window.localStorage.getItem("minDist")
   //var latArray = [];
@@ -141,11 +142,13 @@ function getData(){
     snapshot.forEach(function(data){
         //console.log(data.key);
         dataArray.push(data.val());
+        restKeys.push(data.key);
   }); 
-    console.log(dataArray);
+    //console.log(dataArray);
     calcDistTime(dataArray);
     Data(dataArray);
     window.localStorage.setItem("snapshot",JSON.stringify(dataArray));
+    window.localStorage.setItem("restKeys",JSON.stringify(restKeys));
   });
 }
 else {
@@ -493,6 +496,15 @@ function restSearch() {
 
 function knowMore(evt,id){
 var data = JSON.parse(window.localStorage.getItem("snapshot"));
+var restKeys = JSON.parse(window.localStorage.getItem('restKeys'));
+var review = data[id].reviews;
+var uid = window.sessionStorage.getItem('uid');
+var user = window.sessionStorage.getItem('user');
+var usernames = [];
+var comment = "";
+var rateKey = "";
+var userRating = "";
+console.log(review);
 //console.log(name);
 var count = Object.keys(data).length;
 // var city;
@@ -521,9 +533,31 @@ var count = Object.keys(data).length;
 // fridayCloseArray;
 // saturdayCloseArray;
 // sundayCloseArray;
+var username = null;
+if(!user.username){
+  username = "Muffito User"
+} 
+else {
+  username = user.username;
+}
 var distArray = JSON.parse(window.localStorage.getItem("distance"));
 var durArray = JSON.parse(window.localStorage.getItem("duration"));
-
+    for(key in review){
+      if(review[key].uid==uid){
+        comment = review[key].comments;
+        //userRating = parseInt(review[key].ratings);
+        rateKey = key;
+        usernames.push(username)
+      }
+      else{
+        firebase.database().ref('users/'+review[key].uid).once('value')
+        .then(function(snapshot){
+            var users = snapshot.val();
+            usernames.push(user.username);
+        });
+      }
+    }
+    console.log(usernames);
 //for(var i=0;i<count;i++){
     //if(data[i]["imageUri"].indexOf(imageURL)!=-1) {
       name = data[id].name
@@ -620,6 +654,7 @@ modal.append(`
 <br />
 <div id="reviewRest">
 <li class="divider"></li>
+<div id='userReview'></div>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-danger" id="myModalClose">Close</button>
@@ -633,7 +668,6 @@ $("#myModalClose").on('click',function(){
     console.log('Modal code');
     $("#myModal").modal('hide')
 });
-var user = window.sessionStorage.getItem('user');
 var review = $("#reviewRest");
 if(user){
   review.prepend(`
@@ -646,13 +680,7 @@ else {
   `)
   $('#revTemp').tooltip();
 }
-var username = null;
-if(!user.username){
-  username = "Muffito User"
-} 
-else {
-  username = user.username;
-}
+
 var revModal = $("#modalRev");
 revModal.append(`
 <div  class="modal-dialog" >
@@ -674,7 +702,7 @@ revModal.append(`
 </div>
 <div class="form-group">
 <label for="message">Review</label>
-<textarea class="form-control" id="review" name="review" rows="3"></textarea>
+<textarea class="form-control" id="review" name="review" rows="3">${comment}</textarea>
 </div>
 <button type="button" class="btn btn-primary" id="submitRev">Submit</button>
 <div class="modal-footer">
@@ -704,6 +732,36 @@ $('#myModal').on('hidden.bs.modal', function () {
 });
 $('#modalRev').on('hidden.bs.modal', function () {
   $('#modalRev').empty();
+});
+$("#submitRev").on('click',function(){
+  var key = restKeys[id];
+  console.log(uid);
+  var review = document.getElementById("review").value;
+  var textMsg = $.sanitize(review);
+  var city = window.localStorage.getItem("minCity");
+  var restRate  = document.getElementById("restRate");
+  var restRateBy = restRate.options[restRate.selectedIndex].innerHTML;
+  //firebase.database().ref().child()
+  if(rateKey){
+    firebase.database().ref('restaurants/' + city).child(key).child('reviews').child(rateKey).set({
+      uid:uid,
+      ratings:restRateBy,
+      comments:textMsg
+    })
+    .then(function(){
+      $("#modalRev").modal('hide');
+    });
+}
+else{
+  firebase.database().ref('restaurants/' + city).child(key).child('reviews').push({
+    uid:uid,
+    ratings:restRateBy,
+    comments:textMsg
+  })
+  .then(function(){
+    $("#modalRev").modal('hide');
+  });
+}
 });
 //var carousel
 }
