@@ -28,18 +28,21 @@ homeRouter.get('/signout',function(req,res){
     res.end("Success");
 });
 homeRouter.get('/add',function(req,res){
+    res.set('Cache-Control','public,max-age=300,s-maxage=600');
     if (Verify.verifyOpts())
     res.sendFile(path.join(__dirname,'../views/home_addRestaurant.html'));
     else 
     res.redirect('/login');
 });
 homeRouter.get('/update',function(req,res){
+    res.set('Cache-Control','public,max-age=300,s-maxage=600');
     if (Verify.verifyOpts())
     res.sendFile(path.join(__dirname,'../views/home_updateProfile.html'));
     else 
     res.redirect('/login');
 });
 homeRouter.get('/contactus',function(req,res){
+    res.set('Cache-Control','public,max-age=300,s-maxage=600');
     if (Verify.verifyOpts())
     res.sendFile(path.join(__dirname,'../views/home_contactUs.html'));
     else 

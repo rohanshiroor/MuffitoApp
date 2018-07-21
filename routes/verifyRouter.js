@@ -9,6 +9,7 @@ const verifyRouter = express.Router();
 verifyRouter.use(bodyParser.json());
 verifyRouter.get('/',function(req,res){
     //res.send('Correcto');
+    res.set('Cache-Control','public,max-age=300,s-maxage=600');
     res.sendFile(path.join(__dirname,'../views/verify.html'));
 });
 verifyRouter.post('/',function(req,res){
