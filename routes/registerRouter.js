@@ -120,7 +120,13 @@ registerRouter.post('/',function(req,res){
       var email = req.body.email;
       var phone = "+91"+req.body.phone;
       //console.log(email);
-    if(!email){ 
+      if(req.body.email==null){
+        email = "";
+      }
+      else {
+      email = req.body.email;
+      }
+    if(email!=null){ 
       
       admin_app.auth().createUser({
         emailVerified: false,
@@ -131,12 +137,14 @@ registerRouter.post('/',function(req,res){
         .then(function(userRecord) {
           // See the UserRecord reference doc for the contents of userRecord.
           //console.log("Successfully created new user:", userRecord.uid);
+          
           firebase.database().ref('users/' + userRecord.uid).set({
             userName:req.body.username,
             password: req.body.password,
             firstName:req.body.firstname,
             lastName: req.body.lastname,
             phone: phone,
+            email:email,
             age: req.body.age,
             dateOfBirth:req.body.dob,
             state: req.body.state,
@@ -157,7 +165,7 @@ registerRouter.post('/',function(req,res){
         })
         .catch(function(error) {
           //console.log("Error creating new user:", error);
-          res.send("Error");
+          res.send(error.message);
         });
     } 
     else if(!email && !phone) {

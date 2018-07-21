@@ -9,22 +9,33 @@ document.addEventListener("DOMContentLoaded",function() {
   if(token) {
    $("#tab0").show();
    $("#tab1").show();
-   $("#tab2").show();
+   $("#tab2").hide();
    $("#tab3").show();
-   $("#tab4").hide();
+   $("#tab4").show();
    $("#tab5").hide();
+   $("#tab6").hide();
   }
   else {
    $("#tab0").hide();
    $("#tab1").hide();
-   $("#tab2").hide();
+   $("#tab2").show();
    $("#tab3").hide();
-   $("#tab4").show();
-   $("#tab5").show(); 
+   $("#tab4").hide();
+   $("#tab5").show();
+   $("#tab6").show();
+   $('[data-toggle="tooltip"]').tooltip(); 
   }
   //count=count+1;
 
 });
+
+var cw = window.rating1.clientWidth; // save original 100% pixel width
+
+function rating( rating ) {
+  window.rating1.style.width = Math.round(cw * (rating / 5)) + 'px';
+}
+
+
 function calcDistTime(dataArray){ 
   //console.log("Yes");
   var distArray = [];
@@ -78,6 +89,7 @@ function rad2deg(rad) {
 function Data(data) {
   //console.log("Yes");
   //durationArray.push(duration);
+  //console.log(data);
   var bodyDiv = $('#restCards');
   $('#restCards').empty();
   var distArray = JSON.parse(window.localStorage.getItem('distance'));
@@ -86,7 +98,7 @@ function Data(data) {
   //var itm = window.localStorage.getItem("item");
   if(data.length!=0) {
   for(var i=0;i<data.length;i++){
-  if(distArray[i]<10.0){  
+  if(distArray[i]<10.0 && data[i].name){  
   bodyDiv.append(`
       <div class="thumbnail sized">              
       <img src = '${data[i].imageUri}' onerror="this.onerror=null;this.src='images/bar_substitute.jpg';"> 
@@ -105,7 +117,7 @@ function Data(data) {
         <h6>Address  : </h6><p>${data[i].street},${data[i].area}</p>
         <p>${data[i].city}</p>
         <br />
-      <button type="button" onclick = "knowMore(event,'${data[i].imageUri}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+      <button type="button" onclick = "knowMore(event,'${i}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
       Know More
       </button>
       </div>
@@ -124,24 +136,55 @@ bodyDiv.append(`<img src="./images/no_restaurant2.jpg" alt="No Results Found! Pl
 
 function getData(){
   var dataArray = [];
+  var restKeys = [];
+  //var users = [];
+  var users = {};
+  //window.localStorage.removeItem('snapshot');
   var city = window.localStorage.getItem("minCity");
+  var dist = window.localStorage.getItem("minDist")
   //var latArray = [];
   //var lngArray = [];
-  console.log(city);
+  //console.log(city);
+  if(dist < 100){
+    firebase.database().ref('users').once('value',function(snapshot){
+      snapshot.forEach(function(data){
+          //console.log(data.val());
+          users[data.key] = data.val().userName;
+          //users.push(obj);
+  });  
   var restRef = firebase.database().ref().child('restaurants').child(city)
   restRef.orderByValue().once('value',function(snapshot){
+    //console.log(snapshot.val());
     snapshot.forEach(function(data){
         //console.log(data.key);
         dataArray.push(data.val());
+        restKeys.push(data.key);
   }); 
-    //console.log(dataArray);
+    //console.log(users);
     calcDistTime(dataArray);
     Data(dataArray);
     window.localStorage.setItem("snapshot",JSON.stringify(dataArray));
+    window.localStorage.setItem("restKeys",JSON.stringify(restKeys));
   });
+  window.sessionStorage.setItem('users',JSON.stringify(users));
+});
+}
+else {
+  var bodyDiv = $('#restCards');
+  $('#restCards').empty();
+  bodyDiv.append(`<img src="./images/no_restaurant2.jpg" alt="No Results Found! Please Try Again!">`);
+}
 }
 
-$("#searchRest").change(function restSearch() {
+// $("#searchRest").on('change',function(){
+//   restSearch();
+// });
+
+// $("#searchText").on('input',function(){
+//   restSearch();
+// });
+
+function restSearch() {
   var data = JSON.parse(window.localStorage.getItem("snapshot"));
   //console.log(imageUrlArray);
   nameArray = [];
@@ -156,9 +199,9 @@ $("#searchRest").change(function restSearch() {
   costArray = [];
   costArrayhigh = [];
   restaurantTypeArray = [];
+  restId = [];
   distTextArray = JSON.parse(window.localStorage.getItem("distance"));//distTextArray;
   durationArray = JSON.parse(window.localStorage.getItem("duration"));
-
   $('#restCards').empty();
   var ck_misctext = /^[A-Za-z0-9 ]+$/;
   var error = false;
@@ -178,7 +221,8 @@ $("#searchRest").change(function restSearch() {
   if (error) {
     return false
   }
-  var count = Object.keys(data).length;
+  if(data)
+    var count = Object.keys(data).length;
   //console.log(count);
   var flag = 0;
   var filterVal = 0;
@@ -195,7 +239,7 @@ $("#searchRest").change(function restSearch() {
       break;
     }
     case "Within 25 km":
-    {
+    {   
       filterVal = 25;
       break;
     }
@@ -203,22 +247,30 @@ $("#searchRest").change(function restSearch() {
       filterVal = 10;
   }
   for(var i=0;i<count;i++){
-    if(distTextArray[i]<filterVal){
+    if(distTextArray[i]<filterVal && data[i].name){
     for(key in data[i]){
       data[i][key] = data[i][key].toString();
-      // console.log(data[i]);
-      if(data[i][key].indexOf(searText)!=-1) {
+      if((data[i][key].toLowerCase()).indexOf(searText.toLowerCase())!=-1) {
         flag = 1;
       }
-      else if(stagEntry && (data[i].stagEntry == "yes" || data[i].stagEntry == "Yes"))
+      //console.log(data[i].stagEntry=="yes");
+      // if(stagEntry){
+      // if(data[i].stagEntry == "yes")
+      //   flag = 1;
+      // else 
+      //   flag = 0;
+      // }
+      if(openNow){
+      if(data[i].openInfo == "open now" )
         flag = 1;
-      else if(openNow && data[i].openInfo == "open now" )
-        flag = 1;
+      else  
+        flag = 0;
+      }
     } 
-    if(stagEntry && (data[i].stagEntry != "yes" || data[i].stagEntry != "Yes"))
-          flag = 0;
-    if(openNow && data[i].openInfo != "open now" )
-          flag = 0;
+    // if(stagEntry && (data[i].stagEntry != "yes" || data[i].stagEntry != "Yes"))
+    //       flag = 0;
+    // if(openNow && data[i].openInfo != "open now" )
+    //       flag = 0;
     if (flag == 1) {
       nameArray.push(data[i].name);
       imageUriArray.push(data[i].imageUri);
@@ -229,6 +281,7 @@ $("#searchRest").change(function restSearch() {
       streetArray.push(data[i].street);
       distanceArray.push(distTextArray[i]);
       duration.push(durationArray[i]);
+      restId.push(i);
       //console.log(data[i]);
     }
     flag = 0;
@@ -240,7 +293,7 @@ $("#searchRest").change(function restSearch() {
     case "Rating":
     {   
         var temp = null;
-        console.log("R");
+        //console.log("R");
         for(var i=0;i<ratingArray.length;i++){
           for(var j=0;j<ratingArray.length-i-1;j++){
               if(ratingArray[j] < ratingArray[j+1]){
@@ -279,7 +332,7 @@ $("#searchRest").change(function restSearch() {
     case "Cost-High to Low":
     { 
       var temp = null;
-      console.log("CHL");
+      // console.log("CHL");
       for(var i=0;i<restaurantTypeArray.length;i++){
         if(restaurantTypeArray[i]=="cheap")
         costArrayhigh.push(0);
@@ -330,7 +383,7 @@ $("#searchRest").change(function restSearch() {
     case "Cost-Low to High":
     {
       var temp = null;
-      console.log("CLH");
+      //console.log("CLH");
       for(var i=0;i<restaurantTypeArray.length;i++){
         if(restaurantTypeArray[i]=="cheap")
         costArray.push(0);
@@ -429,14 +482,14 @@ $("#searchRest").change(function restSearch() {
       
       bodyDiv.append(`
       <div class="thumbnail sized">              
-      <img src = '${imageUriArray[i]}'   > 
+      <img src = '${imageUriArray[i]}' onerror="this.onerror=null;this.src='images/bar_substitute.jpg';"> 
       <div class="caption">
         <h3>${nameArray[i]}</h5>
         <div class="row">
         <div class="col-md-6 mr-auto"><p >${ratingArray[i]}</p></div>
         <div class="col-md-6 ml-auto"><p >${restaurantTypeArray[i]}</p></div>
         </div>
-        <br />
+        <br/>
         <div class="row">
         <div class="col-md-6 mr-auto"><p >${distanceArray[i]} km</p></div>
         <div class="col-md-6 ml-auto"><p >${duration[i]}</p></div>
@@ -445,7 +498,7 @@ $("#searchRest").change(function restSearch() {
         <p >${streetArray[i]},${areaArray[i]}</p>
         <p >${cityArray[i]}</p>
         <br />
-      <button type="button" onclick = "knowMore(event,'${imageUriArray[i]}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+      <button type="button" onclick = "knowMore(event,'${restId[i]}')" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
       Know More
       </button>
       </div>
@@ -456,12 +509,18 @@ $("#searchRest").change(function restSearch() {
   else {
     bodyDiv.append(`<img src="./images/no_restaurant2.jpg" alt="No Results Found! Please Try Again!">`);
   }
-});
+}
 
-function knowMore(evt,imageURL){
+function knowMore(evt,id){
 var data = JSON.parse(window.localStorage.getItem("snapshot"));
-//console.log(name);
+var reviews = data[id].reviews;
+var user = window.sessionStorage.getItem('user');
+users = JSON.parse(window.sessionStorage.getItem('users'));
 var count = Object.keys(data).length;
+//var usernames = [];
+//var userRating = "";
+//console.log(reviews);
+//console.log(name);
 // var city;
 // areaArray;
 // extraImageArray;
@@ -488,43 +547,52 @@ var count = Object.keys(data).length;
 // fridayCloseArray;
 // saturdayCloseArray;
 // sundayCloseArray;
+var username = null;
+if(user){
+  if(!user.username)
+  username = "Muffito User" 
+  else
+  username = user.username;
+}
 var distArray = JSON.parse(window.localStorage.getItem("distance"));
 var durArray = JSON.parse(window.localStorage.getItem("duration"));
-for(var i=0;i<count;i++){
-    if(data[i]["imageUri"].indexOf(imageURL)!=-1) {
-      city = data[i].city;
-      area = data[i].area;
-      openInfo = data[i].openInfo;
-      rating = data[i].ratting;
-      restaurantType = data[i].restaurantType;
-      stagEntry = data[i].stagEntry;
-      street = data[i].street;
-      mondayOpen = data[i].mondayOpen;
-      tuesdayOpen = data[i].tuesdayOpen;
-      wednesdayOpen = data[i].wednesdayOpen;
-      thursdayOpen = data[i].thursdayOpen;
-      fridayOpen = data[i].fridayOpen;
-      saturdayOpen = data[i].saturdayOpen;
-      sundayOpen = data[i].sundayOpen;
-      mondayClose = data[i].mondayClose;
-      tuesdayClose = data[i].tuesdayClose;
-      wednesdayClose = data[i].wednesdayClose;
-      thursdayClose = data[i].thursdayClose;
-      fridayClose = data[i].fridayClose;
-      saturdayClose = data[i].saturdayClose;
-      sundayClose = data[i].sundayClose;
-      extraImage = data[i].extraImage;
-      distance = distArray[i];
-      duration = durArray[i];
-    }
-  }
+    //console.log(usernames);
+//for(var i=0;i<count;i++){
+    //if(data[i]["imageUri"].indexOf(imageURL)!=-1) {
+      name = data[id].name
+      city = data[id].city;
+      area = data[id].area;
+      openInfo = data[id].openInfo;
+      rating = data[id].ratting;
+      restaurantType = data[id].restaurantType;
+      //stagEntry = data[id].stagEntry;
+      street = data[id].street;
+      mondayOpen = data[id].mondayOpen;
+      tuesdayOpen = data[id].tuesdayOpen;
+      wednesdayOpen = data[id].wednesdayOpen;
+      thursdayOpen = data[id].thursdayOpen;
+      fridayOpen = data[id].fridayOpen;
+      saturdayOpen = data[id].saturdayOpen;
+      sundayOpen = data[id].sundayOpen;
+      mondayClose = data[id].mondayClose;
+      tuesdayClose = data[id].tuesdayClose;
+      wednesdayClose = data[id].wednesdayClose;
+      thursdayClose = data[id].thursdayClose;
+      fridayClose = data[id].fridayClose;
+      saturdayClose = data[id].saturdayClose;
+      sundayClose = data[id].sundayClose;
+      extraImage = data[id].extraImage;
+      distance = distArray[id];
+      duration = durArray[id];
+      imageURL = data[id].imageUri;
+    //}
+  //}
 var modal = $('#myModal');
 modal.append(`
 <div  class="modal-dialog modal-lg" >
 <div class="modal-content">
 <div class="modal-header">
     <h4 class="modal-title">${name}</h4>
-    <button type="button" class="close" data-dismiss="modal">&times;</button>
 </div>
 <div class="modal-body">
 <div id="model" class="carousel slide" data-ride="carousel">
@@ -547,22 +615,19 @@ modal.append(`
   <div>
     <h5 class="modal-title">${name}</h5>
   </div><br>
+
   <div  class= "col-md-6 mr-auto row">   <h6>Rating  : </h6>
-      <span class="fa fa-star checked" style="color: orange;"></span>
-      <span class="fa fa-star checked"  style="color: orange;"></span>
-      <span class="fa fa-star checked"style="color: orange;"></span>
-      <span class="fa fa-star"></span>
-      <span class="fa fa-star"></span>
-  </div><br>
+
+	${rating}
+	<span class="fa fa-star checked" style="color: orange;"></span>
+     </div>
   <div>
-      <h6>Address Of the restraunts: ${street},${area},${city}</h6>
+      <h6>Address Of the restraunts:<br> ${street},${area},${city}</h6>
   </div><br>
-  <div class="row">
-    <div class="col-md-6 mr-auto"><h6>Location: ${street} ${area}</h6></div>
-</div><br>
+  <br>
 <div class="row">
     <div class="col-md-6 mr-auto"><h6>Open Info : ${openInfo} </h6></div>
-    <div class="col-md-6 ml-auto"><h6>Stag Entry : ${stagEntry} </h6></div>
+    <div class="col-md-6 ml-auto"><h6>Stag Entry : Updating Soon </h6></div>
 </div><br>
 <div class="row">
 <div class="col-md-6 mr-auto"><h6>Distance : ${distance} km </h6></div>
@@ -583,16 +648,69 @@ modal.append(`
           <div class="col-md-6 mr-auto"><h6>Friday : ${fridayOpen}-${fridayClose} </h6></div>
           <div class="col-md-6 ml-auto"><h6>Saturday : ${saturdayOpen}-${saturdayClose} </h6></div>
       </div>
-
 </div>
+<br />
+<div id="reviewRest"></div>
+<br>
+<div id='userReview'></div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-danger" id="close" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-danger" id="myModalClose">Close</button>
   </div>
 </div>
 </div>  
 </div>
 </div>
 `);
+$("#myModalClose").on('click',function(){
+    //console.log('Modal code');
+    $("#myModal").modal('hide')
+});
+//console.log(users);
+var userReview = $("#userReview");
+userReview.empty();
+userReview.append(`<h4><strong>Reviews</strong></h4>`)
+if(!reviews){
+  userReview.append(`
+  <div class="modal-footer" style="text-align:left;">
+  <h4>NO REVIEWS YET. BE THE FIRST ONE TO REVIEW :)</h4>
+  </div>
+  `)
+}
+for(keys in reviews){
+//
+if(!users[keys])
+    revUser = "Muffito User";
+else
+    revUser = users[keys];
+userReview.append(`
+<div class="modal-footer" style="text-align:left;">
+    <strong>${revUser} :</strong>
+			${reviews[keys].ratings}
+	<span class="fa fa-star checked" style="color: orange;"></span>
+    ${reviews[keys].comments}
+  </div>
+`);
+}
+
+var review = $("#reviewRest");
+if(user){
+  review.append(`
+  <button class="btn btn-danger btn-block" id="reviewBut" data-toggle="modal" data-target="#modalRev">REVIEW RESTAURANT</button>
+  `);
+}
+else {
+  review.append(`
+  <button class="btn btn-danger btn-block" data-toggle="tooltip" id="revTemp" title="Please Login to Review" data-placement="bottom">REVIEW RESTAURANT</button>
+  `)
+  $('#revTemp').tooltip();
+}
+
+$("#reviewBut").on('click',function(){
+  giveReview(username,id);
+//$("#modalRev").modal('show');
+});
+
+
 var indicator = $("ul.carousel-indicators");
 var addImages = $("div.carousel-inner");
 var count = 1;
@@ -611,8 +729,177 @@ $('#myModal').on('hidden.bs.modal', function () {
   $('#myModal').empty();
 });
 
+
 //var carousel
 }
+
+function giveReview(username,id){
+  var restKeys = JSON.parse(window.localStorage.getItem('restKeys'));
+  var revModal = $("#modalRev");
+  var data = JSON.parse(window.localStorage.getItem("snapshot"));
+  var reviews = data[id].reviews;
+  var uid = window.sessionStorage.getItem('uid');
+  var comment = "";
+  var rateKey = "";
+  for(keys in reviews){
+    if(reviews[keys].uid==uid){
+      comment = reviews[keys].comments;
+      //userRating = parseInt(review[key].ratings);
+      rateKey = keys;
+    }
+  }
+revModal.append(`
+<div  class="modal-dialog" >
+<div class="modal-content">
+<div class="modal-header">
+    <h4 class="modal-title">${username}</h4>
+</div>
+<div class="modal-body">
+<div class='row'>
+<div class="col-md-6 mr-auto"><h3>Review</h3></div>
+<div class="col-md-6 ml-auto"><select id="restRate" name="restRate">
+<option>1</option>
+<option>2</option>
+<option>3</option>
+<option>4</option>
+<option>5</option>
+</select>
+</div>
+</div>
+<div class="form-group">
+<label for="message">Review</label>
+<textarea class="form-control" id="review" name="review" rows="3">${comment}</textarea>
+</div>
+<button type="button" class="btn btn-primary" id="submitRev">Submit</button>
+<div class="modal-footer">
+    <button type="button" class="btn btn-danger" id="modalRevClose">Close</button>
+</div>
+`)
+
+$("#modalRevClose").on('click',function(){
+  //console.log('modal 2');
+  $("#modalRev").modal('hide');
+});
+$('#modalRev').on('hidden.bs.modal', function () {
+  $('#modalRev').empty();
+});
+
+$("#submitRev").on('click',function(){
+  var key = restKeys[id];
+  //console.log(uid);
+  var review = document.getElementById("review").value;
+  var textMsg = $.sanitize(review);
+  var city = window.localStorage.getItem("minCity");
+  var restRate  = document.getElementById("restRate");
+  var restRateBy = restRate.options[restRate.selectedIndex].innerHTML;
+  var userReview = $("#userReview");
+  //firebase.database().ref().child()
+  if(rateKey){
+    firebase.database().ref('restaurants/' + city).child(key).child('reviews').child(rateKey).set({
+      uid:uid,
+      ratings:restRateBy,
+      comments:textMsg
+    })
+    .then(function(){
+      var newRev =  
+      {
+        uid:uid,
+        ratings:restRateBy,
+        comments:textMsg
+      }
+      data[id].reviews[rateKey] = newRev;
+      window.localStorage.setItem("snapshot",JSON.stringify(data));
+      reviews = data[id].reviews;
+      // /console.log(reviews);
+      userReview.empty();
+      userReview.append(`<h4><strong>Reviews</strong></h4>`)
+      for(keys in reviews){
+        if(!users[keys])
+        revUser = "Muffito User";
+        else
+        revUser = users[keys];
+        userReview.append(`
+        <div class="modal-footer" style="text-align:left;">
+        <strong>${revUser} :</strong>
+        ${reviews[keys].ratings}
+        <span class="fa fa-star checked" style="color: orange;"></span>
+        ${reviews[keys].comments}
+        </div>
+        `);
+      }
+      $("#modalRev").modal('hide');
+    });
+}
+else{
+  var rateRef = firebase.database().ref('restaurants/' + city).child(key).child('reviews').push();
+  rateRef.set({
+    uid:uid,
+    ratings:restRateBy,
+    comments:textMsg
+  })
+  .then(function(){
+      var newRev = {};
+      var obj =  
+      {
+        uid:uid,
+        ratings:restRateBy,
+        comments:textMsg
+      }
+      newRev[rateRef.key] = obj;
+      if(!users[uid])
+        revUser = "Muffito User";
+        else
+        revUser = users[uid];
+//console.log(review);
+      if(!reviews){
+        userReview.empty();
+        userReview.append(`<h4><strong>Reviews</strong></h4>`)
+      }
+          userReview.append(`
+          <div class="modal-footer" style="text-align:left;">
+          <strong>${revUser} :</strong>
+          ${obj.ratings}
+          <span class="fa fa-star checked" style="color: orange;"></span>
+          ${obj.comments}
+          </div>
+      `);
+      //console.log(newRev);
+      if(!data[id].reviews)
+        data[id]['reviews'] = newRev;      
+      else
+        data[id].reviews.push(newRev);
+        window.localStorage.setItem("snapshot",JSON.stringify(data));
+      reviews = data[id].reviews;
+    $("#modalRev").modal('hide');
+  });
+}
+});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //  <!-- Modal Header -->

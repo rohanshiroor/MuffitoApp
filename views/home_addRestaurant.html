@@ -3,24 +3,27 @@
     <title>Home</title>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
     <link rel="dns-prefetch" href="https://maps.googleapis.com">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link type="text/css" rel="stylesheet" href="../stylesheets/devesh.css"/>
     <link type="text/css" rel="stylesheet" href="../stylesheets/devesh-theme.css"/>
     <link type="text/css" rel="stylesheet" href="../stylesheets/devslider.min.css"/>
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../stylesheets/style.css">
     <link type="text/css" rel="stylesheet" href="../stylesheets/search.css"/>
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+
   </head>
-  <body>
+  <body >
       <header>
-          <div id="header">
+    <div id="header">
       <div class='container'>
           <br />
           <div class="row">
                   <!-- LOGO -->
           <div class="col-md-3">
               <div class="header-logo  ">
-                  <a href="#" class="logo">
+                  <a href="/" class="logo">
                       <img height ="120" width = "120" src="../images/logo.png" alt="MUFFITO">
                   </a>
               </div>
@@ -49,7 +52,7 @@
           </div>
           <!-- /container -->
       </nav>
-  <div class="container">
+  <div class="container-reg">
     <!--
     <nav class="nav nav-pills nav-fill">
     <a class="nav-item nav-link active" href="#add" role="tab" data-toggle="tab" onclick="pageChange(event,'add')">Add Restaurant</a>
@@ -59,29 +62,32 @@
     </nav>
     -->
     <br />
+	<div class="card wrapreg">
       <h2>Add Your Restaurant Details</h2>
-      <form name="restDet" enctype='multipart/form-data' id="restDet">
-        <div class="form-group">
+       <div class="fullwidth">
+		<form name="restDet" enctype='multipart/form-data' id="restDet">
+		<div class="form-group">
           <label for="restName">Restaurant Name:</label>
           <input class="form-control" id="restName" type="text" name="restName" placeholder="Restaurant Name" required onblur="valInp('restDet','restName')">
         </div>
-        <div class="form-group">
-          <label for="restCity">City:</label>
-          <input class="form-control" id="restCity" type="text" name="restCity" placeholder="City" required onblur="valInp('restDet','restCity')">
+        <button class="btn btn-danger btn-block" id="curLoc">USE CURRENT LOCATION</button>
+        <br />
+        <label for='location'>Set Location of Restaurant:</label>
+        <div id="map"></div>
+        <br /></i>
+        <label for="restCity">City:</label>
+        <div class="form-group" id="pac-container">
+            <input class="form-control" id="restCity" type="text" name="restCity" placeholder="City" required onblur="valInp('restDet','restCity')">
         </div>
         <div class="form-group">
-          <label for="restArea">Area:</label>
-          <input class="form-control" id="restArea" type="text" name="restArea" placeholder="Area" required onblur="valInp('restDet','restArea')">
+            <label for="restArea">Area:</label>
+            <input class="form-control" id="restArea" type="text" name="restArea" placeholder="Area" required onblur="valInp('restDet','restArea')">
         </div>
         <div class="form-group">
           <label for="restStreetName">Street Name:</label>
-          <input class="form-control" id="restStreetName" type="text" name="restStreetName" placeholder="Street Name" required onblur="valInp('restDet','restStreetName')">
-        </div>
-        <div id="map"></div>
-        <br />
-        <input type="hidden" id="latitude" name="latitude">
-        <input type="hidden" id="longitude" name="longitude">
-        <div class='form-group'>
+        <input class="form-control" id="restStreetName" type="text" name="restStreetName" placeholder="Street Name" required onblur="valInp('restDet','restStreetName')">
+    </div>    
+		<div class='form-group'>
           <label for='restImage'>Restaurant Images</label>
           <input type='file' class='form-control-file' name='' id='restImage' multiple name='restImage'>
           </div>
@@ -104,19 +110,11 @@
             <option>No</option>
           </select>
         </div>
-        <div class="form-group">
-          <label for="restOpen">Restaurant Open Info</label>
-          <select class="form-control" id="restOpen" name="restOpen">
-            <option>Open Now</option>
-            <option>Closed</option>
-          </select>
-        </div>
-        <h3>Hours:</h3>
+        <h4>Hours</h4>
         <div class="form-group">
           <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-2">
-              <h4>Monday:</h4>
+            <div class="col-md-4">
+              <h4>Monday : </h4>
             </div>
             <div class="col-md-3">
               <input class="form-control" id="monOp" type="time" name="monOp" required="">
@@ -128,9 +126,8 @@
         </div>
         <div class="form-group">
           <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-2">
-              <h4>Tuesday:</h4>
+            <div class="col-md-4">
+              <h4>Tuesday : </h4>
             </div>
             <div class="col-md-3">
               <input class="form-control" id="tueOp" type="time" name="tueOp" required="">
@@ -139,11 +136,11 @@
               <input class="form-control" id="tueCl" type="time" name="tueCl" required="">
             </div>
           </div>
+		  
         </div>
         <div class="form-group">
           <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-2">
+            <div class="col-md-4">
               <h4>Wednesday:</h4>
             </div>
             <div class="col-md-3">
@@ -156,9 +153,8 @@
         </div>
         <div class="form-group">
           <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-2">
-              <h4>Thursday:</h4>
+            <div class="col-md-4">
+              <h4>Thursday : </h4>
             </div>
             <div class="col-md-3">
               <input class="form-control" id="thOp" type="time" name="thOp" required="">
@@ -170,9 +166,8 @@
         </div>
         <div class="form-group">
           <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-2">
-              <h4>Friday:</h4>
+            <div class="col-md-4">
+              <h4>Friday : </h4>
             </div>
             <div class="col-md-3">
               <input class="form-control" id="friOp" type="time" name="friOp" required="">
@@ -184,9 +179,8 @@
         </div>
         <div class="form-group">
           <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-2">
-              <h4>Saturday:</h4>
+            <div class="col-md-4">
+              <h4>Saturday :</h4>
             </div>
             <div class="col-md-3">
               <input class="form-control" id="satOp" type="time" name="satOp" required="">
@@ -198,9 +192,8 @@
         </div>
         <div class="form-group">
           <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-2">
-              <h4>Sunday:</h4>
+            <div class="col-md-4">
+              <h4>Sunday :</h4>
             </div>
             <div class="col-md-3">
               <input class="form-control" id="sunOp" type="time" name="sunOp" required="">
@@ -210,9 +203,14 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <button class="btn btn-primary btn-block" type="submit">Submit</button>
       </form>
+	  		</div>
+
+	</div>
   </div>
+  
+  
   <footer id="footer">
 			
       <!-- bottom footer -->
@@ -241,6 +239,8 @@
       <script src="../javascripts/myScript.js"></script>
       <script src="../javascripts/main.js"></script>
       <script src="../javascripts/home.js"></script>
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBRIt05f_gxZGvC0HTPpjxGh0hsglgl2I4&callback=initMap"></script>
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPfMiy-_3AWVnJZaMjKfQGxIuCd2kP0lg&libraries=places"></script>     
+      <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+
 </body>
 </html>

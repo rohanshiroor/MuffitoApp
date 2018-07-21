@@ -5,11 +5,13 @@
         <link rel="dns-prefetch" href="https://www.gstatic.com/firebasejs/5.0.1">
         <link rel="prefetch" href="../javascripts/search.js">
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+		<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link type="text/css" rel="stylesheet" href="stylesheets/devesh.css"/>
 		<link type="text/css" rel="stylesheet" href="stylesheets/devesh-theme.css"/>
 		<link type="text/css" rel="stylesheet" href="stylesheets/devslider.min.css"/>
+		    <link rel="stylesheet" href="../stylesheets/style.css">
+
         <link rel="shortcut icon" href="images/favicon.ico">
         <link type="text/css" rel="stylesheet" href="stylesheets/search.css"/>
 
@@ -23,7 +25,7 @@
                     <!-- LOGO -->
                     <div class="col-md-3">
                         <div class="header-logo  ">
-                            <a href="#" class="logo">
+                            <a href="/" class="logo">
                                 <img height ="120" width = "120" src="images/logo.png" alt="MUFFITO">
                             </a>
             </div>
@@ -34,9 +36,9 @@
                 <div class="col-md-9">
                     <div class="header-search">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for Bars & Pubs" name="searchText" id="searchText">
+                <input type="text" class="form-control" placeholder="Search for Bars & Pubs" name="searchText" id="searchText" oninput="restSearch();">
                     <div class="input-group-btn">
-                        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                        <button class="btn btn-default" type="submit" disabled><i class="glyphicon glyphicon-search"></i></button>
                     </div>
                 </div>
                 </div>
@@ -57,7 +59,8 @@
                 <div class = "row">
                     <div class="col-sm-2">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="stagEntryBox">
+                    <!--onchange="restSearch();"-->
+                    <input class="form-check-input" type="checkbox" id="stagEntryBox" >
                     <label class="form-check-label" for="stagEntryBox">
                      <font color="White"> Stag Entry </font>
                     </label>
@@ -65,7 +68,7 @@
                 </div>
                 <div class="col-sm-2">
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="openNowBox">
+                    <input class="form-check-input" type="checkbox" value="" id="openNowBox" onchange="restSearch();">
                     <label class="form-check-label" for="openNowBox">
                             <font color="White">  Open Now </font>
                     </label>
@@ -82,7 +85,7 @@
                         <li class="dropdown-item">Cost-Low to High</li>
                     </ul>
                 -->
-                <select id="sort" name="sort">
+                <select id="sort" name="sort" onchange="restSearch();">
                     <option>default</option>
                     <option>Rating</option>
                     <option>Distance</option>
@@ -92,7 +95,7 @@
             </div>
         </div> 
         <div class="col-sm-2">
-                <select id="filter" name="filter">
+                <select id="filter" name="filter" onchange="restSearch();">
                     <option>Within 10 km</option>
                     <option>Within 15 km</option>
                     <option>Within 25 km</option>
@@ -100,6 +103,7 @@
             </div>
         </div>
                
+
             </form>
         </div>
         </div>
@@ -114,6 +118,7 @@
                         <ul class="main-nav nav navbar-nav" id="searchTabs">
                             <li><a  href="#search" role="tab" data-toggle="tab" onclick="pageChange(event,'search')">Search Restaurants</a></li>
                             <li><a  href="#add" role="tab" data-toggle="tab" onclick="pageChange(event,'add')">Add Restaurant</a></li>
+                            <li><a  href="#add" role="tab" data-toggle="tooltip" title="Please Login to Add Restaurant" data-placement="bottom">Add Restaurant</a></li>
                             <li><a  href="#update" role="tab" data-toggle="tab" onclick="pageChange(event,'update')">Update Profile</a></li>
                             <li><a  href="#contact" role="tab" data-toggle="tab" onclick="pageChange(event,'contactus')">Contact Us</a></li>  
                             <li><a href="/login">Login</a></li>
@@ -128,14 +133,23 @@
                 <!-- /container -->
             </nav>
             
-         <div class="container">   
+         <div class="container-reg">
+			<div class="card wrapreg">
+		       <div class="fullwidth">
+				<!--<button onclick="snackbar()">apply this onclick</button>	
+
+			   <div id="snackbar">Error Message..</div>-->			   
         <div id="restCards">
             <img src="../images/loading_red.gif" alt="Loading Results!!! Please Wait" class="center-block">
         </div>
   <!-- The Modal -->
         <div class="modal" id="myModal">
         </div>
+        <div class='modal' id='modalRev'> 
         </div>
+        </div>
+		</div>
+		</div>
         <footer id="footer">
 			
                 <!-- bottom footer -->
