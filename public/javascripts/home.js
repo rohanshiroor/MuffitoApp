@@ -47,17 +47,30 @@ $('#contactus').on('submit',function(event){
       }),
       success:function(response){
         if (response=='Sent'){
-          document.forms["contactus"]["name"].value = " ";
-          document.forms["contactus"]["email"].value = " ";
-          document.forms["contactus"]["subject"].value = " ";
-          document.forms["contactus"]["message"].value = " ";
-          var x = document.getElementById("snackbar");
+          
+          //var x = document.getElementById("snackbar");
   
           // Add the "show" class to DIV
-          x.className = "show";
+          //x.className = "show";
   
           // After 3 seconds, remove the show class from DIV
-          setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+          //setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+          var token = window.sessionStorage.getItem("token")
+          $.ajax({
+            url:'/home',
+            method:'GET',
+            headers: ({
+              'x-access-token':token
+            }),
+            success:function(response){
+              if(response=="Success"){
+                window.location.origin = window.location.protocol + "//" 
+              + window.location.hostname 
+              + (window.location.port ? ':' + window.location.port : '');
+              window.location = window.location.origin+'/home/contactus';
+              }
+            }
+          });
         }
       }
   });
@@ -143,8 +156,8 @@ $('#contactus').on('submit',function(event){
         else if(i!=0 && dist < min_dist){
         min_dist = dist;
         min_city = cities[i];
-        console.log(min_dist);
-        console.log(min_city)
+        //console.log(min_dist);
+        //console.log(min_city)
         }
         destination = null;
       }
@@ -195,7 +208,7 @@ $('#contactus').on('submit',function(event){
           sunCl: document.forms["restDet"]["sunCl"].value
         }),
         success:function(response){
-          console.log(response);
+          //console.log(response);
           if(response!='Error'){ 
             var selectedFile = document.getElementById('restImage');
             if(selectedFile.files.length != 0){
@@ -207,10 +220,10 @@ $('#contactus').on('submit',function(event){
               snapshot.ref.getDownloadURL().then(function(downloadURL){
                 firebase.database().ref('restaurants').child(city).child(response).child('restImage').set(downloadURL);
               });
-              console.log('Uploaded File');
+              //console.log('Uploaded File');
               var fileLength = selectedFile.files.length;
               for (var i=1; i < fileLength ; i++ ) {
-                console.log(i);
+                //console.log(i);
               ImagesRef = storageRef.child('images/'+selectedFile.files[i].name);
               ImagesRef.put(selectedFile.files[i])
               .then(function(snapshot){
@@ -235,7 +248,7 @@ $('#contactus').on('submit',function(event){
                     }
                   });
                 })
-                console.log('Uploaded File');   
+                //console.log('Uploaded File');   
                 //console.log(i,fileLength-1);
               });
             }
@@ -289,7 +302,7 @@ $('#contactus').on('submit',function(event){
 document.addEventListener("DOMContentLoaded",function() {
     if (top.location.pathname === '/home/update'){
         var user = JSON.parse(window.sessionStorage.getItem('user'));
-        console.log(user);
+        // /console.log(user);
         phone = user.phone.substring(3);
         document.forms["updateProf"]["firstname"].value = user.firstName; 
         document.forms["updateProf"]["lastname"].value = user.lastName;
@@ -304,7 +317,7 @@ document.addEventListener("DOMContentLoaded",function() {
         document.forms["updateProf"]["country"].value = user.country;
         document.forms["updateProf"]["email"].value = user.email;
         document.forms["updateProf"]["username"].value = user.userName;
-        document.forms["updateProf"]["phone"].value = phone
+        document.forms["updateProf"]["phone"].value = user.phone;
         document.forms["updateProf"]["password"].value = user.password;
     }
   });
@@ -440,7 +453,44 @@ document.addEventListener("DOMContentLoaded",function() {
         password:password
       }),
       success:function(response,textStatus,xhr){
-        console.log(response);
+        var userId = xhr.getResponseHeader('x-access-uid');
+        var selectedFile = document.getElementById("profilePic");
+        if(selectedFile.files.length != 0){
+          var storageRef = firebase.storage().ref();
+          //console.log(selectedFile);
+          var ImagesRef = storageRef.child('images/'+selectedFile.files[0].name);
+          ImagesRef.put(selectedFile.files[0])
+          .then(function(snapshot){
+            snapshot.ref.getDownloadURL().then(function(downloadURL){
+              //console.log(userId);
+              //console.log(downloadURL);
+              firebase.database().ref('users').child(userId).child('profileUrl').set(downloadURL)
+                $.ajax({
+                  url:'/home',
+                  method:'GET',
+                  headers: ({
+                    'x-access-token':token
+                  }),
+                  success:function(response,textStatus,xhr){
+                    if(response=="Success"){
+                      var userId = xhr.getResponseHeader('x-access-uid');
+                      firebase.database().ref('/users/' + userId).once('value')
+                      .then(function(snapshot) {
+                        var user = snapshot.val();
+                      window.sessionStorage.setItem("user",JSON.stringify(user));            
+                      window.location.origin = window.location.protocol + "//" 
+                    + window.location.hostname 
+                    + (window.location.port ? ':' + window.location.port : '');
+                    window.location = window.location.origin+'/home/update';
+                      });
+                    }
+                  }
+                });
+            });
+          });
+        }
+        else {
+        //console.log(response);
         $.ajax({
           url:'/home',
           method:'GET',
@@ -462,6 +512,7 @@ document.addEventListener("DOMContentLoaded",function() {
             }
           }
         });
+      }
       }   
     });
   }

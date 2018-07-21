@@ -225,8 +225,8 @@ document.addEventListener('DOMContentLoaded', function() {
         else if(i!=0 && dist < min_dist){
         min_dist = dist;
         min_city = cities[i];
-        console.log(min_dist);
-        console.log(min_city)
+        //console.log(min_dist);
+        //console.log(min_city)
         }
         // if(j==(results.length-1)){
         //  

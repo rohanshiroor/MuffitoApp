@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             },
             'expired-callback': function(){
-                console.log("Error");
+                //console.log("Error");
                 grecaptcha.reset(window.recaptchaWidgetId);
             }
           });
@@ -60,11 +60,11 @@ document.addEventListener('DOMContentLoaded', function() {
               // SMS sent. Prompt user to type the code from the message, then sign the
               // user in with confirmationResult.confirm(code).
               window.confirmationResult = confirmationResult;
-              console.log(confirmationResult);
+              //console.log(confirmationResult);
             }).catch(function (error) {
               // Error; SMS not sent
               // ...
-              console.log("SMS not sent"+error);
+              //console.log("SMS not sent"+error);
               grecaptcha.reset(window.recaptchaWidgetId);
             });  
     }
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function() {
                    userId: uid
                }),
                success: function(response){
-                    console.log(response);
+                    //console.log(response);
                     if(response=='Success'){ 
                         window.sessionStorage.removeItem('uid');   
                         window.location.origin = window.location.protocol + "//" 

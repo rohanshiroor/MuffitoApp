@@ -140,7 +140,7 @@ homeRouter.post('/update',Verify.verifyUser,function(req,res){
                 if(user.phone!="")
                     firebase.database().ref('phoneUidMap').child(user.phone).remove();
                 firebase.database().ref('phoneUidMap').child(phone).set(uid)
-                res.end('Success');
+                res.header('x-access-uid',uid).end('Success');
             });
         }
          else if(req.body.password!="" && req.body.password!= user.password){
@@ -149,12 +149,12 @@ homeRouter.post('/update',Verify.verifyUser,function(req,res){
             })
             .then(function(snapshot){
                 updateUser(uid,req);
-                res.end('Success');
+                res.header('x-access-uid',uid).end('Success');
             });
         }
         else {
             updateUser(uid,req);
-            res.end('Success');
+            res.header('x-access-uid',uid).end('Success');
         }
     });
 
