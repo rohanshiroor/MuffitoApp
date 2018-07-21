@@ -12,6 +12,7 @@ registerRouter.use(bodyParser.json());
 registerRouter.use(validator());
 registerRouter.get('/',function(req,res){
     //res.send('Correcto');
+    res.set('Cache-Control','public,max-age=300,s-maxage=600');
     res.sendFile(path.join(__dirname,'../views/register.html'));
     //res.render('register');
 });

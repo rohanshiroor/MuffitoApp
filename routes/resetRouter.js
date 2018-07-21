@@ -9,14 +9,17 @@ const resetRouter = express.Router();
 resetRouter.use(bodyParser.json());
 resetRouter.get('/phone',function(req,res){
     //res.send('Correcto');
+    res.set('Cache-Control','public,max-age=300,s-maxage=600');
     res.sendFile(path.join(__dirname,'../views/reset.html'));
 });
 resetRouter.get('/otp',function(req,res){
     //res.send('Correcto');
+    res.set('Cache-Control','public,max-age=300,s-maxage=600');
     res.sendFile(path.join(__dirname,'../views/reset_otp.html'));
 });
 resetRouter.get('/password',function(req,res){
     //res.send('Correcto');
+    res.set('Cache-Control','public,max-age=300,s-maxage=600');
     res.sendFile(path.join(__dirname,'../views/reset_password.html'));
 });
 resetRouter.post('/password',function(req,res){

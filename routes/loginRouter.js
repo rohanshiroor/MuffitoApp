@@ -10,10 +10,12 @@ const loginRouter = express.Router();
 loginRouter.use(bodyParser.json());
 loginRouter.use(validator());
 loginRouter.get('/',function(req,res){
+    res.set('Cache-Control','public,max-age=300,s-maxage=600');
     //res.send('Correcto');
     res.sendFile(path.join(__dirname,'../views/login.html'));
 });
 loginRouter.get('/verify',function(req,res){
+    res.set('Cache-Control','public,max-age=300,s-maxage=600');
     //res.send('Correcto');
     var userId = req.query.user;
     var oobCode = req.query.oobCode;

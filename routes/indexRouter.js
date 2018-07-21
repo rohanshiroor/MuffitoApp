@@ -9,6 +9,7 @@ const admin = require('firebase-admin');
 indexRouter.use(bodyParser.json());
 // indexRouter.use(validator());
 indexRouter.get('/',function(req,res){
+    res.set('Cache-Control','public,max-age=300,s-maxage=600');
     //res.send('Correcto');
     res.sendFile(path.join(__dirname,'../views/index.html'));
     //res.render('register');
