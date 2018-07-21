@@ -13,11 +13,10 @@ margin-right:0;
 padding-left:0;
 padding-right:0;
 display:block;
-text-align:center; /*This will result in centering the link text, which is probably what you want -brianjohnsondesign.com*/
+text-align:center; 
 }
 .container-reg
-{
-	
+{	
 	width: 100%;
     min-height: 100vh;
     display: -webkit-flex;
@@ -55,8 +54,7 @@ width: 960px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 100px 100px 100px 100px
-	
+  padding: 1.5% 1.5% 1.5% 1.5% 	
 }
 
 .wraphome
