@@ -53,7 +53,7 @@ if (top.location.pathname === '/verify'){
         
         },
         'expired-callback': function(){
-            console.log("Error");
+            //console.log("Error");
             grecaptcha.reset(window.recaptchaWidgetId);
         }
       });
@@ -67,11 +67,11 @@ if (top.location.pathname === '/verify'){
           // SMS sent. Prompt user to type the code from the message, then sign the
           // user in with confirmationResult.confirm(code).
           window.confirmationResult = confirmationResult;
-          console.log(confirmationResult);
+          //console.log(confirmationResult);
         }).catch(function (error) {
           // Error; SMS not sent
           // ...
-          console.log("SMS not sent"+error);
+          //console.log("SMS not sent"+error);
           grecaptcha.reset(window.recaptchaWidgetId);
         });  
 }
@@ -190,7 +190,7 @@ $('#register').on('submit',function(event){
         password:password
       }),
       success:function(response){
-        console.log(response);
+        //console.log(response);
         // if (email && response=='sent'){
         //   //console.log(response);
         //   window.location.origin = window.location.protocol + "//" 
@@ -218,11 +218,11 @@ $('#register').on('submit',function(event){
     event.preventDefault();
     var code = document.forms['otpverify']['otp'].value;
     phone = window.localStorage.getItem('regPhone')
-    console.log(phone);
+    //console.log(phone);
     confirmationResult.confirm(code).then(function (result) {
     // User signed in successfully.
     var user = result.user;
-    console.log(user.uid);
+    //console.log(user.uid);
     $('#hidden').val(user.uid);
     // ...
     }).catch(function (error) {

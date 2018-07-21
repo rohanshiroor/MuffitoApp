@@ -63,7 +63,7 @@
         <br>
 		<div class="card wrapreg">
 		       <div class="fullwidth">
-        <form name="updateProf" id="updateProf">
+        <form name="updateProf" enctype='multipart/form-data' id="updateProf">
           <h2>Update Your Profile Details</h2>
 		  <div class="form-group">
             <label for="First Name">First Name:</label>
@@ -83,11 +83,11 @@
             </div>
 			<div class='form-group'>
           <label for=''>Change Profile Picture</label>
-          <input type='file' class='form-control-file' name='' id='' multiple name=''>
+          <input type='file' class='form-control-file' name='profilePic' id='profilePic'>
           </div>
           <div class="form-group">
               <label for="Flat No.">Flat No:</label>
-              <input class="form-control" id="flatno" type="number" name="flatno" placeholder="Flat Number" onblur="valInp('updateProf','flatno')">
+              <input class="form-control" id="flatno" type="text" name="flatno" placeholder="Flat Number" onblur="valInp('updateProf','flatno')">
             </div>
           <div class="form-group">
               <label for="StreetName">Street Name:</label>

@@ -13,7 +13,7 @@ if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
     window.localStorage.removeItem('emailForSignIn');
   })
   .catch(function(error) {
-    console.log(error);
+    //console.log(error);
   });
 }
 var uiConfig = {
@@ -23,7 +23,8 @@ callbacks: {
     // Return type determines whether we continue the redirect automatically
     // or whether we leave that to developer to handle.
     var displayName = currentUser.displayName.split(" ");
-    console.log(currentUser.phoneNumber)
+    //console.log(currentUser.phoneNumber)
+    username = currentUser.email.split('@');
       $.ajax({
         url: '/login/social',
         method:'POST',
@@ -31,11 +32,13 @@ callbacks: {
         data: JSON.stringify({
             uid:currentUser.uid,
             email: currentUser.email,
+            phone:currentUser.phoneNumber,
+            username:username[0],
             firstName: displayName[0],
             lastName: displayName[1],
         }),
         success:function(response,textStatus,xhr){
-          console.log(response);
+          //console.log(response);
           if (response=='Success'){
             var token = xhr.getResponseHeader('x-access-token');
             // console.log(token);
@@ -122,7 +125,7 @@ $('#login').on('submit',function(event){
           password: password
         }),
         success:function(response,textStatus,xhr){
-          console.log(response);
+          //console.log(response);
           if (response=='Success'){
             var token = xhr.getResponseHeader('x-access-token');
             window.sessionStorage.setItem("token",token);

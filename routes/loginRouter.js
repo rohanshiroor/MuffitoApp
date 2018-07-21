@@ -152,12 +152,18 @@ loginRouter.post('/',function(req,res){
         .then(function(snapshot){
         var user = snapshot.val();
         if(user==null) {
+            if(req.body.phone){
+                phone = req.body.phone;
+            }
+            else{
+                phone = "";
+            }
             firebase.database().ref('users/' + req.body.uid).set({
                 email: req.body.email,
-                phone: "",
+                phone: phone,
                 firstName: req.body.firstName,
                 lastName:req.body.lastName,
-                userName:"",
+                userName:req.body.username,
                 password: "",
                 age: "",
                 dateOfBirth:"",

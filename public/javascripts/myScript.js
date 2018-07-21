@@ -45,13 +45,13 @@ firebase.initializeApp(config);
 var user = JSON.parse(window.sessionStorage.getItem("user"));
 var userInfo = $("#userInfo"); 
 if(user) {
-console.log(user);
+// console.log(user.profileUrl);
 var username = null;
-if(!user.username){
+if(!user.userName){
   username = "Muffito User"
 } 
 else {
-  username = user.username;
+  username = user.userName;
 }
 userInfo.append(
   `
@@ -67,7 +67,7 @@ userInfo.append(
               <div class="row">
                   <div class="col-lg-4">
                       <p class="text-center ">
-                        <img src = '' class=" img-rounded img-responsive aria-hidden="true"" onerror="this.onerror=null;this.src='images/bar_substitute.jpg'; "> 
+                        <img src = "${user.profileUrl}" class=" img-rounded img-responsive aria-hidden="true"" onerror="this.onerror=null;this.src='images/bar_substitute.jpg'; "> 
 
                       </p>
                   </div>
@@ -170,7 +170,7 @@ function showMap(pos){
           marker.setVisible(true);
           infoWindow.setContent(address);
           infoWindow.open(map, marker);
-          console.log(results[0].address_components);
+          //console.log(results[0].address_components);
           locationSet = true;
         });
         //location.value=results[0].formatted_address;
@@ -321,7 +321,7 @@ function signOut(){
       })  
     }).catch(function(error) {
       // An error happened.
-      console.log(error);
+     // console.log(error);
     });
 }
 
