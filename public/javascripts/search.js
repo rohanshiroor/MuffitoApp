@@ -849,7 +849,7 @@ else{
       else
         data[id]['reviews'][rateRef.key] = newRev;
       reviews = data[id].reviews;
-      console.log(reviews);
+      //console.log(reviews);
       if(!users[uid])
         revUser = "Muffito User";
         else
