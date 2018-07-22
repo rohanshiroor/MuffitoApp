@@ -849,11 +849,13 @@ else{
       else
         data[id]['reviews'][rateRef.key] = newRev;
       reviews = data[id].reviews;
-      if(!users[reviews[keys].uid])
+      console.log(reviews);
+      if(!users[uid])
         revUser = "Muffito User";
         else
-        revUser = users[reviews[keys].uid];
-//console.log(review);
+        revUser = users[uid];
+      //console.log(users[reviews[keys].uid]);
+      //console.log(revUser);
       if(!reviews){
         userReview.empty();
         userReview.append(`<h4><strong>Reviews</strong></h4>`)
