@@ -29,9 +29,8 @@ document.addEventListener("DOMContentLoaded",function() {
 
 });
 
-var cw = window.rating1.clientWidth; // save original 100% pixel width
-
 function rating( rating ) {
+  var cw = window.rating1.clientWidth; // save original 100% pixel width
   window.rating1.style.width = Math.round(cw * (rating / 5)) + 'px';
 }
 
@@ -678,10 +677,10 @@ if(!reviews){
 }
 for(keys in reviews){
 //
-if(!users[keys])
+if(!users[reviews[keys].uid])
     revUser = "Muffito User";
 else
-    revUser = users[keys];
+    revUser = users[reviews[keys].uid];
 userReview.append(`
 <div class="modal-footer" style="text-align:left;">
     <strong>${revUser} :</strong>
@@ -706,7 +705,7 @@ else {
 }
 
 $("#reviewBut").on('click',function(){
-  giveReview(username,id);
+  giveReview(username,id,users);
 //$("#modalRev").modal('show');
 });
 
@@ -733,7 +732,7 @@ $('#myModal').on('hidden.bs.modal', function () {
 //var carousel
 }
 
-function giveReview(username,id){
+function giveReview(username,id,users){
   var restKeys = JSON.parse(window.localStorage.getItem('restKeys'));
   var revModal = $("#modalRev");
   var data = JSON.parse(window.localStorage.getItem("snapshot"));
@@ -810,14 +809,15 @@ $("#submitRev").on('click',function(){
       data[id].reviews[rateKey] = newRev;
       window.localStorage.setItem("snapshot",JSON.stringify(data));
       reviews = data[id].reviews;
-      // /console.log(reviews);
+      //console.log(reviews);
+      //console.log(users);
       userReview.empty();
       userReview.append(`<h4><strong>Reviews</strong></h4>`)
       for(keys in reviews){
-        if(!users[keys])
+        if(!users[reviews[keys].uid])
         revUser = "Muffito User";
         else
-        revUser = users[keys];
+        revUser = users[reviews[keys].uid];
         userReview.append(`
         <div class="modal-footer" style="text-align:left;">
         <strong>${revUser} :</strong>
@@ -838,19 +838,24 @@ else{
     comments:textMsg
   })
   .then(function(){
-      var newRev = {};
-      var obj =  
+      var newRev =  
       {
         uid:uid,
         ratings:restRateBy,
         comments:textMsg
       }
-      newRev[rateRef.key] = obj;
+      if(!data[id].reviews)
+        data[id]['reviews'] = newRev;      
+      else
+        data[id]['reviews'][rateRef.key] = newRev;
+      reviews = data[id].reviews;
+      //console.log(reviews);
       if(!users[uid])
         revUser = "Muffito User";
         else
         revUser = users[uid];
-//console.log(review);
+      //console.log(users[reviews[keys].uid]);
+      //console.log(revUser);
       if(!reviews){
         userReview.empty();
         userReview.append(`<h4><strong>Reviews</strong></h4>`)
@@ -858,18 +863,14 @@ else{
           userReview.append(`
           <div class="modal-footer" style="text-align:left;">
           <strong>${revUser} :</strong>
-          ${obj.ratings}
+          ${newRev.ratings}
           <span class="fa fa-star checked" style="color: orange;"></span>
-          ${obj.comments}
+          ${newRev.comments}
           </div>
       `);
       //console.log(newRev);
-      if(!data[id].reviews)
-        data[id]['reviews'] = newRev;      
-      else
-        data[id].reviews.push(newRev);
+      
         window.localStorage.setItem("snapshot",JSON.stringify(data));
-      reviews = data[id].reviews;
     $("#modalRev").modal('hide');
   });
 }
