@@ -19,6 +19,8 @@ const indexRouter = require('./routes/indexRouter');
 const searchRouter = require('./routes/searchRouter');
 const resetRouter = require('./routes/resetRouter');
 const admin = require('firebase-admin');
+const privacy = require('./routes/privacy');
+
 // const firebaseui = require('firebaseui');
 const app = express();
 //otpcode = null;
@@ -71,6 +73,7 @@ app.use('/verify',verifyRouter);
 app.use('/home',homeRouter);
 app.use('/search',searchRouter);
 app.use('/reset',resetRouter);
+app.use('/privacy',privacy);
 // catch 404 and forward to error handler
 app.use(function(req, res, next){
   const err = new Error('Not Found');
