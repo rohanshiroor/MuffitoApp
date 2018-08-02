@@ -93,8 +93,10 @@ function Data(data) {
   $('#restCards').empty();
   var distArray = JSON.parse(window.localStorage.getItem('distance'));
   var durArray = JSON.parse(window.localStorage.getItem("duration"));
+  var count = 0;
   //var data = JSON.parse(window.localStorage.getItem("snapshot"));
   //var itm = window.localStorage.getItem("item");
+  //console.log(data);
   if(data.length!=0) {
   for(var i=0;i<data.length;i++){
   if(distArray[i]<10.0 && data[i].name){  
@@ -122,10 +124,14 @@ function Data(data) {
       </div>
       `);
       bodyDiv.append(`<br />`);
+      count++;
       //if(i == count)
       // /  document.getElementById("searchText").disabled = false;
       //console.log(i);
   }
+}
+if(count==0){
+  bodyDiv.append(`<img src="./images/no_restaurant2.jpg" alt="No Results Found! Please Try Again!">`);
 }
 }
 else {
@@ -160,6 +166,7 @@ function getData(){
         restKeys.push(data.key);
   }); 
     //console.log(users);
+    //console.log(dataArray);
     calcDistTime(dataArray);
     Data(dataArray);
     window.localStorage.setItem("snapshot",JSON.stringify(dataArray));
