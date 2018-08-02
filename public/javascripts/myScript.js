@@ -42,6 +42,13 @@ document.addEventListener('DOMContentLoaded', function() {
 firebase.initializeApp(config);
 // var storage = firebase.storage();
 // var auth = app.auth();
+window.dataLayer = window.dataLayer || [];
+function gtag()
+{
+  dataLayer.push(arguments);
+}
+gtag('js', new Date());
+gtag('config', 'UA-120403146-1');
 var user = JSON.parse(window.sessionStorage.getItem("user"));
 var userInfo = $("#userInfo"); 
 if(user) {
@@ -121,7 +128,6 @@ function displayLocation(position) {
   };
   showMap(pos,map);
 }
-
 
 
 function showMap(pos){
