@@ -27,8 +27,9 @@ text-align:center;
     padding: 15px;
     align-items: center;
     background: #9053c7;
-    background: linear-gradient(-135deg, #c850c0, #4158d0);
-
+	background: url("../images/bg-pattern.png"), #7b4397;
+	background: url("../images/bg-pattern.png"), -webkit-linear-gradient(to left, #7b4397, #dc2430);
+	background: url("../images/bg-pattern.png"), linear-gradient(to left, #7b4397, #dc2430);
 }
    #overmap { 
    
