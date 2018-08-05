@@ -84,8 +84,22 @@ signInFlow: 'popup',
 //signInSuccessUrl: top.location.pathname+'/home',
 signInOptions: [
   // Leave the lines as is for the providers you want to offer your users.
-  firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-  firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+  {
+    provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    customParameters: {
+      // Forces account selection even when one account
+      // is available.
+      prompt: 'select_account'
+    }
+  },
+  {
+    provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+    customParameters: {
+      // Forces password re-entry.
+      auth_type: 'reauthenticate'
+    }
+  },
+
 ],
 };
 ui.start('#firebaseui-auth-container', uiConfig);
@@ -136,7 +150,8 @@ $('#login').on('submit',function(event){
                 'x-access-token':token
               }),
               success:function(response,textStatus,xhr){
-                if(response=="Success"){
+                if(response=="Success")
+                {
                   var userId = xhr.getResponseHeader('x-access-uid');
                   window.sessionStorage.setItem('uid',userId);
                   firebase.database().ref('/users/' + userId).once('value')
@@ -152,6 +167,12 @@ $('#login').on('submit',function(event){
               }
             });
           }
+          // else {
+          //   console.log('Errorrrr');
+          //   $("#snackbar").append(response);
+          //   console.log($("#snackbar").val);
+          //   snackbar();
+          // }
         }
       });
     }
