@@ -68,7 +68,8 @@ loginRouter.post('/',function(req,res){
             });
             })
             .catch(function(error) {
-                console.log("Error fetching user data:", error);
+                res.end(error.message);
+                //console.log("Error fetching user data:", error);
             });
         }
         if(1 != 1) {
@@ -100,7 +101,7 @@ loginRouter.post('/',function(req,res){
                 var errorCode = error.code;
                 var errorMessage = error.message;
                 //res.end(errorMessage+""+errorCode);
-                res.send('Error');
+                res.send(errorMessage);
                 // ...
               });
             //   firebase.auth().onAuthStateChanged(function(user) {
