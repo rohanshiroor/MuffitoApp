@@ -259,7 +259,7 @@ section h2 {
 }
 
 #mainNav .navbar-brand {
-  color: #933b7d;
+  color: #fdcc52;
   font-family: 'Catamaran', 'Helvetica', 'Arial', 'sans-serif';
   font-weight: 200;
   letter-spacing: 1px;
@@ -590,9 +590,9 @@ footer ul li a:hover, footer ul li a:focus, footer ul li a:active, footer ul li 
 }
 
 .bg-primary {
-  background: #fdcc52;
-  background: -webkit-linear-gradient(#fdcc52, #fdc539);
-  background: linear-gradient(#fdcc52, #fdc539);
+  
+  background: url(../images/bg-pattern.png),-webkit-linear-gradient(to left, #7b4397, #dc2430);
+  background: url(../images/bg-pattern.png),linear-gradient(to left, #7b4397, #dc2430);
 }
 
 .text-primary {
