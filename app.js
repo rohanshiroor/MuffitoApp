@@ -20,6 +20,7 @@ const searchRouter = require('./routes/searchRouter');
 const resetRouter = require('./routes/resetRouter');
 const admin = require('firebase-admin');
 const privacyRouter = require('./routes/privacyRouter');
+const careerRouter = require('./routes/careerRouter');
 
 // const firebaseui = require('firebaseui');
 const app = express();
@@ -74,6 +75,7 @@ app.use('/home',homeRouter);
 app.use('/search',searchRouter);
 app.use('/reset',resetRouter);
 app.use('/privacy',privacyRouter);
+app.use('/careers',careerRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next){
   const err = new Error('Not Found');
